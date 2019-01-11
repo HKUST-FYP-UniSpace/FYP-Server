@@ -1,0 +1,182 @@
+.panel-body-edit {
+	margin-left: 5%;
+	margin-right: 5%;
+	padding: 5%
+}
+
+label {
+    margin-top: 5px;
+}
+
+.label-error {
+	color: red;
+}
+
+.edit-form {
+	padding: 5px;
+}
+
+.fake-input {
+	border-bottom: 1px dotted lightgray;
+}
+
+#edit-mission-name, 
+#edit-mission-owner, 
+#edit-mission-type, 
+#edit-mission-date, 
+#edit-mission-address, 
+#edit-mission-num-of-ppl, 
+#edit-mission-salary, 
+#edit-mission-start-time, 
+#edit-mission-end-time, 
+#edit-mission-content, 
+#edit-mission-requirement {
+	padding: 5px;
+}
+
+.label-remainder {
+	color: #afafaf;
+}
+
+textarea {
+	resize: none;
+}
+
+label.report-creator {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	color: orange;
+}
+
+.well {
+	border-radius: 10px;
+	box-shadow: 0 0 15px #d6d6d6;
+	margin-top: 20px;
+}
+
+.well-report {
+	border-radius: 2px;
+	box-shadow: 3px 3px 3px #d6d6d6;
+	margin-top: 0px;
+	margin-bottom: 1em;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background-color: whitesmoke;
+}
+
+#edit-mission-owner-link {
+	color: orange;
+}
+
+#edit-mission-owner-link:hover {
+	color: #f54d0ff2;
+	text-decoration: underline;
+}
+a.orange-color-link{
+	color: orange;
+}
+
+.preview {
+	height: 23px;
+	width: 23px;
+}
+
+.view {
+	height: 100%;
+	width: 100%;
+}
+
+.view-btn {
+	background-color: white;
+	color: orange;
+}
+
+.view-btn:hover {
+	background-color: orange;
+}
+
+.applied_status_0 {
+	color: deeppink;	// 申請任務 - Taker
+}
+
+.applied_status_1 {
+	color: orchid;		// 接受委託 - Giver
+}
+
+.applied_status_2 {
+	color: pink;		// 取消應徵 - Taker
+}
+
+.applied_status_3, .applying_cancel {
+	color: mediumvioletred;	// 要求收取報酬 - Taker 
+}
+
+.applied_status_4 {
+	color: seagreen;	// 已發放報酬 - Giver
+}
+
+.applied_status_5, .end {
+	color: cornflowerblue;	// 正在批核 （反饋
+}
+
+.applied_status_6, .applied_status_9, .recruiting {
+	color: limegreen;	// 反饋成功、受託人 反饋成功 
+}
+
+.applied_status_7, .applied_status_10 , .cancel_mission{
+	color: red;			// 反饋失敗、受託人 反饋失敗
+}
+
+.applied_status_8 {
+	color: slategrey;	// 反饋成功 - 已被取消資格
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.display_none {
+	display: none;
+}
+
+.display_block {
+	display: block;
+}
+
+.readonly_field, #edit-mission-owner {
+	opacity: 0.5;
+	cursor: default;
+}
+
+.opacity_half {
+	opacity: 0.5;
+}
+
+#no-applied-taker {
+	padding-left: 0px;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+#preview-area {
+	display: none;
+}
+
+#upload-btn {
+	margin-left: 0px;
+}
+
+#add-file, #edit-file {
+	display: none;
+}
+
+#add-new-advertisement {
+	margin-bottom: 30px;
+}
+
+.highlight {
+	text-decoration: underline;
+	font-weight: bold;
+}
