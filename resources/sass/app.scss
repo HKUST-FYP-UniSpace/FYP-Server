@@ -1,14 +1,113 @@
 
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
 
 // Variables
-@import 'variables';
+@import "variables";
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "bootswatch";
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+// https://github.com/ctrngk/backup/blob/master/PingFang%20Regular.ttf
+// @font-face {
+//   font-family: PangFang-TC;
+//   font-style: normal;
+//   font-weight: 400;
+//   src: url('fonts/PingFang-Regular.ttf');
+// }
+body{
+	font-family: "Microsoft Yahei", "Microsoft Jhenghei", "Raleway", Arial, sans-serif !important;
+	font-weight: 300;
+}
+// global scss here
+.container.before-nav{
+	margin-top: 110px;
+}
+
+// nav bar override
+.navbar-brand{
+	color: orange !important;
+}
+
+
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+	color: white;
+	background-color: rgba(240,97,44, 0.95);
+}
+
+// text-area focus override
+textarea:focus, textarea.form-control:focus, input.form-control:focus, 
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, 
+input[type=number]:focus, [type=text].form-control:focus, [type=password].form-control:focus, [type=email].form-control:focus, 
+[type=tel].form-control:focus, [contenteditable].form-control:focus{
+	-webkit-box-shadow: inset 0 -2px 0 orange;
+	box-shadow: inset 0 -2px 0 orange;
+}
+
+
+// pagination override
+.pagination{
+	font-size :18px;
+}
+.pagination > .active > a, .pagination > .active > a:hover, 
+.pagination > .active > a:focus, .pagination > .active > span, 
+.pagination > .active > span:hover, .pagination > .active > span:focus{
+
+	color: #fff;
+    background-color: orange;
+    border-color: orange;
+} 
+.pagination > li > a:hover, .pagination > li > a:focus, .pagination > li > span:hover, .pagination > li > span:focus{
+	color : orange;
+}
+
+.pagination > li > a, .pagination > li > span{
+
+	color: orange;
+}
+
+.btn {
+	background-color: orange;
+	color: white;
+}
+
+.btn:focus, .btn:active, .btn:after, .btn:hover, .btn:hover:disabled {
+	background-color: darkorange;
+	color: white;
+}
+
+input[type="checkbox"]:checked:after, 
+.checkbox input[type="checkbox"]:checked:after, 
+.checkbox-inline input[type="checkbox"]:checked:after {
+	background-color: orange;
+	border-color: orange;
+}
+
+a, a:after, a:focus {
+	color: orange;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #f54d0ff2;
+	text-decoration: underline;
+}
+
+a > button, a > button:after, a > button:focus, a > button:hover {
+	color: white;
+	text-decoration: none;
+}
+select:focus, select.form-control:focus{
+	-webkit-box-shadow: inset 0 -2px 0 orange;
+	box-shadow: inset 0 -2px 0 orange;
+}
+.orange{
+	color: orange;
+	&:hover{color: orange;}
+	&:after {color: orange;}
+	&:focus {color: orange;}
 }
