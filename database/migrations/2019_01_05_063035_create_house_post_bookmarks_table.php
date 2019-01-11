@@ -15,9 +15,9 @@ class CreateHousePostBookmarksTable extends Migration
     {
         Schema::create('house_post_bookmarks', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('status');
-            $table->integer('house_post_id');
-            $table->integer('bookmark_status_id');
+            // $table->integer('status');
+            // $table->integer('house_post_id');
+            // $table->integer('bookmark_status_id');
             $table->integer('house_id');
             $table->integer('tenant_id');
             $table->timestamps();

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBookmarkStatusesTable extends Migration
+class CreateDistrictsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateBookmarkStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('bookmark_statuses', function (Blueprint $table) {
+        Schema::create('districts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('status', 45);
+            $table->string('name', 45);
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateBookmarkStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bookmark_statuses');
+        Schema::dropIfExists('districts');
     }
 }

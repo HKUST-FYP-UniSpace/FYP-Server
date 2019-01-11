@@ -15,8 +15,8 @@ class CreateTradeBookmarksTable extends Migration
     {
         Schema::create('trade_bookmarks', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('status');
-            $table->integer('bookmark_status_id');
+            // $table->integer('status');
+            // $table->integer('bookmark_status_id');
             $table->integer('trade_id');
             $table->integer('user_id');
             $table->timestamps();

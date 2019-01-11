@@ -17,6 +17,7 @@ class CreateHousePostGroupsTable extends Migration
             $table->increments('id');
             $table->integer('house_post_id');
             $table->integer('house_id');
+            $table->integer('is_rent');
             $table->timestamps();
         });
     }
