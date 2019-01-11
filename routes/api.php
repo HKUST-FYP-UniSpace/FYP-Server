@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Blog;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,16 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/hi', function(){
+  return "hi";
+});
+
+Route::get('/blog', function(){
+  return Blog::get();
+});
+
+// Route::post('');
+// Route::post();
+// Route::post();
+// Route::post();
