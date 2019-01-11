@@ -29,11 +29,14 @@ class User extends Authenticatable
     ];
 
     public function profile() {
-        // hasOne:
-        // 1st argument: model
-        // 2nd argument: foreign key (optional)
-        // 3rd argument: local key (optional)
-        return $this->hasOne('App\Profile', 'user_id', 'id');
-        // return $this->hasOne('App\Profile');
+        return $this->hasOne('App\Profile');
+    }
+
+    public function calendar() {
+        return $this->hasMany('App\Calendar');
+    }
+
+    public function trade_transaction() {
+        return $this->hasMany('App\TradeTransaction');
     }
 }
