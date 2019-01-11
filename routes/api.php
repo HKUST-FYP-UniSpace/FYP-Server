@@ -18,10 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // Test
-Route::get('/hi', function() {
-	return "hi";
-});
-
 Route::get('/test', 'TestController@index');
 Route::get('/test/{id}', 'TestController@show');
 
