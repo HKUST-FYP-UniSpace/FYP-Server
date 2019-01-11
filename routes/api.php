@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // Test
-Route::get('/hi', funciton() {
+Route::get('/hi', function() {
 	return "hi";
 });
 
