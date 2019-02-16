@@ -63,6 +63,71 @@
         ]
     },
     {
+        "name": "browner12/helpers",
+        "version": "v2.1.3",
+        "version_normalized": "2.1.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/browner12/helpers.git",
+            "reference": "ad1faab0721688e926857ec0711378c086d645c4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/browner12/helpers/zipball/ad1faab0721688e926857ec0711378c086d645c4",
+            "reference": "ad1faab0721688e926857ec0711378c086d645c4",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/console": "5.5.*|5.6.*|5.7.*",
+            "illuminate/contracts": "5.5.*|5.6.*|5.7.*",
+            "illuminate/support": "5.5.*|5.6.*|5.7.*",
+            "php": ">=7.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~6.0|~7.0",
+            "scrutinizer/ocular": "~1.1",
+            "squizlabs/php_codesniffer": "~2.3"
+        },
+        "suggest": {
+            "moneyphp/money": "Money value object."
+        },
+        "time": "2018-09-11T15:55:15+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0-dev"
+            },
+            "laravel": {
+                "providers": [
+                    "browner12\\helpers\\HelperServiceProvider"
+                ]
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "browner12\\helpers\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Andrew Brown",
+                "email": "browner12@gmail.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "generic helpers",
+        "homepage": "https://github.com/browner12/helpers",
+        "keywords": [
+            "browner12",
+            "helpers"
+        ]
+    },
+    {
         "name": "dnoegel/php-xdg-base-dir",
         "version": "0.1",
         "version_normalized": "0.1.0.0",

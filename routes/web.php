@@ -17,6 +17,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// Test
+Route::get('/hi', function() {
+	return "hi";
+});
+
 // Admin
 Route::prefix('admin')->group(function() {
 	// admin login blank page
@@ -45,6 +50,7 @@ Route::prefix('house')->group(function(){
 //Message
 Route::get('/message', 'MessageController@show_message');
 
+
 // Blog
 Route::prefix('blog')->group(function(){
 	Route::name('blog-list')->get('/', 'BlogController@show_blog');
@@ -59,3 +65,15 @@ Route::prefix('user')->group(function(){
 	Route::name('user-list')->get('/', 'UserController@show_user');
 	Route::name('user-view')->get('/view-user','UserController@show_user_profile');
 });
+
+// put all the routes inside at last
+// only for those who have logged in can access these pages
+Route::group(['middleware' => 'auth:admin'], function(){
+
+});//end middleware auth:admin
+
+
+// ======================================================================================
+// Web API
+Route::name('user.list')->get('/show_profile/{id}', 'Web\UserController@list_all_user');
+
