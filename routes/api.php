@@ -18,6 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::get('/hi', function(){
   return "hi";
 });
@@ -93,3 +94,20 @@ Route::get('/blog', 'API\BlogController@index_blog'); //tested
 // Search Engine
 Route::post('/search/trade', 'API\SearchEngineController@searchTrade');
 Route::post('/search/house', 'API\SearchEngineController@searchHouse');
+
+// Test
+Route::get('/test', 'TestController@index');
+Route::get('/test/{id}', 'TestController@show');
+
+// Test API
+Route::get('/test', 'API\TestController@index');
+Route::get('/test/{id}', 'API\TestController@show');
+
+// Admin
+Route::get('/show_all_admin', 'API\AdminController@show_all_admin');
+
+// User
+Route::get('/show_profile/{id}', 'API\UserController@show_profile');
+Route::post('/create_profile/{id}', 'API\UserController@create_profile');
+Route::post('/edit_profile/{id}', 'API\UserController@edit_profile');
+

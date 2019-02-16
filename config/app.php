@@ -162,6 +162,8 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+        browner12\helpers\HelperServiceProvider::class,
+
         /*
          * Package Service Providers...
          */

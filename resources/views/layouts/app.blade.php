@@ -13,6 +13,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
     @stack('add-style')
 
     <!-- Scripts -->
@@ -22,113 +24,88 @@
         ]); ?>
     </script>
 
+
+
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
+        <div class="container">
+            <nav class="navbar navbar-light bg-light">
+              <a class="navbar-brand" href=="{{ url('/admin') }}">UniSpace CMS</a>
+            </nav>
 
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+ 
+          <nav>
+            <div>
+                <ul class="nav navbar-nav navbar-right">  
 
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/admin') }}">
-                        賞金寶 CMS
-                    </a>
-                </div>
+                    @if( \Request::is('users') || \Request::is('profile/*') || \Request::is('user/*'))
+                            <li class="active"><a href="{{ url('/user') }}">User</a></li>
+                     @else
+                            <li ><a href="{{ url('/user') }}">User</a></li>
+                         @endif
+                </ul>
 
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                	@if(Auth::check())
-	                    <!-- Left Side Of Navbar -->
-	                    <ul class="nav navbar-nav">
-	                        @if( \Request::is('users') || \Request::is('profile/*') || \Request::is('user/*'))
-	                            <li class="active"><a href="{{ url('/users') }}">使用者</a></li>
-	                        @else
-	                            <li ><a href="{{ url('/users') }}">使用者</a></li>
-	                        @endif
-	                        
-	                        @if( (\Request::is('mission/*') || \Request::is('missions') ) && !\Request::is('mission/*/othersmission'))
-	                            <li class="active"><a href="{{ url('/missions') }}">任務</a></li>
-	                        @else
-	                            <li ><a href="{{ url('/missions') }}">任務</a></li>
-	                        @endif
+                <ul class="nav navbar-nav navbar-right">  
+                            
+                     @if( (\Request::is('mission/*') || \Request::is('missions') ) && !\Request::is('mission/*/othersmission'))
+                          <li class="active"><a href="{{ url('/house') }}">Apartment</a></li>
+                     @else
+                         <li ><a href="{{ url('/house') }}">Apartment</a></li>
+                     @endif
+                </ul>
+                         
 
-	                        @if( \Request::is('report/*') || \Request::is('reports'))
-	                            <li class="active"><a href="{{ url('/reports') }}">反饋</a></li>
-	                        @else
-	                            <li ><a href="{{ url('/reports') }}">反饋</a></li>
-	                        @endif
+                <ul class="nav navbar-nav navbar-right">  
+                    @if( \Request::is('report/*') || \Request::is('reports'))
+                         <li class="active"><a href="{{ url('/trade') }}">Trade</a></li>
+                    @else
+                          <li ><a href="{{ url('/trade') }}">Trade</a></li>
+                    @endif
 
-	                        @if( \Request::is('other-mission/*') || \Request::is('other-missions')|| \Request::is('mission/*/othersmission'))
-	                            <li class="active"><a href="{{ url('/other-missions') }}">趣聞</a></li>
-	                        @else
-	                            <li ><a href="{{ url('/other-missions') }}">趣聞</a></li>
-	                        @endif
-	                        @if( \Request::is('runninggold_wallet') )
-	                            <li class="active"><a href="{{ url('/runninggold_wallet') }}">runninggold 錢包</a></li>
-	                        @else
-	                            <li ><a href="{{ url('/runninggold_wallet') }}">runninggold 錢包</a></li>
-	                        @endif
-	                        {{-- @if( \Request::is('advertisement/*') || \Request::is('advertisement'))
-	                            <li class="active"><a href="{{ url('/advertisement') }}">廣告</a></li>
-	                        @else
-	                            <li ><a href="{{ url('/advertisement') }}">廣告</a></li>
-	                        @endif --}}
-	                        @if( \Request::is('select/*') || \Request::is('select'))
-	                            <li class="active"><a href="{{ url('/select') }}">選項</a></li>
-	                        @else
-	                            <li ><a href="{{ url('/select') }}">選項</a></li>
-	                        @endif
-	                        @if( \Request::is('admins/*') || \Request::is('admins'))
-	                            <li class="active"><a href="{{ url('/admins') }}">帳戶</a></li>
-	                        @else
-	                            <li ><a href="{{ url('/admins') }}">帳戶</a></li>
-	                        @endif
+                 </ul>
 
-	                    </ul>
-					@endif
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @if (Auth::guest())
-                            <li><a href="{{ url('admin/login') }}">Login</a></li>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+                 <ul class="nav navbar-nav navbar-right">  
+                    @if( \Request::is('other-mission/*') || \Request::is('other-missions')|| \Request::is('mission/*/othersmission'))
+                         <li class="active"><a href="{{ url('/blog') }}">Blog</a></li>
+                    @else
+                         <li ><a href="{{ url('/blog') }}">Blog</a></li>
+                     @endif
+                </ul>
 
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ url('/logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
+                <ul class="nav navbar-nav navbar-right">  
+                    @if( \Request::is('runninggold_wallet') )
+                         <li class="active"><a href="{{ url('/message') }}">Message</a></li>
+                    @else
+                         <li ><a href="{{ url('/message') }}">Message</a></li>
+                    @endif
 
-                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endif
-                    </ul>
-                </div>
+                </ul>
+
+                 <ul class="nav navbar-nav navbar-right">                   
+                        <li><a href="{{ url('/') }}">Logout</a>
+                        </li>
+                 </ul>
+
             </div>
-        </nav>		
-        @yield('content')
-    </div>
 
+          </nav>       
+          
+            </div>
+        </nav>    
+        
+        <div id="mainDiv">
+            <div id="mydiv" style="height:150px; "></div>
+        </div>
+         @yield('content') 
+    
+    </div>
     <!-- Scripts -->
     <script src="{{ asset('/js/app.js') }}"></script>
     @stack('add-script')
+
+
 
 </body>
 </html>

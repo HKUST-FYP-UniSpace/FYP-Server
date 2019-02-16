@@ -15,7 +15,7 @@ class CreateHousePostGroupsTable extends Migration
     {
         Schema::create('house_post_groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('house_post_id');
+            //$table->integer('house_post_id');
             $table->integer('house_id');
             $table->integer('is_rent');
             $table->timestamps();
