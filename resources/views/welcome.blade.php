@@ -86,7 +86,12 @@
                     {{ env('APP_TITLE') }}
                 </div>
                 <h1>UniSpace CMS</h1>
+                <a href="{{ url('/login') }}">
                 <button class="btn btn-default" id='login'>Login</button>
+                </a>
+
+                
+
 
             </div>
         </div>

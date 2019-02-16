@@ -13,6 +13,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
     @stack('add-style')
 
     <!-- Scripts -->
@@ -28,61 +30,76 @@
 <body>
     <div id="app">
         <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-
+        <div class="container">
             <nav class="navbar navbar-light bg-light">
-              <a class="navbar-brand" href=="{{ url('/admin') }}">
-                <img src="logo.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
-                UniSpace CMS
-              </a>
+              <a class="navbar-brand" href=="{{ url('/admin') }}">UniSpace CMS</a>
             </nav>
 
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    
-                                <!-- Left Side Of Navbar -->
-                        <ul class="nav navbar-nav">
+ 
+          <nav>
+            <div>
+                <ul class="nav navbar-nav navbar-right">  
 
-                            @if( \Request::is('users') || \Request::is('profile/*') || \Request::is('user/*'))
-                                <li class="active"><a href="{{ url('/users') }}">User</a></li>
-                            @else
-                                <li ><a href="{{ url('/users') }}">User</a></li>
-                            @endif
+                    @if( \Request::is('users') || \Request::is('profile/*') || \Request::is('user/*'))
+                            <li class="active"><a href="{{ url('/user') }}">User</a></li>
+                     @else
+                            <li ><a href="{{ url('/user') }}">User</a></li>
+                         @endif
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">  
                             
-                            @if( (\Request::is('mission/*') || \Request::is('missions') ) && !\Request::is('mission/*/othersmission'))
-                                <li class="active"><a href="{{ url('/missions') }}">Apartment</a></li>
-                            @else
-                                <li ><a href="{{ url('/missions') }}">Apartment</a></li>
-                            @endif
+                     @if( (\Request::is('mission/*') || \Request::is('missions') ) && !\Request::is('mission/*/othersmission'))
+                          <li class="active"><a href="{{ url('/house') }}">Apartment</a></li>
+                     @else
+                         <li ><a href="{{ url('/house') }}">Apartment</a></li>
+                     @endif
+                </ul>
+                         
 
-                            @if( \Request::is('report/*') || \Request::is('reports'))
-                                <li class="active"><a href="{{ url('/reports') }}">Trade</a></li>
-                            @else
-                                <li ><a href="{{ url('/reports') }}">Trade</a></li>
-                            @endif
+                <ul class="nav navbar-nav navbar-right">  
+                    @if( \Request::is('report/*') || \Request::is('reports'))
+                         <li class="active"><a href="{{ url('/trade') }}">Trade</a></li>
+                    @else
+                          <li ><a href="{{ url('/trade') }}">Trade</a></li>
+                    @endif
 
-                            @if( \Request::is('other-mission/*') || \Request::is('other-missions')|| \Request::is('mission/*/othersmission'))
-                                <li class="active"><a href="{{ url('/other-missions') }}">Blog</a></li>
-                            @else
-                                <li ><a href="{{ url('/other-missions') }}">Blog</a></li>
-                            @endif
-                            @if( \Request::is('runninggold_wallet') )
-                                <li class="active"><a href="{{ url('/runninggold_wallet') }}">Message</a></li>
-                            @else
-                                <li ><a href="{{ url('/runninggold_wallet') }}">Message</a></li>
-                            @endif
+                 </ul>
 
-                        </ul>
-                    
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">                   
-                        <li><a href="{{ url('admin/login') }}">Logout</a>
+                 <ul class="nav navbar-nav navbar-right">  
+                    @if( \Request::is('other-mission/*') || \Request::is('other-missions')|| \Request::is('mission/*/othersmission'))
+                         <li class="active"><a href="{{ url('/blog') }}">Blog</a></li>
+                    @else
+                         <li ><a href="{{ url('/blog') }}">Blog</a></li>
+                     @endif
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">  
+                    @if( \Request::is('runninggold_wallet') )
+                         <li class="active"><a href="{{ url('/message') }}">Message</a></li>
+                    @else
+                         <li ><a href="{{ url('/message') }}">Message</a></li>
+                    @endif
+
+                </ul>
+
+                 <ul class="nav navbar-nav navbar-right">                   
+                        <li><a href="{{ url('/') }}">Logout</a>
                         </li>
+                 </ul>
 
-                    </ul>
-                </div>
             </div>
-        </nav>      
-        @yield('content')
+
+          </nav>       
+          
+            </div>
+        </nav>    
+        
+        <div id="mainDiv">
+            <div id="mydiv" style="height:150px; "></div>
+        </div>
+         @yield('content') 
+    
     </div>
     <!-- Scripts -->
     <script src="{{ asset('/js/app.js') }}"></script>
