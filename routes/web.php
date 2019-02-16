@@ -48,7 +48,7 @@ Route::prefix('house')->group(function(){
 
 
 //Message
-Route::get('/message', 'MessageController@show_message');
+Route::get('/message', 'Web\MessageController@show_message');
 
 
 // Blog
