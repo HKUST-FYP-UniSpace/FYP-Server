@@ -40,3 +40,8 @@ Route::prefix('admin')->group(function() {
 Route::group(['middleware' => 'auth:admin'], function(){
 
 });//end middleware auth:admin
+
+
+// ======================================================================================
+// Web API
+Route::name('user.list')->get('/show_profile/{id}', 'Web\UserController@list_all_user');

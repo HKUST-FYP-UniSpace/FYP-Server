@@ -12,7 +12,7 @@ use Carbon\Carbon;
 class AdminController extends Controller
 {
     //
-    public function show_all_admin(Request $request) {
+    public function show_all_admin() {
     	$result_all = array();
         $result_all['status'] = "0";
         $result = array();

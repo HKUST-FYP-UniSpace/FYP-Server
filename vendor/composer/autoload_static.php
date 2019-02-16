@@ -25,6 +25,10 @@ class ComposerStaticInitcc0029b7f21d003a1b93a727161d6bda
         array (
             'phpDocumentor\\Reflection\\' => 25,
         ),
+        'b' => 
+        array (
+            'browner12\\helpers\\' => 18,
+        ),
         'X' => 
         array (
             'XdgBaseDir\\' => 11,
@@ -129,6 +133,10 @@ class ComposerStaticInitcc0029b7f21d003a1b93a727161d6bda
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+        ),
+        'browner12\\helpers\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/browner12/helpers/src',
         ),
         'XdgBaseDir\\' => 
         array (
@@ -359,12 +367,19 @@ class ComposerStaticInitcc0029b7f21d003a1b93a727161d6bda
         'App\\HousePostGroup' => __DIR__ . '/../..' . '/app/HousePostGroup.php',
         'App\\HouseStatus' => __DIR__ . '/../..' . '/app/HouseStatus.php',
         'App\\Houses' => __DIR__ . '/../..' . '/app/Houses.php',
+        'App\\Http\\Controllers\\API\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/AdminController.php',
+        'App\\Http\\Controllers\\API\\TestController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/TestController.php',
+        'App\\Http\\Controllers\\API\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/UserController.php',
+        'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
+        'App\\Http\\Controllers\\Auth\\AdminLoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AdminLoginController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
         'App\\Http\\Controllers\\Auth\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisterController.php',
         'App\\Http\\Controllers\\Auth\\ResetPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ResetPasswordController.php',
         'App\\Http\\Controllers\\Auth\\VerificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerificationController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\TestController' => __DIR__ . '/../..' . '/app/Http/Controllers/TestController.php',
+        'App\\Http\\Controllers\\Web\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/Web/UserController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\CheckForMaintenanceMode' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckForMaintenanceMode.php',
@@ -437,6 +452,7 @@ class ComposerStaticInitcc0029b7f21d003a1b93a727161d6bda
         'DeepCopy\\TypeFilter\\Spl\\SplDoublyLinkedListFilter' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/TypeFilter/Spl/SplDoublyLinkedListFilter.php',
         'DeepCopy\\TypeFilter\\TypeFilter' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/TypeFilter/TypeFilter.php',
         'DeepCopy\\TypeMatcher\\TypeMatcher' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/TypeMatcher/TypeMatcher.php',
+        'DistrictsTableSeeder' => __DIR__ . '/../..' . '/database/seeds/DistrictsTableSeeder.php',
         'Doctrine\\Common\\Inflector\\Inflector' => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Common/Inflector/Inflector.php',
         'Doctrine\\Common\\Lexer\\AbstractLexer' => __DIR__ . '/..' . '/doctrine/lexer/lib/Doctrine/Common/Lexer/AbstractLexer.php',
         'Doctrine\\Instantiator\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator/Exception/ExceptionInterface.php',
@@ -3730,6 +3746,8 @@ class ComposerStaticInitcc0029b7f21d003a1b93a727161d6bda
         'Whoops\\Util\\SystemFacade' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/SystemFacade.php',
         'Whoops\\Util\\TemplateHelper' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/TemplateHelper.php',
         'XdgBaseDir\\Xdg' => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src/Xdg.php',
+        'browner12\\helpers\\Commands\\HelperMakeCommand' => __DIR__ . '/..' . '/browner12/helpers/src/Commands/HelperMakeCommand.php',
+        'browner12\\helpers\\HelperServiceProvider' => __DIR__ . '/..' . '/browner12/helpers/src/HelperServiceProvider.php',
         'phpDocumentor\\Reflection\\DocBlock' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlock.php',
         'phpDocumentor\\Reflection\\DocBlockFactory' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlockFactory.php',
         'phpDocumentor\\Reflection\\DocBlockFactoryInterface' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlockFactoryInterface.php',

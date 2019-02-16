@@ -27,3 +27,8 @@ Route::get('/test/{id}', 'API\TestController@show');
 
 // Admin
 Route::get('/show_all_admin', 'API\AdminController@show_all_admin');
+
+// User
+Route::get('/show_profile/{id}', 'API\UserController@show_profile');
+Route::post('/create_profile/{id}', 'API\UserController@create_profile');
+Route::post('/edit_profile/{id}', 'API\UserController@edit_profile');

@@ -17,7 +17,7 @@ class CreateTenantRatingsTable extends Migration
             $table->increments('id');
             $table->integer('tenant_id');
             $table->integer('owner_id');
-            $table->string('rate', 45);
+            $table->integer('rate');
             $table->string('review', 100);
             $table->timestamps();
         });
