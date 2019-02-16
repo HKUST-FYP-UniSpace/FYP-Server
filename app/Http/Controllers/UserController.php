@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     //
-     public function show_user() {
+    public function show_user() {
     	return view('user.list-user');
     }
 
