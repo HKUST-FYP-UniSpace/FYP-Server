@@ -15,9 +15,14 @@ class CreateGroupsTable extends Migration
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('leader_user_id', 45);
+            $table->string('title', 45);
+            $table->string('image_url', 255);
+            $table->integer('leader_user_id');
             $table->integer('max_ppl');
-            $table->integer('house_post_group_id');
+            $table->string('description', 255);
+            $table->integer('duration');
+            $table->integer('is_rent');
+            $table->integer('house_id');
             $table->timestamps();
         });
     }

@@ -18,7 +18,6 @@ class CreateGroupDetailsTable extends Migration
             $table->string('member_user_id', 45);
             $table->integer('status');
             $table->integer('group_id');
-            $table->integer('tenant_id');
             $table->timestamps();
         });
     }

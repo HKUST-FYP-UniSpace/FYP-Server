@@ -17,6 +17,7 @@ class CreateHouseCommentsTable extends Migration
             $table->increments('id');
             $table->integer('house_id');
             $table->integer('tenant_id');
+            $table->string('details', 255);
             $table->timestamps();
         });
     }

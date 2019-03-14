@@ -15,11 +15,13 @@ class CreateHousesTable extends Migration
     {
         Schema::create('houses', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('title', 45);
+            $table->string('subtitle', 120);
             $table->string('type', 45);
             $table->float('size', 8, 2);
             $table->string('address', 255);
             $table->integer('district_id');
-            $table->string('description', 45);
+            $table->string('description', 255);
             $table->integer('max_ppl');
             $table->float('price', 8, 2);
             $table->integer('status');
