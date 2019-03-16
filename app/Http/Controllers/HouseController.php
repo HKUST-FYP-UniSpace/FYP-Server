@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\House;
+use App\District;
 
 
 class HouseController extends Controller
@@ -33,8 +34,9 @@ class HouseController extends Controller
     	return $houses;
     }
 
+
     public function show_house() {
-        $houses = House::get();
+        $houses = House::paginate(2);
 
         return view('house.list-house', compact('houses'));
     }
@@ -50,6 +52,14 @@ class HouseController extends Controller
           
         return view('house.edit-house', compact('house'));
                 
+    }
+
+
+    public function add_house_form() { // $id is user id
+        $house = House::get();
+        $house_districts = District::get();
+      
+        return view('house.add-house', compact('house_districts','house'));
     }
 
 
@@ -95,6 +105,83 @@ class HouseController extends Controller
 
         // redirect to edit success page
         return view('house.edit-house-success', ['id'=> $id]);
+    }
+
+
+    // process POST request
+    public function add_house(Request $request) {
+        // validation
+        //dd($request);
+        $this->validate($request, [
+                'add-house-address' => 'required|max:255',
+                'add-house-price' => 'required|max:255',
+                'add-house-size' => 'required|max:255',
+                'add-house-max_ppl' => 'required|integer',
+                'add-house-description' => 'required|max:255',
+                // 'add-house-post_date' => 'required',
+                'add-house-owner_id' => 'required|max:255',
+                'add-house-type' => 'required',
+                'add-house-district_id' => 'required',
+                // 'add-house-house_category_id' => 'required'
+            ], 
+            [
+ 
+                'add-house-address.required' => 'Input house address',
+                'add-house-address.max' => 'Address cannot be too long',
+
+                'add-house-price.required' => 'Input price',
+                'add-house-size.required' => 'Input size',
+
+                'add-house-max_ppl.required' => 'Input Maximum No. People',
+                'add-house-max_ppl.integer' => 'Input integer only',
+
+                'add-house-description.required' => 'Input description',
+                'add-house-description.max' => 'Description cannot be too long',
+
+                // 'add-house-post_date.required' => 'Input Post Date in YYYY-MM-DD',
+
+                'add-house-owner_id.required' => 'Input house owner_id',
+                'add-house-owner_id.max' => 'Owner ID cannot be too long',
+
+                'add-house-type.required' => 'Select Apartment Type', //hard code slect
+
+                'add-house-district_id.required' => 'Select District ID', //select from database
+
+                // 'add-house-house_category_id' => 'Select house Category'
+            ]
+        );
+
+        // form information filled by users
+        $house= new house();
+
+        $house->status = "1";
+        $house->is_deleted = "1";
+
+
+        // address
+        $house->address = $request->input('add-house-address');
+        // description
+        $house->description = $request->input('add-house-description');
+        // max_ppl
+        $house->max_ppl = $request->input('add-house-max_ppl');
+        // price
+        $house->price = $request->input('add-house-price');
+        // size
+        $house->size = $request->input('add-house-size');
+        // // post-date
+        // $house->post_date = $request->input('add-house-post_date');
+        // owner_id   
+        $house->owner_id = $request->input('add-house-owner_id');
+        // house type
+        $house->type = (intval($request->input('add-house-type')));
+        // district_id
+        $house->district_id = intval($request->input('add-house-district_id'));
+
+
+        // save in database
+        $house->save();
+        // redirect to add success page
+        return view('house.add-house-success', ['id'=> $house->id]);
     }
 	
 }

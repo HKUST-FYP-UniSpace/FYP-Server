@@ -22,39 +22,39 @@
   
             <div class="panel-body-edit">
                           
-                  <dt class="col-sm-3">Apartment ID</dt>
-                  <dd class="col-sm-9">{{ $house->id }}</dd>
+                  <dt class="col-sm-5">Apartment ID</dt>
+                  <dd class="col-sm-7">{{ $house->id }}</dd>
 
-                  <dt class="col-sm-3">Post Date</dt>
-                  <dd class="col-sm-9">{{ $house->created_at }}</dd>
+                  <dt class="col-sm-5">Post Date</dt>
+                  <dd class="col-sm-7">{{ $house->created_at }}</dd>
 
 
-                  <dt class="col-sm-3">Update Date</dt>
-                  <dd class="col-sm-9">{{ $house->updated_at}}</dd>
+                  <dt class="col-sm-5">Update Date</dt>
+                  <dd class="col-sm-7">{{ $house->updated_at}}</dd>
 
-                  <dt class="col-sm-3">Address</dt>
-                  <dd class="col-sm-9">{{ $house->address }}</dd>
+                  <dt class="col-sm-5">Address</dt>
+                  <dd class="col-sm-7">{{ $house->address }}</dd>
 
-                  <dt class="col-sm-3">Apartment Type</dt>
-                  <dd class="col-sm-9">{{ $house->type }}</dd>
+                  <dt class="col-sm-5">Apartment Type</dt>
+                  <dd class="col-sm-7">{{ $house->type }}</dd>
 
-                  <dt class="col-sm-3">Apartment Size</dt>
-                  <dd class="col-sm-9">{{ $house->size }}</dd>
+                  <dt class="col-sm-5">Apartment Size</dt>
+                  <dd class="col-sm-7">{{ $house->size }}</dd>
 
-                  <dt class="col-sm-3">Maximum No. People</dt>
-                  <dd class="col-sm-9">{{ $house->max_ppl }}</dd>
+                  <dt class="col-sm-5">Maximum No. People</dt>
+                  <dd class="col-sm-7">{{ $house->max_ppl }}</dd>
 
-                  <dt class="col-sm-3">Price</dt>
-                  <dd class="col-sm-9">{{ $house->price }}</dd>
+                  <dt class="col-sm-5">Price</dt>
+                  <dd class="col-sm-7">{{ $house->price }}</dd>
 
-                  <dt class="col-sm-3">Status</dt>
-                  <dd class="col-sm-9">{{ $house->status }}</dd>
+                  <dt class="col-sm-5">Status</dt>
+                  <dd class="col-sm-7">{{ $house->status }}</dd>
 
-                  <dt class="col-sm-3">Owner ID</dt>
-                  <dd class="col-sm-9">{{ $house->owner_id }}</dd>
+                  <dt class="col-sm-5">Owner ID</dt>
+                  <dd class="col-sm-7">{{ $house->owner_id }}</dd>
 
-                  <dt class="col-sm-3">Description</dt>
-                  <dd class="col-sm-9">{{ $house->description }}</dd>
+                  <dt class="col-sm-5">Description</dt>
+                  <dd class="col-sm-7">{{ $house->description }}</dd>
 
             </div>  
 

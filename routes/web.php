@@ -39,8 +39,7 @@ Route::prefix('trade')->group(function(){
 	Route::name('trade-edit')->get('/{id}/edit-trade', 'TradeController@edit_trade_form'); //click edit 
 	Route::name('trade-edit-form')->post('/{id}/edit-trade/update', 'TradeController@update_trade');//do 
 
-	Route::name('trade-add')->get('/new', 'TradeController@add_trade_form');
-		
+	Route::name('trade-add')->get('/new', 'TradeController@add_trade_form');	
 	Route::name('trade-add-form')->post('/new/add','TradeController@add_trade');// submit add
 });
 
@@ -51,6 +50,9 @@ Route::prefix('house')->group(function(){
 	Route::name('house-view')->get('/{id}/view-house','HouseController@show_house_details');
 	Route::name('house-edit')->get('/{id}/edit-house', 'HouseController@edit_house_form'); //click edit 
 	Route::name('house-edit-form')->post('/{id}/edit-house/update', 'HouseController@update_house');//do edit
+
+	Route::name('house-add')->get('/new', 'HouseController@add_house_form');	
+	Route::name('house-add-form')->post('/new/add','HouseController@add_house');// submit add
 	
 });
 

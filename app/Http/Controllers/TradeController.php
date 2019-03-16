@@ -36,7 +36,8 @@ class TradeController extends Controller
     }
      	 
     public function show_trade() {
-        $trades = Trade::get();
+
+        $trades = Trade::paginate(2);
 
         return view('trade.list-trade', compact('trades')); 	
     }
@@ -47,14 +48,14 @@ class TradeController extends Controller
 		return view('trade.view-trade',compact('trade'));
 	}
 
-       public function edit_trade_form($id) { // $id is user id
+    public function edit_trade_form($id) { // $id is user id
         $trade = Trade::where('id', $id)->first();
           
         return view('trade.edit-trade', compact('trade'));
 
     }
 
-       public function add_trade_form() { // $id is user id
+    public function add_trade_form() { // $id is user id
         $trade = Trade::get();
           
         return view('trade.add-trade');
@@ -143,14 +144,14 @@ class TradeController extends Controller
         // form information filled by users
         $trade= new Trade();
 
-        $trade->id="";
-        $trade->status = "";
-        $trade->trade_transaction_id = ""; 
-        $trade->trade_category_id = "";
-        $trade->trade_condition_type_id = "";
-        $trade->trade_status_id = "";
-        $trade->status = "";
-        $trade->is_deleted = "";
+        // $trade->id="1111";
+        $trade->status = "1";
+        $trade->trade_transaction_id = "1"; 
+        $trade->trade_category_id = "1";
+        $trade->trade_condition_type_id = "1";
+        $trade->trade_status_id = "1";
+        $trade->status = "1";
+        $trade->is_deleted = "1";
 
 
         // title
@@ -174,7 +175,7 @@ class TradeController extends Controller
         
        
         // redirect to add success page
-        return view('trade.add-trade-success', ['id'=> $id]);
+        return view('trade.add-trade-success', ['id'=> $trade->id]);
     }
     
 

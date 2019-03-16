@@ -17,31 +17,10 @@
     
     </div>
 
-	<div>
-	    <nav aria-label="Page navigation example">
-		  <ul class="pagination justify-content-center">
-		    <li class="page-item disabled">
-		      <a class="page-link" href="#" tabindex="-1">Previous</a>
-		    </li>
-		    <li class="page-item"><a class="page-link" href="#">1</a></li>
-		    <li class="page-item"><a class="page-link" href="#">2</a></li>
-		    <li class="page-item"><a class="page-link" href="#">3</a></li>
-		    <li class="page-item">
-		      <a class="page-link" href="#">Next</a>
-		    </li>
-		  </ul>
-		</nav>
-	</div>
-    
     <div class="row">
 		<div class="panel panel-default col-md-12">
             <div class="panel-body">
                 <h3>Users</h3>
-
-        
-
-                <hr>
-                
                 <table class="table table-striped table-hover ">
                     <thead>
                         <tr>
@@ -63,11 +42,11 @@
                             <td><a href="{{ route('user-view', $user->id) }}">details</a></td>
                         </tbody>
                      @endforeach
-                     
 
-
-				
 				</table>
+                <div>
+                    {{ $users->links() }}
+                </div>
             </div>
         </div>
     </div>

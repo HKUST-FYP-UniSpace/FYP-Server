@@ -9,13 +9,9 @@
 @section('content')
 <div class="container before-nav">
 
-
     <div class="row">
-        
-            <a href="{{ route('blog-add') }}"><button class="btn btn-default add-new-blog">New Blog</button></a>
-       
-        
-       
+        <a href="{{ route('trade-add') }}">
+        <button class="btn btn-default add-new-item">Add New Blog</button></a>
     </div>
 
     <div class="row">
@@ -50,6 +46,9 @@
                         </tbody>
                      @endforeach
                 </table> 
+                <div>
+                    {{ $blogs->links() }}
+                </div>
             </div>
         </div>
     </div>

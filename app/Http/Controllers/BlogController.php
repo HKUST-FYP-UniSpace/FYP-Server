@@ -27,7 +27,7 @@ class BlogController extends Controller
 
     //
     public function show_blog() {
-        $blogs = Blog::get();
+        $blogs = Blog::paginate(2);
         
         return view('blog.list-blog', compact('blogs'));  
     }  
