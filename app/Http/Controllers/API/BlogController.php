@@ -98,7 +98,7 @@ class BlogController extends Controller
     }
 
 
-    // View Blog
+    // View Blog (Get Blog Detail)
     public function show_blog($id){
       $blog = Blog::where('id', $id)->first();
       // Terminate the method and return exit message if the respective blog does not exist
@@ -106,42 +106,44 @@ class BlogController extends Controller
         return "Blog with respective ID numebr does not exist";
       }
 
-      $result_all = array();
-      $result_all['status'] = 0;
-      $result = array();
+      // $result_all = array();
+      // $result_all['status'] = 0;
+      // $result = array();
       //$result['errors'] = array();
 
-      $result_blog = array();
+      $result_blog = [
+        'id' = $blog->id;
+        'title' = $blog->title;
+        //$result_blog['subtitle'] = $blog->subtitle;
+        //$result_blog['detail'] = $blog->detail;
+        'time' = $blog->created_at; //create time maybe?
+        'photoURL' = $blog->image_url;
+      ];
 
-      //retrieve blog and convert to array
-      $result_blog['title'] = $blog->title;
-      $result_blog['description'] = $blog->description;
-      $result_blog['status'] = $blog->status;
-      $result_blog['admin_id'] = $blog->admin_id;
-      $result_blog['image_url'] = $blog->image_url;
-      $result_blog['created_at'] = $blog->created_at;
-      $result_blog['updated_at'] = $blog->updated_at;
 
-      //retreive all blog comments that are related to the blog
+      // $result['blog'] = $result_blog;
+      // //$result['errors'] = $errors;
+      // $result_all['result'] = $result;
+      // $result_all['status'] = '1';
+      //
+      // return $result_all;
+      return $result_blog;
+    }
+
+    public function show_blogComments($id){
       $result_blog_comments = array();
       $blog_comments = BlogComment::where('blog_id', $id)->get();
       foreach ($blog_comments as $blog_comment) {
-        $result_blog_comment = array();
-        $result_blog_comment['id'] = $blog_comment->id;
-        $result_blog_comment['comment'] = $blog_comment->comment;
-        $result_blog_comment['user_id'] = $blog_comment->user_id;
-        $result_blog_comment['created_at'] = $blog_comment->created_at;
-        $result_blog_comment['updated_at'] = $blog_comment->updated_at;
+        $result_blog_comment = [
+          'id' => $blog_comment->id,
+          'comment' => $blog_comment->comment,
+          'user_id' => $blog_comment->user_id,
+          'created_at' => $blog_comment->created_at,
+          'updated_at' => $blog_comment->updated_at
+        ];
         array_push($result_blog_comments, $result_blog_comment);
       }
-
-      $result['blog'] = $result_blog;
-      $result['blog_comments'] = $result_blog_comments;
-      //$result['errors'] = $errors;
-      $result_all['result'] = $result;
-      $result_all['status'] = '1';
-
-      return $result_all;
+      return $result_blog_comments;
     }
 
 
@@ -177,33 +179,66 @@ class BlogController extends Controller
     public function index_blog(){
       //return Blog::get();
 
-      $result_all = array();
-      $result_all['status'] = 0;
-      $result = array();
+      // $result_all = array();
+      // $result_all['status'] = 0;
+      // $result = array();
       //$errors = array();
 
       $result_blogs = array();
       $blogs = Blog::get();
       foreach ($blogs as $blog) {
-        $result_blog = array();
-        $result_blog['id'] = $blog->id;
-        $result_blog['title'] = $blog->title;
-        $result_blog['description'] = $blog->description;
-        $result_blog['status'] = $blog->status;
-        $result_blog['admin_id'] = $blog->admin_id;
-        $result_blog['image_url'] = $blog->image_url;
-        $result_blog['created_at'] = $blog->created_at;
-        $result_blog['updated_at'] = $blog->updated_at;
+        $result_blog = [
+          'id' => $blog->id,
+          'title' => $blog->title,
+          'description' => $blog->description,
+          'status' => $blog->status,
+          'admin_id' => $blog->admin_id,
+          'image_url' => $blog->image_url,
+          'created_at' => $blog->created_at,
+          'updated_at' => $blog->updated_at
+        ];
+
         array_push($result_blogs, $result_blog);
       }
 
-      $result['blogs'] = $result_blogs;
-      //$result['errors'] = $errors;
-      $result_all['result'] = $result;
-      $result_all['status'] = '1';
+      // $result['blogs'] = $result_blogs;
+      // //$result['errors'] = $errors;
+      // $result_all['result'] = $result;
+      // $result_all['status'] = '1';
 
-      return $result_all;
+      return $result_blogs;
 
+    }
+
+    // Should return an array of objects instead?
+    public function index_blogSummary(){
+      $result_blogs = array();
+      $blogs = Blog::get();
+      foreach ($blogs as $blog) {
+        // $result_blog = [
+        //   'id' => $blog->id,
+        //   'title' => $blog->title,
+        //   'description' => $blog->description, //may not consist of this if description is considered as "detail", which should be only displayed in the detail part
+        //   'status' => $blog->status,
+        //   'admin_id' => $blog->admin_id,
+        //   'image_url' => $blog->image_url,
+        //   'created_at' => $blog->created_at,
+        //   'updated_at' => $blog->updated_at
+        // ];
+
+        $result_blog = [
+          'id' = $blog->id;
+          'title' = $blog->title;
+          //$result_blog['subtitle'] = $blog->subtitle;
+          //$result_blog['detail'] = null;
+          'time' = $blog->created_at; //create time maybe?
+          'photoURL' = $blog->image_url;
+        ];
+
+        array_push($result_blogs, $result_blog);
+      }
+
+      return $result_blogs;
     }
 
 
