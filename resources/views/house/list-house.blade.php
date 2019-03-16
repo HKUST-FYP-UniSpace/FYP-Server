@@ -64,18 +64,21 @@
 
                         </tr>
                     </thead>
-                    <tbody>
-                            <th>1</th>
-                            <th>Tsuen Wan</th>
-                            <th>House</th>
-                            <th>400</th>
-                            <th>10000</th>
-                            <th>5</th>
-                            <th>Available</th>
-                            <th>HKUST</th>
-                            <td><a href="{{ route('trade-view') }}">details</a></td>
+                    @foreach ($houses as $house)
+                        <tbody>
+                         
+                            <th>{{ $house->id }}</th>
+                            <th>{{ $house->address }}</th>
+                            <th>{{ $house->type }}</th>
+                            <th>{{ $house->size }}</th>
+                            <th>{{ $house->price }}</th>
+                            <th>{{ $house->max_ppl }}</th>
+                            <th>{{ $house->status }}</th>
+                            <th>{{ $house->owner_id }}</th>
+                            <td><a href="{{ route('house-view', $house->id) }}">details</a></td>
+                        </tbody>
+                     @endforeach
 
-                    </tbody>
                 </table> 
             </div>
         </div>

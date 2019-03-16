@@ -21,7 +21,10 @@
 
     <div class="row">
         
-        <a href=""><button class="btn btn-default add-new-item">New Item</button></a>
+        <div class="col-md-8 col-md-offset-2">     
+            <a href="{{ route('trade-add') }}">
+            <button class="btn btn-default add-new-item">Add New Trade Item</button></a>
+        </div>
         
        
     </div>
@@ -63,17 +66,19 @@
 
                         </tr>
                     </thead>
-                    <tbody>
-                            <th>1</th>
-                            <th>Chair</th>
-                            <th>$30</th>
-                            <th>90% new</th>
-                            <th>1</th>
-                            <th>2019.1.1</th>
-                            <th>Available</th>
-                            <td><a href="{{ route('trade-view') }}">details</a></td>
-
-                    </tbody>
+                    @foreach ($trades as $trade)
+                        <tbody>
+                         
+                            <th>{{ $trade->id }}</th>
+                            <th>{{ $trade->title }}</th>
+                            <th>{{ $trade->price }}</th>
+                            <th>{{ $trade->description }}</th>
+                            <th>{{ $trade->quantity }}</th>
+                            <th>{{ $trade->created_at }}</th>
+                            <th>{{ $trade->status }}</th>
+                            <td><a href="{{ route('trade-view', $trade->id) }}">details</a></td>
+                        </tbody>
+                     @endforeach
                 </table> 
             </div>
         </div>

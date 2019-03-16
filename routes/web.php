@@ -29,20 +29,28 @@ Route::prefix('admin')->group(function() {
     // submit admin login
     Route::name('admin.login.submit')->post('/login', 'Auth\AdminLoginController@login');
     // index page after logged in
-    Route::name('admin.dashboard')->get('/', 'Web\AdminController@index');
+    Route::name('admin.dashboard')->get('/', 'AdminController@index');
 });
 
 //Trade
 Route::prefix('trade')->group(function(){
-	Route::name('trade-list')->get('/', 'Web\TradeController@show_trade');
-	Route::name('trade-view')->get('/view-trade','Web\TradeController@view_trade_detail');
+	Route::name('trade-list')->get('/', 'TradeController@show_trade');
+	Route::name('trade-view')->get('/{id}/view-trade','TradeController@show_trade_details');
+	Route::name('trade-edit')->get('/{id}/edit-trade', 'TradeController@edit_trade_form'); //click edit 
+	Route::name('trade-edit-form')->post('/{id}/edit-trade/update', 'TradeController@update_trade');//do 
+
+	Route::name('trade-add')->get('/new', 'TradeController@add_trade_form');
+		
+	Route::name('trade-add-form')->post('/new/add','TradeController@add_trade');// submit add
 });
 
 
 // House
 Route::prefix('house')->group(function(){
-	Route::name('blog-list')->get('/', 'Web\HouseController@show_house');
-	Route::name('blog-view')->get('/view-house','Web\HouseController@show_house_details');
+	Route::name('house-list')->get('/', 'HouseController@show_house');
+	Route::name('house-view')->get('/{id}/view-house','HouseController@show_house_details');
+	Route::name('house-edit')->get('/{id}/edit-house', 'HouseController@edit_house_form'); //click edit 
+	Route::name('house-edit-form')->post('/{id}/edit-house/update', 'HouseController@update_house');//do edit
 	
 });
 
@@ -53,17 +61,21 @@ Route::get('/message', 'MessageController@show_message');
 
 // Blog
 Route::prefix('blog')->group(function(){
-	Route::name('blog-list')->get('/', 'Web\BlogController@show_blog');
-	Route::name('blog-view')->get('/view-blog','Web\BlogController@show_blog_details');
-	Route::name('blog-add')->get('/add-blog','Web\BlogController@add_blog');
+	Route::name('blog-list')->get('/', 'BlogController@show_blog');
+	Route::name('blog-view')->get('/{id}/view-blog','BlogController@show_blog_details');
+	Route::name('blog-add')->get('/add-blog','BlogController@add_blog');
+	Route::name('blog-edit')->get('/{id}/edit-blog', 'BlogController@edit_blog_form'); //click edit 
+	Route::name('blog-edit-form')->post('/{id}/edit-blog/update', 'BlogController@update_blog');//do edit
 });
 
 
 
 //User
 Route::prefix('user')->group(function(){
-	Route::name('user-list')->get('/', 'Web\UserController@show_user');
-	Route::name('user-view')->get('/view-user','Web\UserController@show_user_profile');
+	Route::name('user-list')->get('/', 'UserController@show_user');
+	Route::name('user-view')->get('/{id}/view-user','ProfileController@view_user_profile');
+	Route::name('user-edit')->get('/{id}/edit-user', 'ProfileController@edit_user_form'); //click edit 
+	Route::name('user-edit-form')->post('/{id}/edit-user/update', 'ProfileController@update_user');//do edit
 });
 
 // put all the routes inside at last
@@ -77,3 +89,7 @@ Route::group(['middleware' => 'auth:admin'], function(){
 // Web API
 Route::name('user.list')->get('/show_profile/{id}', 'Web\UserController@list_all_user');
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

@@ -37,6 +37,9 @@
 		<div class="panel panel-default col-md-12">
             <div class="panel-body">
                 <h3>Users</h3>
+
+        
+
                 <hr>
                 
                 <table class="table table-striped table-hover ">
@@ -50,14 +53,19 @@
                         </tr>            
                     </thead>
 
-                     <tbody>
-                            <th>001</th>
-                            <th>haha</th>
-                            <th>haha</th>
-                            <th>fyp@ust.hk</th>
-                            <td><a href="{{ route('user-view') }}">details</a></td>
+                    @foreach ($users as $user)
+                        <tbody>
+                         
+                            <th>{{ $user->id }}</th>
+                            <th>{{ $user->username }}</th>
+                            <th>{{ $user->name }}</th>
+                            <th>{{ $user->email }}</th>
+                            <td><a href="{{ route('user-view', $user->id) }}">details</a></td>
+                        </tbody>
+                     @endforeach
+                     
 
-                    </tbody>
+
 				
 				</table>
             </div>
