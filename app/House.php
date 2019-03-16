@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Houses extends Model
+class House extends Model
 {
     //
     public function owner() {

@@ -18,12 +18,30 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-Route::get('/hi', function(){
-  return "hi";
+// testing
+Route::post('/test', function (Request $request) {
+	$input = $request->input();
+	$var = $input['var'];
+	return $var;
 });
 
+
+Route::group(['middleware' => ['api','cors']], function () {
+    Route::post('users/register', 'API\UserController@register');     // 注册
+    Route::post('users/login', 'API\UserController@login');           // 登陆
+    Route::group(['middleware' => 'jwt.auth'], function () {
+        Route::post('users/get_user_details', 'API\UserController@get_user_details');  // 获取用户详情
+    });
+});
+
+
 Route::post('/testData', 'API\HouseController@testData');
+
+// User
+Route::get('/users/profile/{id}', 'API\UserController@show_profile');
+Route::post('/users/profile/{id}/create', 'API\UserController@create_profile');
+// Route::post('/users/profile/{id}/edit', 'API\UserController@edit_profile');
+
 
 // House
 // Route::get('/house/create', 'API\HouseController@create_house');
@@ -125,3 +143,4 @@ Route::get('/show_all_admin', 'API\AdminController@show_all_admin');
 Route::get('/show_profile/{id}', 'API\UserController@show_profile');
 Route::post('/create_profile/{id}', 'API\UserController@create_profile');
 Route::post('/edit_profile/{id}', 'API\UserController@edit_profile');
+

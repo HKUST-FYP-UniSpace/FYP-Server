@@ -17,7 +17,7 @@ class CreateReviewRepliesTable extends Migration
             $table->increments('id');
             $table->integer('review_id');
             $table->integer('owner_id');
-            $table->string('reply', 255);
+            $table->string('details', 255);
             $table->timestamps();
         });
     }
