@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Trade;
+use App\TradeBookmark;
 use App\TradeCategory;
 use App\TradeConditionType;
 use App\TradeImage;
@@ -191,76 +192,146 @@ class TradeController extends Controller
     //
     // }
 
-
-    public function show_trade($id){
+    // Get trade detail
+    public function show_trade($userId, $id){
       $trade = Trade::where("id", $id)->first();
 
       if($trade == null){
         return "Trade with respective ID numebr does not exist";
       }
 
-      $result_all = array();
-      $result_all['status'] = 0;
-      $result = array();
+      // $result_all = array();
+      // $result_all['status'] = 0;
+      // $result = array();
       //$result['errors'] = array();
 
-      $result_trade = array();
-      $result_trade['title'] = $trade->title;
-      $result_trade['price'] = $trade->price;
-      $result_trade['description'] = $trade->description;
-      $result_trade['quantity'] = $trade->quantity;
-      $result_trade['post_date'] = $trade->post_date;
-      $result_trade['status'] = $trade->status;
-      $result_trade['trade_transaction_id'] = $trade->trade_transaction_id;
-      $result_trade['trade_category_id'] = $trade->trade_category_id;
-      $result_trade['trade_condition_type_id'] = $trade->trade_condition_type_id;
-      $result_trade['trade_status_id'] = $trade->trade_status_id;
-      $result_trade['is_deleted'] = $trade->is_deleted;
-      $result_trade['created_at'] = $trade->created_at;
-      $result_trade['updated_at'] = $trade->updated_at;
+      $trade_img = TradeImage::where('trade_id', $id)->get();
+      $result_trade = [
+        'id' => $id,
+        'title' => $trade->title,
+        'price' => $trade->price,
+        'status' => $trade->status,
+        'description' => $trade->description,
+        'isBookmarked' => (TradeBookmark::where('trade_id', $id)->where('user_id', $userId)->count()>0)?true:false,
+        'photoURL' => ($trade_img->count()!=0)?$trade_img->image_url:null,
 
-      $result['trade'] = $result_trade;
-      //$result['errors'] = $errors;
-      $result_all['result'] = $result;
-      $result_all['status'] = '1';
+        // Bonuse Information that may be needed
+        'quantity' => $trade->quantity,
+        'post_date' => $trade->post_date,
+        'trade_transaction_id' => $trade->trade_transaction_id,
+        'trade_category_id' => $trade->trade_category_id,
+        'trade_condition_type_id' => $trade->trade_condition_type_id,
+        'trade_status_id' => $trade->trade_status_id,
+        'is_deleted' => $trade->is_deleted,
+        'created_at' => $trade->created_at,
+        'updated_at' => $trade->updated_at
+      ];
 
-      return $result_all;
+
+      // $result['trade'] = $result_trade;
+      // //$result['errors'] = $errors;
+      // $result_all['result'] = $result;
+      // $result_all['status'] = '1';
+
+      //return $result_all;
+      return $result_trade;
     }
 
-
-    public function index_trade(){
-      $result_all = array();
-      $result_all['status'] = 0;
-      $result = array();
+    // Handling on search criteria is pending to be added
+    // $userId is needed to check if items bookmarked
+    public function index_trade($userId){
+      // $result_all = array();
+      // $result_all['status'] = 0;
+      // $result = array();
       //$errors = array();
 
       $result_trades = array();
       $trades = Trade::get();
       foreach ($trades as $trade) {
-        $result_trade = array();
-        $result_trade['id'] = $trade->id;
-        $result_trade['title'] = $trade->title;
-        $result_trade['price'] = $trade->price;
-        $result_trade['description'] = $trade->description;
-        $result_trade['quantity'] = $trade->quantity;
-        $result_trade['post_date'] = $trade->post_date;
-        $result_trade['status'] = $trade->status;
-        $result_trade['trade_transaction_id'] = $trade->trade_transaction_id;
-        $result_trade['trade_category_id'] = $trade->trade_category_id;
-        $result_trade['trade_condition_type_id'] = $trade->trade_condition_type_id;
-        $result_trade['trade_status_id'] = $trade->trade_status_id;
-        $result_trade['is_deleted'] = $trade->is_deleted;
-        $result_trade['created_at'] = $trade->created_at;
-        $result_trade['updated_at'] = $trade->updated_at;
+        $trade_id = $trade->id;
+        $trade_img = TradeImage::where('trade_id', $trade_id)->get();
+        $result_trade = [
+          'id' => $trade_id,
+          'title' => $trade->title,
+          'price' => $trade->price,
+          'status' => $trade->status,
+          'description' => $trade->description,
+          'isBookmarked' => (TradeBookmark::where('trade_id', $trade_id)->where('user_id', $userId)->count()>0)?true:false,
+          'photoURL' => ($trade_img->count()!=0)?$trade_img->image_url:null,
+        ];
+        // $result_trade = array();
+        // $result_trade['id'] = $trade->id;
+        // $result_trade['title'] = $trade->title;
+        // $result_trade['price'] = $trade->price;
+        // $result_trade['description'] = $trade->description;
+        // $result_trade['quantity'] = $trade->quantity;
+        // $result_trade['post_date'] = $trade->post_date;
+        // $result_trade['status'] = $trade->status;
+        // $result_trade['trade_transaction_id'] = $trade->trade_transaction_id;
+        // $result_trade['trade_category_id'] = $trade->trade_category_id;
+        // $result_trade['trade_condition_type_id'] = $trade->trade_condition_type_id;
+        // $result_trade['trade_status_id'] = $trade->trade_status_id;
+        // $result_trade['is_deleted'] = $trade->is_deleted;
+        // $result_trade['created_at'] = $trade->created_at;
+        // $result_trade['updated_at'] = $trade->updated_at;
         array_push($result_trades, $result_trade);
       }
 
-      $result['trades'] = $result_trades;
-      //$result['errors'] = $errors;
-      $result_all['result'] = $result;
-      $result_all['status'] = '1';
+      // $result['trades'] = $result_trades;
+      // //$result['errors'] = $errors;
+      // $result_all['result'] = $result;
+      // $result_all['status'] = '1';
 
-      return $result_all;
+      //return $result_all;
+      return $result_trades;
+    }
+
+
+    // Show the list of items that are being sold by the owener given the owner's user id
+    public function index_pastTrade($id){
+      $result_pastTrades = array();
+      $pastTrades = Trade::where('user_id', $id)->get();
+
+      foreach($pastTrades as $pastTrade){
+        $trade_id = $pastTrade->id;
+
+        $result_pastTrade = [
+          'id' => $trade_id,
+          'title'=> $pastTrade->title,
+          'price' => $pastTrade->price,
+          'views' => TradeVisitor::where('trade_item_id', $trade_id)->count(),
+          'photoURL' => TradeImage::where('trade_id', $trade_id)->get()
+        ];
+
+        array_push($result_pastTrades, $result_pastTrade);
+      }
+
+      return $result_pastTrades;
+    }
+
+
+    // Retrieve list of bookedmarked Trade given the userId
+    public function index_bookmarkedTrade($id){
+      $result_bookmarkedTrades = array();
+      $bookmarkedTrades = TradeBookmark::where('user_id', id)->get();
+
+      foreach ($bookmarkedTrades as $bookmarkedTrade) {
+        $trade = Trade::where('id', $bookmarkedTrades->trade_id)->first();
+        $trade_id = $trade->id;
+
+        $result_bookmarkedTrade = [
+          'id' => $trade_id,
+          'title' => $trade->title,
+          'price' => $trade->price,
+          'status' => $trade->status,
+          'description' => $trade->description,
+          'photoURL' => TradeImage::where('trade_id', $trade_id)->get()
+        ];
+
+        array_push($result_bookmarkedTrades, $result_bookmarkedTrade);
+      }
+
+      return $result_bookmarkedTrades;
     }
 
 
