@@ -83,6 +83,7 @@ class HouseBookmarkController extends Controller
     }
 
 
+    // Bookmark House
     public function store_houseBookmark(Request $request){
       $bookmark = new HousePostBookmark();
 

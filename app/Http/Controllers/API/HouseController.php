@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\House;
 use App\HousePostBookmark;
-use App\HousePostGroup;
+//use App\HousePostGroup; //obsolete, combined with "Group"
 use App\HouseImage;
 use App\Group;
-use App\GroupDetail; // to be removed
+use App\GroupDetail;
 use App\User;
 use App\Profile;
 use App\Tenant;
@@ -18,9 +18,9 @@ use App\OwnerComment;
 use App\HouseComment;
 use App\TenantRating;
 use App\Review;
-// use App\Preference;
-// use App\PreferenceItem;
-// use App\PreferenceItemCategory;
+use App\Preference;
+use App\PreferenceItem;
+use App\PreferenceItemCategory;
 
 use Validator;
 use Carbon\Carbon;
@@ -127,7 +127,7 @@ class HouseController extends Controller
     }
 
     //should have included team information as well
-    public function show_house($id){
+    public function show_house($id, $userId){
       $house = House::where("id", $id)->first();
 
       if($house == null){
@@ -139,16 +139,19 @@ class HouseController extends Controller
       //$result = array();
       //$result['errors'] = array();
 
+      $house_id = $house->id;
+      $house_img = HouseImage::where('house_id', $house_id);
+
       $result_house = [
         'id' => $house->id,
-        //'title' => $house->title, // to be added to the ERD
+        'title' => $house->title,
         'price' => $house->price,
         'size' => $house->size,
-        'starRating' => $house->starRating,
-        //'subtitle' => $house->subtitle, // refering to the description in the DB maybe?
+        'starRating' => self::get_averageHouseOverallRating($id),
+        'subtitle' => $house->subtitle, // refering to the description in the DB maybe?
         'address' => $house->address,
-        'isBookmarked' => (HousePostBookmark::where('house_id', $house->id)->where('tenant_id', $userId)->get()->exists())?true:false,
-        'PhotoURL' => HouseImage::where('house_id', $house->id)->first()->image_url
+        'isBookmarked' => (HousePostBookmark::where('house_id', $house_id)->where('tenant_id', $userId)->count()>0)?true:false,
+        'PhotoURL' => ($house_img->count()>0)?$house_img->first()->image_url:null
         // 'district_id' => $house->district_id,
         // 'description' => $house->description,
         // 'max_ppl' => $house->max_ppl,
@@ -169,25 +172,25 @@ class HouseController extends Controller
     }
 
 
+    //Get House List
     public function index_house($userId){
-      // $result_all = array();
-      // $result_all['status'] = 0;
-      // $result = array();
-      //$errors = array();
-
       $result_houses = array();
       $houses = House::get();
+
       foreach ($houses as $house) {
+        $house_id = $house->id;
+        $house_img = HouseImage::where('house_id', $house_id);
+
         $result_house = [
-          'id' => $house->id,
-          //'title' => $house->title, // to be added to the ERD
+          'id' => $house_id,
+          'title' => $house->title,
           'price' => $house->price,
           'size' => $house->size,
-          'starRating' => $house->starRating,
-          //'subtitle' => $house->subtitle, // refering to the description in the DB maybe?
+          'starRating' => self::get_averageHouseOverallRating($house_id),
+          'subtitle' => $house->subtitle, // refering to the description in the DB maybe?
           'address' => $house->address,
-          'isBookmarked' => (HousePostBookmark::where('house_id', $house->id)->where('tenant_id', $userId)->get()->exists())?true:false,
-          'PhotoURL' => HouseImage::where('house_id', $house->id)->first()->image_url
+          'isBookmarked' => (HousePostBookmark::where('house_id', $house->id)->where('tenant_id', $userId)->count()>0)?true:false,
+          'PhotoURL' => ($house_img->count()>0)?$house_img->first()->image_url:null
           // 'district_id' => $house->district_id,
           // 'description' => $house->description,
           // 'max_ppl' => $house->max_ppl,
@@ -200,36 +203,32 @@ class HouseController extends Controller
         array_push($result_houses, $result_house);
       }
 
-      //$result['houses'] = $result_houses;
-      //$result['errors'] = $errors;
-      //$result_all['result'] = $result;
-      //$result_all['status'] = '1';
-
-      //return $result_all;
       return $result_houses;
     }
 
-    public function show_houseView($id){
-      $result_titleView = show_house($id); // may include some extra info
+    // Get House View
+    public function show_houseView($id, $userId){
+      $result_titleView = self::show_house($id, $userId); // may include some extra info
 
       $result_teams = array();
       $groups = Group::where('house_id', $id)->get();
       foreach ($groups as $group) {
-        array_push($teams, get_teamView($group->id));
+        array_push($result_teams, self::get_teamView($group->id));
       }
 
-      $result_reviews = get_reviews($id);
+      //$result_reviews = self::get_reviews($id);
 
       $response = [
         'titleView' => $result_titleView,
-        'teams' => $result_teams,
-        'reviews' => $result_reviews
+        'teams' => $result_teams
+        //'reviews' => $result_reviews // to be added
       ];
 
       return $response;
     }
 
-    // Retrieve list of houses saved by a tenant
+    // Retrieve list of houses saved by a tenant (Get House Saved)
+    //param: $id: userId
     public function index_houseSaved($id){
       $bookmarks = HousePostBookmark::where('tenant_id', $id)->get();
       if($bookmarks == null){
@@ -238,19 +237,22 @@ class HouseController extends Controller
 
       $result_savedHouses = array();
       foreach($bookmarks as $bookmark){
-        $savedHouse = House::where('id', $bookmark->$houseid)->first();
+        $savedHouse = House::where('id', $bookmark->house_id)->first();
+        $savedHouse_id = $savedHouse->id;
+        $savedHouse_img = HouseImage::where('house_id', $savedHouse_id);
+
         if($savedHouse == null){
           return "Saved house does not exist!";
         }
 
         $result_savedHouse = [
-          'id' => $savedHouse->id,
-          //'title' => $savedHouse->title, //to be added to the ERD
+          'id' => $savedHouse_id,
+          'title' => $savedHouse->title,
           'price' => $savedHouse->price,
           'size' => $savedHouse->size,
-          //'starRating' => $savedHouse->starRating, //to be added to the ERD
-          //'subtitle' => $savedHouse->subtitle, //refering to the "description" in the db maybe?
-          'PhotoURL' => HouseImage::where('house_id', $house->id)->first()->image_url
+          'starRating' => self::get_averageHouseOverallRating($savedHouse_id),
+          'subtitle' => $savedHouse->subtitle, //refering to the "description" in the db maybe?
+          'PhotoURL' => ($savedHouse_img->count()>0)?$savedHouse_img->first()->img_url:null
         ];
 
         array_push($result_savedHouses, $result_savedHouse);
@@ -314,22 +316,21 @@ class HouseController extends Controller
 
     // Get team view
     // param: id: teamId
-    public function show_housePostGroup($id){
-      $housePostGroup = HousePostGroup::where("id", $id)->first();
+    public function show_group($id){
       $group = Group::where("id", $id)->first();
 
-      if($housePostGroup == null){
-        return "HousePostGroup with respective ID numebr does not exist";
+      if($group == null){
+        return null;
       }
 
       // id
-      $result_id = $housePostGroup->house_id;
+      $result_id = $group->house_id;
 
       // teamView
-      $result_teamView = get_teamView($id);
+      $result_teamView = self::get_teamView($id);
 
       //teamMembers
-      $result_teamMembers = get_teamMembers($id);
+      $result_teamMembers = self::get_teamMembers($id);
 
 
       $response = [
@@ -344,14 +345,20 @@ class HouseController extends Controller
 
     // Create Team
     // param:
-    // $request should include $userId and houseId
-    public function store_housePostGroup(Request $request){
-      $housePostGroup = new HousePostGroup();
+    // $request should include $userId(as leader_user_id) and houseId
+    public function store_group(Request $request){
+      $group = new Group();
 
-      $housePostGroup->title = $request->input('title');
-      $housePostGroup->description = $request->input('description');
-      $housePostGroup->max_ppl = $request->input('groupSize');
-      $housePostGroup->save();
+      $group->title = $request->input('title');
+      $group->description = $request->input('description');
+      $group->max_ppl = $request->input('groupSize');
+
+      $group->image_url = $request->input('image_url'); //extra
+      $group->leader_user_id = $request->input('userId');
+      $group->duration = $request->input('duration');//extra
+      $group->is_rent = 0;
+      $group->house_id = $request->input('houseId');
+      $group->save();
 
       //$housePostGroup->preference = $request->input('preference'); // to be added to the ERD
       // $preferences = $request->input('preference'); // should have just get the id?
@@ -362,10 +369,11 @@ class HouseController extends Controller
       //   $house_preference->save();
       // }
 
+      //save preference model
       $preferenceModel = $request->input('preferenceModel');
       foreach ($preferenceModel as $modelDetail) {
         $preference_category_id = PreferenceItemCategory::where('category', key($modelDetail))->get()->id;
-        $preference_item_id = PreferenceItem::where('name', $modelDetail)->where('category_id', $preference_category_id)->id;
+        $preference_item_id = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->get()->id;
 
         $preference = new Preference();
         $preference->item_id = $preference_item_id;
@@ -410,28 +418,32 @@ class HouseController extends Controller
     // -----------------------------Helper functions---------------------------------------------
     // ------------------------------------------------------------------------------------------
 
-    // helper function that retrieve the team view (For retreving team veiw and house view), given housePostGroup/ groupDetail id
+    // helper function that retrieve the team view (For retreving team veiw and house view), given Group id
     public function get_teamView($id){
-      $housePostGroup = HousePostGroup::where("id", $id)->first();
+      //$housePostGroup = HousePostGroup::where("id", $id)->first();
       $group = Group::where("id", $id)->first();
 
-      if($housePostGroup == null){
-        return "HousePostGroup with respective ID numebr does not exist";
+      if($group == null){
+        return null;
       }
 
-      HousePostGroup::where('id', $id)->get();
+      $occupiedCount = GroupDetail::where('group_id', $id)->count();
+
+      $preference_model = self::create_preferenceModelByPreference($id);
+
+      //HousePostGroup::where('id', $id)->get();
       $team_view = [
-        'id' => $housePostGroup->id,
-        //'title' => $housePostGroup->title, // to be added to the ERD
-        //'price' => $housePostGroup->price,// This is prob. not the hosue prize right?
-        //'duration' => $housePostGroup->duration, // to be added to thte ERD
-        //'preferencec' => ,// to be added to the ERD
-        //'description' => $housePostGroup->description,// should be the house group description, to be added to the ERD
+        'id' => $group->id,
+        'title' => $group->title, // to be added to the ERD
+        'price' => (House::where('id', $group->house_id)->first()->price) / $occupiedCount,// Average price for each tenant
+        'duration' => $group->duration, // to be added to thte ERD
+        'preference' => $preference_model,// to be added to the ERD
+        'description' => $group->description,// should be the house group description, to be added to the ERD
         'groupSize' => $group->max_ppl,
-        'occupiedCount' => GroupDetail::where('group_id', $id)->count()
+        'occupiedCount' => $occupiedCount
       ];
 
-      return $teamView;
+      return $team_view;
     }
 
 
@@ -459,24 +471,23 @@ class HouseController extends Controller
       $result_reviews = array();
       $house = House::where('id', $id)->first();
       $owner= Owner::where('id', $house->owner_id)->first();
-      $reviews = Reviews::where('house_id', $id)->get();
+      $reviews = Review::where('house_id', $id)->get();
 
       foreach($reviews as $review){
         $tenant = Tenant::where('id', $review->tenant_id)->first();
         $user = User::where('id', $tenant->user_id)->first();
-        $house_comment = HouseComment::where('house_id', $id)->where('tenant_id', $review->tenant_id)->get();
         $overall_rating = ( ($review->value) + ($review->cleaniness) + ($review->accuracy) + ($review->communication) )/4;
-        $tenant_rating = OwnerComment::where('owner_id'->$house->owner_id)->where('tenant_id', $tenant->$id)->first();
+        //$owner_comment = ReviewReply::where('review_id', $review->$id)->first();
 
         $result_review = [
           'id' => $review->tenant_id,
           'username' => $user->username,
           //'title' => ,
           'date' => $review->created_at,
-          //'detail' => $house_comment->detail, // to be added to the ERD
+          'detail' => $review->detail,
           'starRating' => $overall_rating,
           'ownerId' => $house->owner_id,
-          'OwnerComment' => $tenant_rating->review,
+          //'OwnerComment' => $tenant_rating->review,
           //'phototURL' =>
         ];
         array_push($result_reviews, $result_review);
@@ -485,7 +496,71 @@ class HouseController extends Controller
       return $result_reviews;
     }
 
-    //temporary function for mathching house preference to the user profiled preference
+
+    // Calculate the average of overall star rating (using the average star rating of all related reviews) of a house
+    // param: $id: houseId
+    public function get_averageHouseOverallRating($id){
+      $reviews = Review::where('house_id', $id)->get();
+
+      $numOfReviews = $reviews->count();
+      $total_score = 0;
+
+      foreach($reviews as $review){
+        $overall = ( ($review->value) + ($review->cleaniness) + ($review->accuracy) + ($review->communication) )/4;
+        $total_score += $overall;
+      }
+
+      return ($total_score/$numOfReviews);
+    }
+
+
+    // function that create preference model (from Preference table data)
+    //param: $id (groupId)
+    public function create_preferenceModelByPreference($id){
+      $preferences = Preference::where('group_id', $id)->get();
+      if($preferences == null){
+        return null;
+      }
+
+      $result_preferences = array();
+      $gender = '';
+      $petFree = '';
+      $timeInHouse = '';
+      $personalities = array();
+      $interests = array();
+      foreach ($preferences as $preference) {
+        //$preference_category_id = PreferenceItemCategory::where('category', key($modelDetail))->get()->id;
+        //$preference_item_id = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->get()->id;
+        $item_id = $preference->item_id;
+        $preference_item = PreferenceItem::where('id',$item_id)->first();
+        $category_id = $preference_item->category_id;
+
+        if($category_id == 1){
+          $gender = $preference_item->name;
+        }elseif($category_id == 2){
+          $petFree = $preference_item->name;
+        }elseif($category_id == 3){
+          $timeInHouse = $preference_item->name;
+        }elseif($category_id == 4){
+          array_push($personalities, $preference_item->name);
+        }elseif($category_id ==5){
+          array_push($interests, $preference_item->name);
+        }
+      }
+
+      $preference_model=[
+        'id'=>$id, // should be an alternative id, currently using group id which may be conflict to profile detail
+        'gender'=>$gender,
+        'petFree'=>$petFree,
+        'timeInHouse'=>$timeInHouse,
+        'personalities'=>$personalities,
+        'interests'=>$interests
+      ];
+
+      return $preference_model;
+    }
+
+    // temporary function for mathching house preference to the user profiled preference
     // public function match_house($userId){
     //   $hosue_bookmarkedId = HousePostBookmark::where('tenant_id', $userId)->get();
     //   $house_notBookmarked = House::whereNotIn('id', $hosue_bookmarkedId->house_id);
@@ -501,6 +576,7 @@ class HouseController extends Controller
     //
     // }
 
+    // This function is not used in the app but only kept here for testing data structure
     // public function testData(Request $request){
     //   //form preference model
     //   dd($request->input('preferenceModel')['gender'][1]);
