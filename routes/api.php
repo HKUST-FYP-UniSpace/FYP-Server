@@ -79,11 +79,14 @@ Route::post('/houseBookmark/{id}/delete', 'API\HouseBookmarkController@delete_ho
 // Trade
 // Route::get('/trade/create', 'API\TradeController@create_trade');
 // Route::get('/trade/{id}/edit', 'API\TradeController@edit_trade');
-Route::get('/trade/{userId}/{id}', 'API\TradeController@show_trade'); //
-Route::get('/trade/index/{userId}', 'API\TradeController@index_trade'); //tested
-Route::post('/trade', 'API\TradeController@store_trade'); //
+Route::get('/trade/{userId}/{id}/show', 'API\TradeController@show_trade'); // Get Trade Detail //tested
+Route::get('/trade/{userId}/index', 'API\TradeController@index_trade'); // Get Trade List // filter to be added
+Route::get('/trade/{userId}/selling', 'API\TradeController@show_sellingTrade'); // Get Trade Selling Items // 'Views' to be added to the response
+Route::get('/trade/{userId}/bookmarked', 'API\TradeController@index_bookmarkedTrade'); // Get Trade Saved // Tested
+//Route::get('/trade/{userId}/history', 'API\TradeController@index_tradeHistory'); // Get Past Trade //
+Route::post('/trade', 'API\TradeController@store_trade'); // Create Trade Item //tested
 Route::post('/trade/{id}/delete', 'API\TradeController@delete_trade'); //
-Route::put('/trade/{id}', 'API\TradeController@update_trade'); //
+Route::put('/trade/{id}', 'API\TradeController@update_trade'); // Edit Trade Item //PhotoURL handling to be added
 Route::put('/trade/{id}/archive', 'API\TradeController@archive_trade'); //
 Route::put('/trade/{id}/hide', 'API\TradeController@hide_trade'); //
 Route::put('/trade/{id}/reveal', 'API\TradeController@reveal_trade'); //
