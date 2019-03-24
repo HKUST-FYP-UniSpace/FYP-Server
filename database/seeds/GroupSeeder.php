@@ -11,7 +11,7 @@ class GroupSeeder extends Seeder
      */
     public function run()
     {
-        //
+        // test seeder
         DB::table('groups')->insert([
           [
             'title'=>'Group 1',
