@@ -18,7 +18,7 @@ class TradeBookmarkController extends Controller
   //
   // }
 
-  //Bookmark Trade Item
+
   public function show_tradeBookmark($id){
     $bookmark = TradeBookmark::where("id", $id)->first();
 
@@ -73,19 +73,16 @@ class TradeBookmarkController extends Controller
   }
 
 
-  // Bookmark Item
   public function store_tradeBookmark(Request $request){
     $bookmark = new TradeBookmark();
 
-    $bookmark->trade_id = $request->input('itemId');
-    $bookmark->user_id = $request->input('userId');
+    $bookmark->trade_id = $request->input('trade_id');
+    $bookmark->user_id = $request->input('user_id');
 
     $bookmark->save();
 
-    // $success_msg = "New tradeBookmark stored Successfully! (Trade ID = {$bookmark->id})";
-    // return $success_msg;
-    $response = ['isSuccess' => true];
-    return $response;
+    $success_msg = "New tradeBookmark stored Successfully! (Trade ID = {$bookmark->id})";
+    return $success_msg;
   }
 
 

@@ -20,10 +20,29 @@
     </div>
 
     <div class="row">
-        <a href="{{ route('trade-add') }}">
-        <button class="btn btn-default add-new-item">Add New Trade Item</button></a>
+        
+        <a href=""><button class="btn btn-default add-new-item">New Item</button></a>
+        
+       
     </div>
 
+    <div>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </nav>
+    </div>
+
+   
     <div class="row">
         <div class="panel panel-default col-md-12">
             <div class="panel-body">
@@ -44,23 +63,18 @@
 
                         </tr>
                     </thead>
-                    @foreach ($trades as $trade)
-                        <tbody>
-                         
-                            <th>{{ $trade->id }}</th>
-                            <th>{{ $trade->title }}</th>
-                            <th>{{ $trade->price }}</th>
-                            <th>{{ $trade->description }}</th>
-                            <th>{{ $trade->quantity }}</th>
-                            <th>{{ $trade->created_at }}</th>
-                            <th>{{ $trade->status }}</th>
-                            <td><a href="{{ route('trade-view', $trade->id) }}">details</a></td>
-                        </tbody>
-                     @endforeach
-                </table>
-                <div>
-                    {{ $trades->links() }}
-                </div>
+                    <tbody>
+                            <th>1</th>
+                            <th>Chair</th>
+                            <th>$30</th>
+                            <th>90% new</th>
+                            <th>1</th>
+                            <th>2019.1.1</th>
+                            <th>Available</th>
+                            <td><a href="{{ route('trade-view') }}">details</a></td>
+
+                    </tbody>
+                </table> 
             </div>
         </div>
     </div>
