@@ -36,9 +36,9 @@ class TradeController extends Controller
 
 
 //-----------------------------------------------------------------------------------------------------
+//------------------------------- Trade category related functions ------------------------------------
+//-----------------------------------------------------------------------------------------------------
 
-
-    // Trade category related functions
     public function store_trade_category(Request $request){
       $trade_cat = new TradeCategory();
 
@@ -113,9 +113,9 @@ class TradeController extends Controller
 
 
 //----------------------------------------------------------------------------------------------------------
+//----------------------------- Trade transaction related functions ----------------------------------------
+//----------------------------------------------------------------------------------------------------------
 
-
-    // Trade transaction related functions
     public function store_trade_transaction(Request $request){
       $trade_txn = new TradeTransaction();
 
@@ -179,22 +179,14 @@ class TradeController extends Controller
     }
 
 
-//-------------------------------------------------------------------------------------------------------
-
-
-    // Basic Trade functions
-    // public function create_trade(){
-    //
-    // }
-    //
-    //
-    // public function edit_trade(){
-    //
-    // }
+//----------------------------------------------------------------------------------------------------------
+//------------------------------------- Basic Trade functions ----------------------------------------------
+//----------------------------------------------------------------------------------------------------------
 
     // Get trade detail
     public function show_trade($userId, $id){
       $trade = Trade::where("id", $id)->first();
+      //$userId = $request->input('userId');
 
       if($trade == null){
         return "Trade with respective ID numebr does not exist";
@@ -237,6 +229,31 @@ class TradeController extends Controller
       return $result_trade;
     }
 
+
+    // Get Trade Selling Items
+    //param: userId (ownerId)
+    Public function show_sellingTrade($userId){
+      $trades = Trade::where('user_id', $userId)->get();
+
+      $result_trades = array();
+      foreach($trades as $trade){
+        $trade_id = $trade->id;
+        // $trade_img = (TradeImage::where('trade_id', $trade_id)->count()>0)?TradeImage::where('trade_id', $trade_id)->get():null;
+        $trade_img = TradeImage::where('trade_id', $trade_id)->get();
+
+        $result_trade=[
+          'id'=>$trade_id,
+          'title'=>$trade->title,
+          'price'=>$trade->price,
+          //'views'=>, //visitor counter to be added
+          'photoURL'=>$trade_img
+        ];
+        array_push($result_trades, $result_trade);
+      }
+      return $result_trades;
+    }
+
+    // Get Trade List
     // Handling on search criteria is pending to be added
     // $userId is needed to check if items bookmarked
     public function index_trade($userId){
@@ -287,36 +304,46 @@ class TradeController extends Controller
     }
 
 
-    // Show the list of items that are being sold by the owener given the owner's user id
-    public function index_pastTrade($id){
-      $result_pastTrades = array();
-      $pastTrades = Trade::where('user_id', $id)->get();
+    // Get Trade History
+    // Show the list of items that are traded in/out by the user given the owner's user id
+    // public function index_tradeHistory($userId){
+    //   $result_pastTrades = array();
+    //   $pastTransaction = TradeTransaction::where('user_id', $userId)->get();
+    //
+    //   //Trade out
+    //   $pastTradeOuts = Trade::where('user_id', $userId)->get();
+    //
+    //   foreach($pastTradeOuts as $pastTradeOut){
+    //     $trade_id = $pastTradeOut->id;
+    //
+    //     $result_pastTrade = [
+    //       'TransactionType'=>'in',
+    //       'id' => $trade_id,
+    //       'title'=> $pastTradeOut->title,
+    //       'price' => $pastTradeOut->price,
+    //       //'views' => TradeVisitor::where('trade_item_id', $trade_id)->count(),
+    //       'status'=>,
+    //       'description'=>,
+    //       'photoURL' => TradeImage::where('trade_id', $trade_id)->get()
+    //     ];
+    //
+    //     array_push($result_pastTrades, $result_pastTrade);
+    //   }
+    //
+    //   //Trade in
+    //
+    //   return $result_pastTrades;
+    // }
 
-      foreach($pastTrades as $pastTrade){
-        $trade_id = $pastTrade->id;
 
-        $result_pastTrade = [
-          'id' => $trade_id,
-          'title'=> $pastTrade->title,
-          'price' => $pastTrade->price,
-          'views' => TradeVisitor::where('trade_item_id', $trade_id)->count(),
-          'photoURL' => TradeImage::where('trade_id', $trade_id)->get()
-        ];
-
-        array_push($result_pastTrades, $result_pastTrade);
-      }
-
-      return $result_pastTrades;
-    }
-
-
+    // Get Trade Saved
     // Retrieve list of bookedmarked Trade given the userId
-    public function index_bookmarkedTrade($id){
+    public function index_bookmarkedTrade($userId){
       $result_bookmarkedTrades = array();
-      $bookmarkedTrades = TradeBookmark::where('user_id', id)->get();
+      $bookmarkedTrades = TradeBookmark::where('user_id', $userId)->get();
 
       foreach ($bookmarkedTrades as $bookmarkedTrade) {
-        $trade = Trade::where('id', $bookmarkedTrades->trade_id)->first();
+        $trade = Trade::where('id', $bookmarkedTrade->trade_id)->first();
         $trade_id = $trade->id;
 
         $result_bookmarkedTrade = [
@@ -335,6 +362,7 @@ class TradeController extends Controller
     }
 
 
+    // Create Trade Item
     public function store_trade(Request $request){
       $trade = new Trade();
 
@@ -342,18 +370,21 @@ class TradeController extends Controller
       $trade->price = $request->input('price');
       $trade->description = $request->input('description');
       $trade->quantity = $request->input('quantity');
-      $trade->post_date = $request->input('post_date');
-      $trade->status = $request->input('status');
-      $trade->trade_transaction_id = $request->input('trade_transaction_id');
+      //$trade->post_date = $request->input('post_date'); //obsolete
+      //$trade->status = $request->input('status'); //obsolete
+      $trade->trade_transaction_id = 0; //should be null by default (no transaction has been done)
       $trade->trade_category_id = $request->input('trade_category_id');
       $trade->trade_condition_type_id = $request->input('trade_condition_type_id');
-      $trade->trade_status_id = $request->input('trade_status_id');
-      $trade->is_deleted = $request->input('is_deleted');
+      $trade->trade_status_id = 1; //'Reveal' when first create
+      $trade->is_deleted = 0; //not 'Deleted' by default
+      $trade->user_id = $request->input('userId');
 
       $trade->save();
 
-      $success_msg = "New trade stored Successfully! (House ID = {$trade->id})";
-      return $success_msg;
+      // $success_msg = "New trade stored Successfully! (House ID = {$trade->id})";
+      // return $success_msg;
+      $response = ['isSuccess' => true];
+      return $response;
     }
 
 
@@ -370,6 +401,7 @@ class TradeController extends Controller
     }
 
 
+    // Edit Trade Item
     public function update_trade($id, Request $request){
       $trade = Trade::where("id", $id)->first();
 
@@ -381,18 +413,41 @@ class TradeController extends Controller
       $trade->price = (double)($request->input('price')==null ? "" : $request->input('price'));
       $trade->description = ($request->input('description')==null ? "" : $request->input('description'));
       $trade->quantity = (int)($request->input('quantity')==null ? "" : $request->input('quantity'));
-      $trade->post_date = ($request->input('post_date')==null ? "" : $request->input('post_date')); //date
-      $trade->status = (int)($request->input('status')==null ? "" : $request->input('status'));
-      $trade->trade_transaction_id = (int)($request->input('trade_transaction_id')==null ? "" : $request->input('trade_transaction_id'));
+      //$trade->post_date = ($request->input('post_date')==null ? "" : $request->input('post_date')); //obselete
+      //$trade->status = (int)($request->input('status')==null ? "" : $request->input('status')); //obselete
+      //$trade->trade_transaction_id = (int)($request->input('trade_transaction_id')==null ? "" : $request->input('trade_transaction_id'));
       $trade->trade_category_id = (int)($request->input('trade_category_id')==null ? "" : $request->input('trade_category_id'));
       $trade->trade_condition_type_id = (int)($request->input('trade_condition_type_id')==null ? "" : $request->input('trade_condition_type_id'));
-      $trade->trade_status_id = (int)($request->input('trade_status_id')==null ? "" : $request->input('trade_status_id'));
-      $trade->is_deleted = (int)($request->input('is_deleted')==null ? "" : $request->input('is_deleted'));
+      $trade->trade_status_id = (int)($request->input('status')==null ? "" : $request->input('status'));
+      //$trade->is_deleted = (int)($request->input('is_deleted')==null ? "" : $request->input('is_deleted'));
 
       $trade->save();
 
-      $success_msg = "Trade Updated Successfully (ID = {$id})";
-      return $success_msg;
+      // Update isBookmarked
+      if($request->input('isBookmarked')!=null){
+        $user_id = $request->input('userId');
+        $bookmarkNum = TradeBookmark::where('trade_id', $id)->where('user_id', $user_id)->count();
+
+        if($request->input('isBookmarked') == true && $bookmarkNum==0){
+          $newBookmark = new TradeBookmark();
+
+          $newBookmark->trade_id = $id;
+          $newBookmark->user_id = $user_id;
+
+          $newBookmark->save();
+        }elseif($request->input('isBookmarked') == false && $bookmarkNum>0) {
+          $bookmark->delete();
+        }
+
+      }
+
+      // Update photoURL
+      // To be added
+
+      // $success_msg = "Trade Updated Successfully (ID = {$id})";
+      // return $success_msg;
+      $response = ['isSuccess' => true];
+      return $response;
     }
 
 

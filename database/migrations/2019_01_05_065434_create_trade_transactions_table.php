@@ -15,7 +15,7 @@ class CreateTradeTransactionsTable extends Migration
     {
         Schema::create('trade_transactions', function (Blueprint $table) {
             $table->increments('id');
-            $table->dateTime('date');
+            $table->dateTime('trade_id');
             $table->integer('user_id');
             $table->timestamps();
         });

@@ -9,8 +9,9 @@
     <div id="trade-view">
         {{ csrf_field() }}
 
-        <div class="col-md-8 col-md-offset-2">      
-            <a href=""><button class="btn btn-default add-new-item">Edit</button></a>
+        <div class="col-md-8 col-md-offset-2">     
+            <a href="{{ route('trade-edit', $trade->id) }}">
+            <button class="btn btn-default add-new-item">Edit</button></a>
         </div>
         
         <div class="col-md-8 col-md-offset-2">  <!--size of form box -->
@@ -18,72 +19,51 @@
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Trade Item</h4>
                 </div>
+
+                </div>
+
                 <div class="panel-body-edit">
-                    <!-- Item Image  -->
-                    <div class="form-group row">
-                        <label for="view-file" class="col-sm-2">Item ID </label>
-                        <div class="col-sm-10">
-                            
-                        </div>
-                            
-                    </div>
-                    <!-- Item Name  -->
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Item Name</label>
-                        <div class="col-sm-10">
-                          
-                        </div>
-                    </div>
+               
+                    
+                  <dt class="col-sm-5">Trade ID</dt>
+                  <dd class="col-sm-7">{{ $trade->id }}</dd>
 
-                    <!-- Price-->
-                    <div class="form-group row">
-                        <label for="view-end-date" class="col-sm-2 col-form-label">Price</label>
-                        <div class="col-sm-4">
+                  <dt class="col-sm-5">Title</dt>
+                  <dd class="col-sm-7">{{ $trade->title }}</dd>
 
-                        </div>
-                    </div>
+                  <dt class="col-sm-5">Price</dt>
+                  <dd class="col-sm-7">{{ $trade->price }}</dd>
+
+                  <dt class="col-sm-5">Post Date</dt>
+                  <dd class="col-sm-7">{{ $trade->post_date }}</dd>
 
 
-                    <!-- Post Date-->
-                    <div class="form-group row">
-                        <label for="view-start-date" class="col-sm-2 col-form-label">Post Date</label>
-                        <div class="col-sm-4">
-                        	
-                        </div>
-                    </div>
+                  <dt class="col-sm-5">Update Date</dt>
+                  <dd class="col-sm-7">{{ $trade->updated_at}}</dd>
 
-                    <!-- Description-->
-                    <div class="form-group row">
-                        <label for="view-start-date" class="col-sm-2 col-form-label">Description</label>
-                        <div class="col-sm-4">
-                        	
-                        </div>
-                    </div>
+                  <dt class="col-sm-5">Quantity</dt>
+                  <dd class="col-sm-7">{{ $trade->quantity }}</dd>
 
-                     <!-- Quantity-->
-                    <div class="form-group row">
-                        <label for="view-start-date" class="col-sm-2 col-form-label">Quantity</label>
-                        <div class="col-sm-4">
-                        	
-                        </div>
-                    </div>
+                  <dt class="col-sm-5">Trade Description</dt>
+                  <dd class="col-sm-7">{{ $trade->description }}</dd>
 
-                     <!-- Status-->
-                    <div class="form-group row">
-                        <label for="view-start-date" class="col-sm-2 col-form-label">Status</label>
-                        <div class="col-sm-4">
-                        	
-                        </div>
-                    </div>
+                  <dt class="col-sm-5">Status</dt>
+                  <dd class="col-sm-7">{{ $trade->status }}</dd>
 
-                     <!-- User ID-->
-                    <div class="form-group row">
-                        <label for="view-start-date" class="col-sm-2 col-form-label">User ID</label>
-                        <div class="col-sm-4">
-                        	
-                        </div>
-                    </div>                         
+                  <dt class="col-sm-5">Trade Transaction ID</dt>
+                  <dd class="col-sm-7">{{ $trade->trade_transaction_id }}</dd>
 
+                  <dt class="col-sm-5">Trade Category ID</dt>
+                  <dd class="col-sm-7">{{ $trade->trade_category_id}}</dd>    
+
+                  <dt class="col-sm-5">Trade Condition Type ID</dt>
+                  <dd class="col-sm-7">{{ $trade->trade_condition_type_id }}</dd>
+
+                  <dt class="col-sm-5">Trade Status ID</dt>
+                  <dd class="col-sm-7">{{ $trade->trade_status_id }}</dd>            
+
+              </div> 
+                      
                     <!-- edit button -->
 				 	<a href="{{ url('/trade') }}">
 						<button type="button" class="btn btn-primary btn-lg btn-block">Back</button>
