@@ -9,9 +9,9 @@
 <div class="container before-nav">
     <div id="blog-view">
         {{ csrf_field() }}
-        <div class="col-md-8 col-md-offset-2">     
-            <a href="{{ route('blog-edit', $blog->id) }}">
-            <button class="btn btn-default add-new-item">Edit</button></a>
+
+        <div class="col-md-8 col-md-offset-2">      
+            <a href=""><button class="btn btn-default add-new-item">Edit</button></a>
         </div>
 
         <div class="col-md-8 col-md-offset-2">  <!--size of form box -->
@@ -25,36 +25,67 @@
                 </div>
 
                 <div class="panel-body-edit">
-               
-                    
-                  <dt class="col-sm-3">Blog ID</dt>
-                  <dd class="col-sm-9">{{ $blog->id }}</dd>
+                    <!-- Item Image  -->
+                    <div class="form-group row">
+                        <label for="view-file" class="col-sm-2">Blog ID </label>
+                        <div class="col-sm-10">
+                            
+                        </div>
+                            
+                    </div>
+                    <!-- Item Name  -->
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Title</label>
+                        <div class="col-sm-10">
+                          
+                        </div>
+                    </div>
 
-                  <dt class="col-sm-3">Title</dt>
-                  <dd class="col-sm-9">{{ $blog->title }}</dd>
 
-                  <dt class="col-sm-3">Post Date</dt>
-                  <dd class="col-sm-9">{{ $blog->created_at}}</dd>
 
-                  <dt class="col-sm-3">Update Date</dt>
-                  <dd class="col-sm-9">{{ $blog->updated_at}}</dd>
+                    <!-- Post Date-->
+                    <div class="form-group row">
+                        <label for="view-start-date" class="col-sm-2 col-form-label">Post Date</label>
+                        <div class="col-sm-4">
+                        	
+                        </div>
+                    </div>
 
-                  <dt class="col-sm-3">Status</dt>
-                  <dd class="col-sm-9">{{ $blog->status}}</dd>
 
-                  <dt class="col-sm-3">Admin ID</dt>
-                  <dd class="col-sm-9">{{ $blog->admin_id }}</dd>
+                     <!-- Status-->
+                    <div class="form-group row">
+                        <label for="view-start-date" class="col-sm-2 col-form-label">Status</label>
+                        <div class="col-sm-4">
+                        	
+                        </div>
+                    </div>
 
-                  <dt class="col-sm-3">Description</dt>
-                  <dd class="col-sm-9">{{ $blog->description}}</dd>
+                     <!-- User ID-->
+                    <div class="form-group row">
+                        <label for="view-start-date" class="col-sm-2 col-form-label">Admin ID</label>
+                        <div class="col-sm-4">
+                        	
+                        </div>
+                    </div>                         
 
-                  <dt class="col-sm-3">Image</dt>
-                  <dd class="col-sm-9">{{ $blog->image_url }}</dd>
-                 
+                    <!-- Description-->
+                    <div class="form-group row">
+                        <label for="view-start-date" class="col-sm-2 col-form-label">Description</label>
+                        <div class="col-sm-4">
+                            
+                        </div>
+                    </div>
 
-              </div>           
-                   
-                    <!-- back button -->
+
+
+                    <!-- Image-->
+                    <div class="form-group row">
+                        <label for="view-start-date" class="col-sm-2 col-form-label">Image</label>
+                        <div class="col-sm-4">
+                            
+                        </div>
+                    </div>                    
+                    <!-- edit button -->
   
 				 	<a href="{{ url('/blog') }}">
 						<button type="button" class="btn btn-primary btn-lg btn-block" >Back</button>

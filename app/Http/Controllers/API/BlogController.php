@@ -85,9 +85,8 @@ class BlogController extends Controller
       $blog = new Blog();
 
       $blog->title = $request->input('title');
-      $blog->subtitle = $request->input('subtitle');
-      $blog->detail = $request->input('detail');
-      $blog->status = '2'; // "Reveal" when first created
+      $blog->description = $request->input('description');
+      $blog->status = '1';
       $blog->admin_id = $request->input('admin_id');
       $blog->image_url = $request->input('image_url')==null ? '' : $request->input('image_url');
 
@@ -107,19 +106,29 @@ class BlogController extends Controller
         return "Blog with respective ID numebr does not exist";
       }
 
+      // $result_all = array();
+      // $result_all['status'] = 0;
+      // $result = array();
+      //$result['errors'] = array();
+
       $result_blog = [
-        'id' => $blog->id,
-        'title' => $blog->title,
-        'subtitle' => $blog->subtitle,
-        'detail' => $blog->detail,
-        'time' => $blog->updated_at, //switch to created_at maybe?
-        'created_at' => $blog->created_at,
-        'photoURL' => $blog->image_url
+        'id' = $blog->id;
+        'title' = $blog->title;
+        //$result_blog['subtitle'] = $blog->subtitle;
+        //$result_blog['detail'] = $blog->detail;
+        'time' = $blog->created_at; //create time maybe?
+        'photoURL' = $blog->image_url;
       ];
 
+
+      // $result['blog'] = $result_blog;
+      // //$result['errors'] = $errors;
+      // $result_all['result'] = $result;
+      // $result_all['status'] = '1';
+      //
+      // return $result_all;
       return $result_blog;
     }
-
 
     public function show_blogComments($id){
       $result_blog_comments = array();
@@ -201,22 +210,31 @@ class BlogController extends Controller
 
     }
 
-    // Get blog summaries
+    // Should return an array of objects instead?
     public function index_blogSummary(){
       $result_blogs = array();
       $blogs = Blog::get();
       foreach ($blogs as $blog) {
+        // $result_blog = [
+        //   'id' => $blog->id,
+        //   'title' => $blog->title,
+        //   'description' => $blog->description, //may not consist of this if description is considered as "detail", which should be only displayed in the detail part
+        //   'status' => $blog->status,
+        //   'admin_id' => $blog->admin_id,
+        //   'image_url' => $blog->image_url,
+        //   'created_at' => $blog->created_at,
+        //   'updated_at' => $blog->updated_at
+        // ];
+
         $result_blog = [
-          'id' => $blog->id,
-          'title' => $blog->title,
-          'subtitle' => $blog->subtitle,
-          'detail' => null,
-          //'status' => $blog->status, //extra
-          //'admin_id' => $blog->admin_id, //extra
-          //'created_at' => $blog->created_at, //extra
-          'time' => $blog->updated_at, // may need only one of "created_at" and "updated_at"
-          'photoURL' => $blog->image_url
+          'id' = $blog->id;
+          'title' = $blog->title;
+          //$result_blog['subtitle'] = $blog->subtitle;
+          //$result_blog['detail'] = null;
+          'time' = $blog->created_at; //create time maybe?
+          'photoURL' = $blog->image_url;
         ];
+
         array_push($result_blogs, $result_blog);
       }
 

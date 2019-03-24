@@ -19,14 +19,13 @@ class CreateTradesTable extends Migration
             $table->float('price', 8, 2);
             $table->string('description', 255);
             $table->integer('quantity');
-            //$table->date('post_date');
+            $table->date('post_date');
             // $table->integer('status');
-            //$table->integer('trade_transaction_id');
+            $table->integer('trade_transaction_id');
             $table->integer('trade_category_id');
             $table->integer('trade_condition_type_id');
             $table->integer('trade_status_id');
             $table->integer('is_deleted');
-            $table->integer('user_id'); //added
             $table->timestamps();
         });
     }

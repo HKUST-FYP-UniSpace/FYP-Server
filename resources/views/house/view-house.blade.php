@@ -9,9 +9,8 @@
     <div id="house-view">
         {{ csrf_field() }}
 
-        <div class="col-md-8 col-md-offset-2">     
-            <a href="{{ route('house-edit', $house->id) }}">
-            <button class="btn btn-default add-new-item">Edit</button></a>
+        <div class="col-md-8 col-md-offset-2">      
+            <a href=""><button class="btn btn-default add-new-item">Edit</button></a>
         </div>
         
         <div class="col-md-8 col-md-offset-2">  <!--size of form box -->
@@ -19,47 +18,92 @@
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Apartment</h4>
                 </div>
-  
-            <div class="panel-body-edit">
+                <div class="panel-body-edit">
+                    <!-- Item Image  -->
+                    <div class="form-group row">
+                        <label for="view-file" class="col-sm-2">Apartment ID </label>
+                        <div class="col-sm-10">
+                            
+                        </div>
+ 
+                      <!-- Quantity-->
+                    <div class="form-group row">
+                        <label for="view-start-date" class="col-sm-2 col-form-label">Post Date</label>
+                        <div class="col-sm-4">
+                            
+                        </div>
+                    </div>
+
+                    </div>
+                    <!-- Item Name  -->
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Address</label>
+                        <div class="col-sm-10">
                           
-                  <dt class="col-sm-5">Apartment ID</dt>
-                  <dd class="col-sm-7">{{ $house->id }}</dd>
+                        </div>
+                    </div>
 
-                  <dt class="col-sm-5">Post Date</dt>
-                  <dd class="col-sm-7">{{ $house->created_at }}</dd>
+                    <!-- Price-->
+                    <div class="form-group row">
+                        <label for="view-end-date" class="col-sm-2 col-form-label">Apartment Type</label>
+                        <div class="col-sm-4">
+
+                        </div>
+                    </div>
 
 
-                  <dt class="col-sm-5">Update Date</dt>
-                  <dd class="col-sm-7">{{ $house->updated_at}}</dd>
+                    <!-- Post Date-->
+                    <div class="form-group row">
+                        <label for="view-start-date" class="col-sm-2 col-form-label">Apartment Size</label>
+                        <div class="col-sm-4">
+                        	
+                        </div>
+                    </div>
 
-                  <dt class="col-sm-5">Address</dt>
-                  <dd class="col-sm-7">{{ $house->address }}</dd>
+                    <!-- Description-->
+                    <div class="form-group row">
+                        <label for="view-start-date" class="col-sm-2 col-form-label">Max. people</label>
+                        <div class="col-sm-4">
+                        	
+                        </div>
+                    </div>
 
-                  <dt class="col-sm-5">Apartment Type</dt>
-                  <dd class="col-sm-7">{{ $house->type }}</dd>
+                     <!-- Quantity-->
+                    <div class="form-group row">
+                        <label for="view-start-date" class="col-sm-2 col-form-label">Price</label>
+                        <div class="col-sm-4">
+                        	
+                        </div>
+                    </div>
 
-                  <dt class="col-sm-5">Apartment Size</dt>
-                  <dd class="col-sm-7">{{ $house->size }}</dd>
 
-                  <dt class="col-sm-5">Maximum No. People</dt>
-                  <dd class="col-sm-7">{{ $house->max_ppl }}</dd>
+                     <!-- Status-->
+                    <div class="form-group row">
+                        <label for="view-start-date" class="col-sm-2 col-form-label">Status</label>
+                        <div class="col-sm-4">
+                        	
+                        </div>
+                    </div>
 
-                  <dt class="col-sm-5">Price</dt>
-                  <dd class="col-sm-7">{{ $house->price }}</dd>
+                     <!-- User ID-->
+                    <div class="form-group row">
+                        <label for="view-start-date" class="col-sm-2 col-form-label">Owner ID</label>
+                        <div class="col-sm-4">
+                        	
+                        </div>
+                    </div>                         
 
-                  <dt class="col-sm-5">Status</dt>
-                  <dd class="col-sm-7">{{ $house->status }}</dd>
+                     <!-- Quantity-->
+                    <div class="form-group row">
+                        <label for="view-start-date" class="col-sm-2 col-form-label">Description</label>
+                        <div class="col-sm-4">
+                            
+                        </div>
+                    </div>
 
-                  <dt class="col-sm-5">Owner ID</dt>
-                  <dd class="col-sm-7">{{ $house->owner_id }}</dd>
-
-                  <dt class="col-sm-5">Description</dt>
-                  <dd class="col-sm-7">{{ $house->description }}</dd>
-
-            </div>  
 
                     <!-- edit button -->
-				 	<a href="{{ url('/house') }}">
+				 	<a href="{{ url('/trade') }}">
 						<button type="button" class="btn btn-primary btn-lg btn-block">Back</button>
 				    </a>
                 </div>
