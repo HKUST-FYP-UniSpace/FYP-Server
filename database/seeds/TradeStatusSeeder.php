@@ -13,8 +13,11 @@ class TradeStatusSeeder extends Seeder
     {
         //
         DB::table('trade_statuses')->insert([
+          // id: 1
         	['status' => 'reveal'],	// available or show
+          // id: 2
         	['status' => 'archive'],
+          //id: 3
         	['status' => 'sold'],
         ]);
     }

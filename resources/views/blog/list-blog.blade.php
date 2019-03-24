@@ -9,13 +9,9 @@
 @section('content')
 <div class="container before-nav">
 
-
     <div class="row">
-        
-            <a href="{{ route('blog-add') }}"><button class="btn btn-default add-new-blog">New Blog</button></a>
-       
-        
-       
+        <a href="{{ route('trade-add') }}">
+        <button class="btn btn-default add-new-item">Add New Blog</button></a>
     </div>
 
     <div class="row">
@@ -30,22 +26,29 @@
                             <th>Blog ID</th>
                             <th>Title</th>
                             <th>Post Date</th>
+                            <th>Update Date</th>
                             <th>Admin ID </th>    
                             <th>Status</th>
                             <th>View More</th>
 
                         </tr>
                     </thead>
-                    <tbody>
-                            <th>001</th>
-                            <th>Welcoming Message</th>
-                            <th>2019.1.1</th>
-                            <th>111</th>
-                            <th>Active</th>
-                            <td><a href="{{ route('blog-view') }}">details</a></td>
-
-                    </tbody>
+                    @foreach ($blogs as $blog)
+                        <tbody>
+                         
+                            <th>{{ $blog->id }}</th>
+                            <th>{{ $blog->title }}</th>
+                            <th>{{ $blog->created_at }}</th>
+                            <th>{{ $blog->updated_at }}</th>
+                            <th>{{ $blog->admin_id }}</th>
+                            <th>{{ $blog->status }}</th>
+                            <td><a href="{{ route('blog-view', $blog->id) }}">details</a></td>
+                        </tbody>
+                     @endforeach
                 </table> 
+                <div>
+                    {{ $blogs->links() }}
+                </div>
             </div>
         </div>
     </div>
