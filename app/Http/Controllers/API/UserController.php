@@ -101,13 +101,19 @@ class UserController extends Controller
         // create a profile
         $new_profile = new Profile();
         $new_profile->user_id = $new_user->id;
-        $new_profile->gender = $input['gender'];
-        $new->profile->contact = $input['contact'];
-        $new_profile->self_intro = $input['self_intro'];
+        if(isset($input['gender'])) {
+            $new_profile->gender = $input['gender'];
+        }
+        if(isset($input['contact'])) {
+            $new->profile->contact = $input['contact'];
+        }
+        if(isset($input['selfIntro'])) {
+            $new_profile->self_intro = $input['self_intro'];
+        }
         $new_profile->icon_url = null;
         $new_profile->save();
 
-        if(empty($input['preferenceModel'])) {
+        if(isset($input['preferenceModel'])) {
 
         }
         else {
@@ -125,8 +131,6 @@ class UserController extends Controller
             }
         }
         
-        
-
         // for return object
         $profile = array();
         $profile['id'] = $new_user->id;
@@ -189,7 +193,7 @@ class UserController extends Controller
             $is_active = 0;
         }
         $profile['isActive'] = $is_active;
-        $profile['createTime'] = $new_user->created_at;
+        $profile['createTime'] = strtotime($new_user->created_at);
         $profile['verified'] = $new_user->is_verified;
         
         return response($profile)->cookie('token', $new_user->token, 1440);
@@ -285,7 +289,7 @@ class UserController extends Controller
             $is_active = 0;
         }
         $profile['isActive'] = $is_active;
-        $profile['createTime'] = $user->created_at;
+        $profile['createTime'] = strtotime($user->created_at);
         $profile['verified'] = $user->is_verified;
 
         return response($profile)->cookie('token', $user->token, 1440);
@@ -379,7 +383,7 @@ class UserController extends Controller
         $profile['selfIntro'] = $stack->self_intro;
         $profile['userType'] = $user_type;
         $profile['isActive'] = $is_active;
-        $profile['createTime'] = $stack->created_at;
+        $profile['createTime'] = strtotime($stack->created_at);
         $profile['verified'] = $stack->is_verified;
         
         return $profile;
