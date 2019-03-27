@@ -15,7 +15,7 @@ class ProfileTempSeeder extends Seeder
         DB::table('profiles')->insert([
           [
             'gender'=>'M',
-            'name'=>'KN',
+            // 'name'=>'KN',
             'contact'=>'98761001',
             'self_intro'=>'handsome boy 1',
             'icon_url'=>'profileURL1.jpg',
@@ -23,7 +23,7 @@ class ProfileTempSeeder extends Seeder
           ],
           [
             'gender'=>'M',
-            'name'=>'KL',
+            // 'name'=>'KL',
             'contact'=>'98761002',
             'self_intro'=>'handsome boy 2',
             'icon_url'=>'profileURL2.jpg',
@@ -31,7 +31,7 @@ class ProfileTempSeeder extends Seeder
           ],
           [
             'gender'=>'F',
-            'name'=>'GK',
+            // 'name'=>'GK',
             'contact'=>'98761003',
             'self_intro'=>'beautiful girl 3',
             'icon_url'=>'profileURL3.jpg',
@@ -39,7 +39,7 @@ class ProfileTempSeeder extends Seeder
           ],
           [
             'gender'=>'F',
-            'name'=>'HC',
+            // 'name'=>'HC',
             'contact'=>'98761004',
             'self_intro'=>'beautiful girl 4',
             'icon_url'=>'profileURL4.jpg',
