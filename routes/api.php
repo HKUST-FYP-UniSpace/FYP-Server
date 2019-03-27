@@ -52,10 +52,10 @@ Route::post('/users/check/username', 'API\UserController@check_username');
 // Route::get('/house/create', 'API\HouseController@create_house');
 // Route::get('/house/{id}/edit', 'API\HouseController@edit_house');
 Route::get('/house/{id}', 'API\HouseController@show_house'); //
-Route::get('/house/{id}/index', 'API\HouseController@index_house'); //
-Route::get('/house/{id}/houseView', 'API\HouseController@show_houseView');
-Route::get('/house/{id}/saved', 'API\HouseController@index_houseSaved');
-Route::post('/house', 'API\HouseController@store_house'); //tested
+Route::get('/house/{id}/index', 'API\HouseController@index_house'); //Get House List //tested
+Route::get('/house/{userId}/houseView/{id}', 'API\HouseController@show_houseView'); //Get House View // review component cannot be tested yet as review_replies has not been added yet
+Route::get('/house/{id}/saved', 'API\HouseController@index_houseSaved'); //Get House Saved //tested
+Route::post('/house', 'API\HouseController@store_house'); //
 Route::post('/house/{id}/delete', 'API\HouseController@delete_house'); //
 Route::put('/house/{id}', 'API\HouseController@update_house'); //
 Route::put('/house/{id}/archive', 'API\HouseController@archive_house'); //
@@ -63,10 +63,10 @@ Route::put('/house/{id}/hide', 'API\HouseController@hide_house'); //
 Route::put('/house/{id}/reveal', 'API\HouseController@reveal_house'); //
 //Route::put('')
 
-// HousePostGroup (House Team)
-Route::get('/housePostGroup/{id}', 'API\HouseController@show_housePostGroup');
+// Group (House Team/ House Post Group)
+Route::get('/housePostGroup/{id}', 'API\HouseController@show_group');
 Route::get('/housePostGroup', 'API\HouseController@index_housePostGroup');
-Route::post('/housePostGroup', 'API\HouseController@store_housePostGroup');
+Route::post('/housePostGroup', 'API\HouseController@store_group');
 Route::post('/housePostGroup/{id}/join', 'API\HouseController@join_housePostGroup');
 Route::post('/housePostGroup/{id}/delete', 'API\HouseController@delete_housePostGroup'); //
 Route::put('/housePostGroup/{id}', 'API\HouseController@update_housePostGroup'); //
@@ -84,11 +84,14 @@ Route::post('/houseBookmark/{id}/delete', 'API\HouseBookmarkController@delete_ho
 // Trade
 // Route::get('/trade/create', 'API\TradeController@create_trade');
 // Route::get('/trade/{id}/edit', 'API\TradeController@edit_trade');
-Route::get('/trade/{userId}/{id}', 'API\TradeController@show_trade'); //
-Route::get('/trade/index/{userId}', 'API\TradeController@index_trade'); //tested
-Route::post('/trade', 'API\TradeController@store_trade'); //
+Route::get('/trade/{userId}/{id}/show', 'API\TradeController@show_trade'); // Get Trade Detail //tested
+Route::get('/trade/{userId}/index', 'API\TradeController@index_trade'); // Get Trade List // filter to be added
+Route::get('/trade/{userId}/selling', 'API\TradeController@show_sellingTrade'); // Get Trade Selling Items // 'Views' to be added to the response
+Route::get('/trade/{userId}/bookmarked', 'API\TradeController@index_bookmarkedTrade'); // Get Trade Saved // Tested
+//Route::get('/trade/{userId}/history', 'API\TradeController@index_tradeHistory'); // Get Past Trade //
+Route::post('/trade', 'API\TradeController@store_trade'); // Create Trade Item //tested
 Route::post('/trade/{id}/delete', 'API\TradeController@delete_trade'); //
-Route::put('/trade/{id}', 'API\TradeController@update_trade'); //
+Route::put('/trade/{id}', 'API\TradeController@update_trade'); // Edit Trade Item //PhotoURL handling to be added
 Route::put('/trade/{id}/archive', 'API\TradeController@archive_trade'); //
 Route::put('/trade/{id}/hide', 'API\TradeController@hide_trade'); //
 Route::put('/trade/{id}/reveal', 'API\TradeController@reveal_trade'); //
@@ -122,11 +125,11 @@ Route::post('/blog/{id}/delete', 'API\BlogController@delete_blog'); //Why not de
 Route::post('/blog/{id}/delete/{comment_id}', 'API\BlogController@delete_blog_comment');
 
 Route::post('/blog/{id}/comment', 'API\BlogController@comment_blog');
-Route::get('/blog/{id}', 'API\BlogController@show_blog'); //tested
+Route::get('/blog/{id}/detail', 'API\BlogController@show_blog'); //Get Blog Detail //tested
 Route::post('/blog', 'API\BlogController@store_blog'); //tested
 Route::put('/blog/{id}', 'API\BlogController@update_blog'); //?? (dealing with null->0 problem)
 Route::get('/blog', 'API\BlogController@index_blog'); //tested
-Route::get('/blog/summary', 'API\BlogController@index_blogSummary');
+Route::get('/blog/summary', 'API\BlogController@index_blogSummary'); // Get Blog Summaries //tested
 Route::get('/blog/{id}/comment', 'API\BlogController@show_blogComments');
 
 // Search Engine
@@ -143,4 +146,3 @@ Route::get('/test/{id}', 'API\TestController@show');
 
 // Admin
 Route::get('/show_all_admin', 'API\AdminController@show_all_admin');
-

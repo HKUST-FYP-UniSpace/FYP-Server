@@ -13,10 +13,14 @@ class TradeConditionTypeSeeder extends Seeder
     {
         //
         DB::table('trade_condition_types')->insert([
+          // id: 1
         	['type' => 'Perfect'],
+          // id: 2
         	['type' => 'Almost Perfect'],
+          // id: 3
         	['type' => 'Okay'],
-        	['type' => 'Worn'],
+          // id: 4
+        	['type' => 'Worn']
         ]);
     }
 }

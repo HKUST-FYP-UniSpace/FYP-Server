@@ -20,29 +20,10 @@
     </div>
 
     <div class="row">
-        
-        <a href=""><button class="btn btn-default add-new-item">New Apartment</button></a>
-        
-       
+        <a href="{{ route('house-add') }}">
+        <button class="btn btn-default add-new-item">Add New Apartment</button></a>
     </div>
 
-    <div>
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#">Next</a>
-            </li>
-          </ul>
-        </nav>
-    </div>
-
-   
     <div class="row">
         <div class="panel panel-default col-md-12">
             <div class="panel-body">
@@ -64,19 +45,25 @@
 
                         </tr>
                     </thead>
-                    <tbody>
-                            <th>1</th>
-                            <th>Tsuen Wan</th>
-                            <th>House</th>
-                            <th>400</th>
-                            <th>10000</th>
-                            <th>5</th>
-                            <th>Available</th>
-                            <th>HKUST</th>
-                            <td><a href="{{ route('trade-view') }}">details</a></td>
+                    @foreach ($houses as $house)
+                        <tbody>
+                         
+                            <th>{{ $house->id }}</th>
+                            <th>{{ $house->address }}</th>
+                            <th>{{ $house->type }}</th>
+                            <th>{{ $house->size }}</th>
+                            <th>{{ $house->price }}</th>
+                            <th>{{ $house->max_ppl }}</th>
+                            <th>{{ $house->status }}</th>
+                            <th>{{ $house->owner_id }}</th>
+                            <td><a href="{{ route('house-view', $house->id) }}">details</a></td>
+                        </tbody>
+                     @endforeach
 
-                    </tbody>
                 </table> 
+                <div>
+                    {{ $houses->links() }}
+                </div>
             </div>
         </div>
     </div>
