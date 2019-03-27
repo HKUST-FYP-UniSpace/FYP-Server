@@ -107,13 +107,23 @@ class UserController extends Controller
         $new_profile->icon_url = null;
         $new_profile->save();
 
-        // if(empty($input['preferenceModel'])) {
+        if(empty($input['preferenceModel'])) {
 
-        // }
-        // else {
-        //     // crate a preference model
-        //     $new_preference_model = new 
-        // }
+        }
+        else {
+            $preferenceModel = $input['preference'];
+            foreach ($preferenceModel as $modelDetail) {
+                $preference_category = PreferenceItemCategory::where('category', key($modelDetail))->get()->first();
+                $preference_category_id = intval($preference_category['id']);
+                $preference_item = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->first();
+                $preference_item_id = $preference_item['id'];
+
+                $preference = new ProfileDetail();
+                $preference->profile_id = $profile->id;
+                $preference->item_id = intval($preference_item_id);
+                $preference->save();
+            }
+        }
         
         
 
@@ -124,14 +134,14 @@ class UserController extends Controller
 
         $has_profile = Profile::where('user_id', $new_user->id)->first();
         if($has_profile == null) {
-            $profile['photoUrl'] = null;
+            $profile['photoURL'] = null;
             $profile['gender'] = null;
             $profile['contact'] = null;
             $profile['selfIntro'] = null;
         }
         else {
             $user_profile = $new_user->profile()->first();
-            $profile['photoUrl'] = $user_profile->icon_url;
+            $profile['photoURL'] = $user_profile->icon_url;
             $profile['gender'] = $user_profile->gender;
             $profile['contact'] = $user_profile->contact;
             $profile['selfIntro'] = $user_profile->self_intro;
@@ -181,8 +191,6 @@ class UserController extends Controller
         $profile['isActive'] = $is_active;
         $profile['createTime'] = $new_user->created_at;
         $profile['verified'] = $new_user->is_verified;
-
-        // return $user;
         
         return response($profile)->cookie('token', $new_user->token, 1440);
     }
@@ -222,14 +230,14 @@ class UserController extends Controller
 
         $has_profile = Profile::where('user_id', $user->id)->first();
         if($has_profile == null) {
-            $profile['photoUrl'] = null;
+            $profile['photoURL'] = null;
             $profile['gender'] = null;
             $profile['contact'] = null;
             $profile['selfIntro'] = null;
         }
         else {
             $user_profile = $user->profile()->first();
-            $profile['photoUrl'] = $user_profile->icon_url;
+            $profile['photoURL'] = $user_profile->icon_url;
             $profile['gender'] = $user_profile->gender;
             $profile['contact'] = $user_profile->contact;
             $profile['selfIntro'] = $user_profile->self_intro;
@@ -362,7 +370,7 @@ class UserController extends Controller
         $profile['id'] = $stack->id;
         $profile['username'] = $user->username;
         $profile['preference'] = $hobby_model;
-        $profile['photoUrl'] = $stack->icon_url;
+        $profile['photoURL'] = $stack->icon_url;
 
         $profile['email'] = $user->email;
         $profile['name'] = $stack->name;
@@ -375,6 +383,50 @@ class UserController extends Controller
         $profile['verified'] = $stack->is_verified;
         
         return $profile;
+    }
+
+    // 
+    public function edit_profile($id, Request $request) {
+        // profiles: [id], gender, contact, self_intro, icon_url, [user_id]
+        $input = $request->input();
+
+        $user_profile = Profile::where('user_id', $id)->first();
+        $user_profile->gender = $input['gender'];
+        $user_profile->contact = $input['contact'];
+        $user_profile->self_intro = $input['selfIntro'];
+        $user_profile->icon_url = $input['photoURL']; // temp
+
+        $user_profile->save();
+
+        return $user_profile;
+    }
+
+    // 
+    public function edit_preference($id, Request $request) {
+        // profile_details: [id], profile_id, item_id <--> preference_items: id
+        $input = $request->input();
+        $result = array();
+
+        $profile = Profile::where('user_id', $id)->first();
+        $profile_details = ProfileDetail::where('profile_id', $profile->id)->get();
+        foreach($profile_details as $profile_detail) {
+            $profile_detail->delete();
+        }
+
+        $preferenceModel = $input['preference'];
+        foreach ($preferenceModel as $modelDetail) {
+            $preference_category = PreferenceItemCategory::where('category', key($modelDetail))->get()->first();
+            $preference_category_id = intval($preference_category['id']);
+            $preference_item = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->first();
+            $preference_item_id = $preference_item['id'];
+            $preference = new ProfileDetail();
+            $preference->profile_id = $profile->id;
+            $preference->item_id = intval($preference_item_id);
+            $preference->save();
+
+            array_push($result, $preference);
+        }
+        return $result;
     }
 
     // 

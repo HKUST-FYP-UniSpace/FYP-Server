@@ -42,7 +42,8 @@ Route::post('/testData', 'API\HouseController@testData');
 
 // User
 Route::get('/users/profile/{id}', 'API\UserController@show_profile');
-Route::post('/users/profile/{id}/create', 'API\UserController@create_profile');
+Route::post('/users/profile/{id}/edit', 'API\UserController@edit_profile');
+Route::post('/users/preference/{id}/edit', 'API\UserController@edit_preference');
 Route::post('/users/check/username', 'API\UserController@check_username');
 // Route::post('/users/profile/{id}/edit', 'API\UserController@edit_profile');
 
