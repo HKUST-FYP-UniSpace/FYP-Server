@@ -13,11 +13,11 @@ class PreferenceItemCategorySeeder extends Seeder
     {
         //
         DB::table('preference_item_categories')->insert([
-        	['category' => 'Gender',],
-        	['category' => 'Pet Free'],
-        	['category' => 'Time staying in the Apartment'],
-        	['category' => 'Personalities'],
-        	['category' => 'Interests'],
+        	['category' => 'gender',],
+        	['category' => 'petFree'],
+        	['category' => 'timeInHouse'],
+        	['category' => 'personalities'],
+        	['category' => 'interests'],
         ]);
     }
 }

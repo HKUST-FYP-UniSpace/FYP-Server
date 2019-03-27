@@ -317,7 +317,7 @@ class TradeController extends Controller
     //     $trade_id = $pastTradeOut->id;
     //
     //     $result_pastTrade = [
-    //       'TransactionType'=>'in',
+    //       'TransactionType'=>'out',
     //       'id' => $trade_id,
     //       'title'=> $pastTradeOut->title,
     //       'price' => $pastTradeOut->price,

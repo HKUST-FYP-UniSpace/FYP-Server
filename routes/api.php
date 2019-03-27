@@ -25,6 +25,9 @@ Route::post('/test', function (Request $request) {
 	return $var;
 });
 
+// testing
+Route::get('/test_cookie', 'API\UserController@test_cookie');
+
 
 Route::group(['middleware' => ['api','cors']], function () {
     Route::post('users/register', 'API\UserController@register');     // 注册
@@ -39,7 +42,9 @@ Route::post('/testData', 'API\HouseController@testData');
 
 // User
 Route::get('/users/profile/{id}', 'API\UserController@show_profile');
-Route::post('/users/profile/{id}/create', 'API\UserController@create_profile');
+Route::post('/users/profile/{id}/edit', 'API\UserController@edit_profile');
+Route::post('/users/preference/{id}/edit', 'API\UserController@edit_preference');
+Route::post('/users/check/username', 'API\UserController@check_username');
 // Route::post('/users/profile/{id}/edit', 'API\UserController@edit_profile');
 
 
@@ -47,9 +52,9 @@ Route::post('/users/profile/{id}/create', 'API\UserController@create_profile');
 // Route::get('/house/create', 'API\HouseController@create_house');
 // Route::get('/house/{id}/edit', 'API\HouseController@edit_house');
 Route::get('/house/{id}', 'API\HouseController@show_house'); //
-Route::get('/house/{id}/index', 'API\HouseController@index_house'); //Get House List //tested
-Route::get('/house/{userId}/houseView/{id}', 'API\HouseController@show_houseView'); //Get House View // review component cannot be tested yet as review_replies has not been added yet
-Route::get('/house/{id}/saved', 'API\HouseController@index_houseSaved'); //Get House Saved //tested
+Route::get('/house/{id}/index', 'API\HouseController@index_house'); //Get House List //Tested
+Route::get('/house/{userId}/houseView/{id}', 'API\HouseController@show_houseView'); //Get House View //Tested
+Route::get('/house/{id}/saved', 'API\HouseController@index_houseSaved'); //Get House Saved //Tested
 Route::post('/house', 'API\HouseController@store_house'); //
 Route::post('/house/{id}/delete', 'API\HouseController@delete_house'); //
 Route::put('/house/{id}', 'API\HouseController@update_house'); //
@@ -59,32 +64,33 @@ Route::put('/house/{id}/reveal', 'API\HouseController@reveal_house'); //
 //Route::put('')
 
 // Group (House Team/ House Post Group)
-Route::get('/housePostGroup/{id}', 'API\HouseController@show_group');
+Route::get('/housePostGroup/{id}', 'API\HouseController@show_group'); // Get Team View // Tested
 Route::get('/housePostGroup', 'API\HouseController@index_housePostGroup');
-Route::post('/housePostGroup', 'API\HouseController@store_group');
-Route::post('/housePostGroup/{id}/join', 'API\HouseController@join_housePostGroup');
+Route::post('/housePostGroup', 'API\HouseController@store_group'); // Create Team //Tested
+Route::post('/housePostGroup/{id}/join', 'API\HouseController@join_group'); // Join Team //Tested
 Route::post('/housePostGroup/{id}/delete', 'API\HouseController@delete_housePostGroup'); //
 Route::put('/housePostGroup/{id}', 'API\HouseController@update_housePostGroup'); //
+Route::put('housePostGroup/{id}/preference', 'API\HouseController@update_preference'); //Update Preference //Tested
 
 // HouseBookmark
 // Route::get('/houseBookmark/create', 'API\HouseBookmarkController@create_houseBookmark');
 // Route::get('/houseBookmark/{id}/edit', 'API\HouseBookmarkController@edit_houseBookmark');
-Route::get('/houseBookmark/{id}', 'API\HouseBookmarkController@show_houseBookmark'); //tested
-Route::get('/houseBookmark', 'API\HouseBookmarkController@index_houseBookmark'); //tested
-Route::get('/houseBookmark/{id}/saved', 'API\HouseBookmarkController@get_houseBookmarkSaved'); //tested
-Route::post('/houseBookmark', 'API\HouseBookmarkController@store_houseBookmark'); //tested
-Route::post('/houseBookmark/{id}/delete', 'API\HouseBookmarkController@delete_houseBookmark'); //tested
+Route::get('/houseBookmark/{id}', 'API\HouseBookmarkController@show_houseBookmark'); //
+Route::get('/houseBookmark', 'API\HouseBookmarkController@index_houseBookmark'); //
+Route::get('/houseBookmark/{id}/saved', 'API\HouseBookmarkController@get_houseBookmarkSaved'); //
+Route::post('/houseBookmark', 'API\HouseBookmarkController@store_houseBookmark'); //Bookmark House //Tested
+Route::post('/houseBookmark/{id}/delete', 'API\HouseBookmarkController@delete_houseBookmark'); //
 //Route::put('/houseBookmark/{id}', 'API\HouseBookmarkController@update_houseBookmark');
 
 // Trade
 // Route::get('/trade/create', 'API\TradeController@create_trade');
 // Route::get('/trade/{id}/edit', 'API\TradeController@edit_trade');
-Route::get('/trade/{userId}/{id}/show', 'API\TradeController@show_trade'); // Get Trade Detail //tested
+Route::get('/trade/{userId}/{id}/show', 'API\TradeController@show_trade'); // Get Trade Detail //Tested
 Route::get('/trade/{userId}/index', 'API\TradeController@index_trade'); // Get Trade List // filter to be added
 Route::get('/trade/{userId}/selling', 'API\TradeController@show_sellingTrade'); // Get Trade Selling Items // 'Views' to be added to the response
 Route::get('/trade/{userId}/bookmarked', 'API\TradeController@index_bookmarkedTrade'); // Get Trade Saved // Tested
 //Route::get('/trade/{userId}/history', 'API\TradeController@index_tradeHistory'); // Get Past Trade //
-Route::post('/trade', 'API\TradeController@store_trade'); // Create Trade Item //tested
+Route::post('/trade', 'API\TradeController@store_trade'); // Create Trade Item //Tested
 Route::post('/trade/{id}/delete', 'API\TradeController@delete_trade'); //
 Route::put('/trade/{id}', 'API\TradeController@update_trade'); // Edit Trade Item //PhotoURL handling to be added
 Route::put('/trade/{id}/archive', 'API\TradeController@archive_trade'); //
@@ -141,8 +147,3 @@ Route::get('/test/{id}', 'API\TestController@show');
 
 // Admin
 Route::get('/show_all_admin', 'API\AdminController@show_all_admin');
-
-// User
-Route::get('/show_profile/{id}', 'API\UserController@show_profile');
-Route::post('/create_profile/{id}', 'API\UserController@create_profile');
-Route::post('/edit_profile/{id}', 'API\UserController@edit_profile');

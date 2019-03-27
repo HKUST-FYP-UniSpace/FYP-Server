@@ -87,8 +87,8 @@ class HouseBookmarkController extends Controller
     public function store_houseBookmark(Request $request){
       $bookmark = new HousePostBookmark();
 
-      $bookmark->house_id = $request->input('house_id');
-      $bookmark->tenant_id = $request->input('tenant_id');
+      $bookmark->house_id = $request->input('houseId');
+      $bookmark->tenant_id = $request->input('userId'); // should be using user_id instead?
 
       $bookmark->save();
 

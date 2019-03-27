@@ -14,12 +14,27 @@ use App\Preference;
 use App\PreferenceItem;
 use App\PreferenceItemCategory;
 use Validator;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    // test using cookies
+    public function test_cookie() {
+        $user = User::first();
+
+        $content = array();
+        $content['id'] = $user->id;
+        $content['username'] = $user->username;
+        $content['preferenceModel'] = null;
+
+        $token = JWTAuth::fromUser($user);
+
+        return response($content)->cookie('token', $token, 60);
+    }
+
     // POST
     // "username" : (String)    --> username
     // "name" : (String)        --> name
@@ -34,17 +49,6 @@ class UserController extends Controller
 
         // grab all the input
         $input = $request->input();
-
-       //  $validator = Validator::make($request->all(), [
-       //      'username' => 'required|unique:users,username',
-       //      'name' => 'required',
-       //      'email' => 'required|email|unique:users,email',
-       //      'password' => 'required',
-       //      'userType' => 'required|integer|between:0,1',
-       // ]);
-       // if ($validator->fails()) {
-       //     return response()->json(['error'=>$validator->errors()], 401);            
-       // }
 
         // chcek the existence of username
         $if_username_exists = User::where('username', $input['username'])->first();
@@ -94,33 +98,105 @@ class UserController extends Controller
             $new_user_type->save();
         }
 
+        // create a profile
+        $new_profile = new Profile();
+        $new_profile->user_id = $new_user->id;
+        if(isset($input['gender'])) {
+            $new_profile->gender = $input['gender'];
+        }
+        if(isset($input['contact'])) {
+            $new->profile->contact = $input['contact'];
+        }
+        if(isset($input['selfIntro'])) {
+            $new_profile->self_intro = $input['self_intro'];
+        }
+        $new_profile->icon_url = null;
+        $new_profile->save();
+
+        if(isset($input['preferenceModel'])) {
+
+        }
+        else {
+            $preferenceModel = $input['preference'];
+            foreach ($preferenceModel as $modelDetail) {
+                $preference_category = PreferenceItemCategory::where('category', key($modelDetail))->get()->first();
+                $preference_category_id = intval($preference_category['id']);
+                $preference_item = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->first();
+                $preference_item_id = $preference_item['id'];
+
+                $preference = new ProfileDetail();
+                $preference->profile_id = $profile->id;
+                $preference->item_id = intval($preference_item_id);
+                $preference->save();
+            }
+        }
+        
+        // for return object
+        $profile = array();
+        $profile['id'] = $new_user->id;
+        $profile['username'] = $new_user->username;
+
+        $has_profile = Profile::where('user_id', $new_user->id)->first();
+        if($has_profile == null) {
+            $profile['photoURL'] = null;
+            $profile['gender'] = null;
+            $profile['contact'] = null;
+            $profile['selfIntro'] = null;
+        }
+        else {
+            $user_profile = $new_user->profile()->first();
+            $profile['photoURL'] = $user_profile->icon_url;
+            $profile['gender'] = $user_profile->gender;
+            $profile['contact'] = $user_profile->contact;
+            $profile['selfIntro'] = $user_profile->self_intro;
+
+
+            // check profile detail
+            $hobby_model = null;
+            $has_profile_detail = ProfileDetail::where('profile_id', $new_user->profile()->first()->id)->first();
+            if($has_profile_detail == null) {
+                $profile['preference'] = null;
+            }
+            else {
+                // get preference model
+                $profile_details = $user_profile->profile_detail()->get();
+                $hobby_model = array();
+                foreach($profile_details as $profile_detail) {
+                    $hobby_model_record = array();
+                    $hobbies = $profile_detail->hobby_item()->get();
+                    foreach($hobbies as $hobby) {
+                        $category_name = $hobby->category()->first()->category;
+                        $item = $hobby->name;
+                        $hobby_model_record[$category_name] = $item;
+                    }
+                    array_push($hobby_model, $hobby_model_record);
+                }
+                $profile['preference'] = $hobby_model;
+            }
+        }
+
+        $profile['email'] = $new_user->email;
+        $profile['name'] = $new_user->name;
+        
         // check user type
-        // $user_type = 0; // default is a tenant
-        // $tenant = Tenant::where('user_id', $user->id);
-        // if($tenant->first() == null) {  // not a tenant
-        //     $user_type = 1;
-        // } return response()->json(['success'=>$success], $this->successStatus);
+        $user_type = 0; // default is a tenant
+        $tenant = Tenant::where('user_id', $new_user->id);
+        if($tenant->first() == null) {  // not a tenant
+            $user_type = 1;
+        }
+        $profile['userType'] = $user_type;
 
-        // if($new_user->is_deleted == 0) {
-        //     $is_active = 1;
-        // }
-        // else {
-        //     $is_active = 0;
-        // }
+        if($new_user->is_deleted == 0) {
+            $is_active = 1;
+        }
+        else {
+            $is_active = 0;
+        }
+        $profile['isActive'] = $is_active;
+        $profile['createTime'] = strtotime($new_user->created_at);
+        $profile['verified'] = $new_user->is_verified;
         
-        // $user = array();
-        // $user['id'] = $new_user->id;
-        // $user['username'] = $new_user->username;
-        // $user['name'] = $new_user->name;
-        // $user['email'] = $new_user->email;
-        // $user['userType'] = $user_type;
-        // $user['isActive'] = $is_active;
-        // $user['createTime'] = $new_user->created_at;
-        // $user['verified'] = $new_user->is_verified;
-
-        // return $user;
-        
-        return response()->json(['result' => $new_user->token]);
+        return response($profile)->cookie('token', $new_user->token, 1440);
     }
 
     // POST
@@ -143,7 +219,80 @@ class UserController extends Controller
             return $errors;
         }
 
-        return response()->json(['result' => $token]);
+        // grab all the input
+        $input = $request->input();
+
+        $user = User::where('username', $input['username'])->first();
+
+        $profile = array();
+        // dd($new_user);
+        $profile['id'] = $user->id;
+        $profile['username'] = $user->username;
+
+
+        
+
+        $has_profile = Profile::where('user_id', $user->id)->first();
+        if($has_profile == null) {
+            $profile['photoURL'] = null;
+            $profile['gender'] = null;
+            $profile['contact'] = null;
+            $profile['selfIntro'] = null;
+        }
+        else {
+            $user_profile = $user->profile()->first();
+            $profile['photoURL'] = $user_profile->icon_url;
+            $profile['gender'] = $user_profile->gender;
+            $profile['contact'] = $user_profile->contact;
+            $profile['selfIntro'] = $user_profile->self_intro;
+
+
+            // check profile detail
+            $hobby_model = null;
+            $has_profile_detail = ProfileDetail::where('profile_id', $user->profile()->first()->id)->first();
+            if($has_profile_detail == null) {
+                $profile['preference'] = null;
+            }
+            else {
+                // get preference model
+                $profile_details = $user_profile->profile_detail()->get();
+                $hobby_model = array();
+                foreach($profile_details as $profile_detail) {
+                    $hobby_model_record = array();
+                    $hobbies = $profile_detail->hobby_item()->get();
+                    foreach($hobbies as $hobby) {
+                        $category_name = $hobby->category()->first()->category;
+                        $item = $hobby->name;
+                        $hobby_model_record[$category_name] = $item;
+                    }
+                    array_push($hobby_model, $hobby_model_record);
+                }
+                $profile['preference'] = $hobby_model;
+            }
+        }
+
+        $profile['email'] = $user->email;
+        $profile['name'] = $user->name;
+        
+        // check user type
+        $user_type = 0; // default is a tenant
+        $tenant = Tenant::where('user_id', $user->id);
+        if($tenant->first() == null) {  // not a tenant
+            $user_type = 1;
+        }
+        $profile['userType'] = $user_type;
+
+        if($user->is_deleted == 0) {
+            $is_active = 1;
+        }
+        else {
+            $is_active = 0;
+        }
+        $profile['isActive'] = $is_active;
+        $profile['createTime'] = strtotime($user->created_at);
+        $profile['verified'] = $user->is_verified;
+
+        return response($profile)->cookie('token', $user->token, 1440);
 
     }
 
@@ -198,9 +347,6 @@ class UserController extends Controller
         $hobby_model = null;
         $has_profile_detail = ProfileDetail::where('profile_id', $user->profile()->first()->id)->first();
         if($has_profile_detail == null) {
-            // $error['message'] = "The user have not created a preference model.";
-            // $error['resource'] = "show_profile()";
-            // array_push($errors, $error);
         }
         else {
             // get preference model
@@ -216,7 +362,6 @@ class UserController extends Controller
                 }
                 array_push($hobby_model, $hobby_model_record);
             }
-            //dd($hobby_model);
         }
         
         if($stack->is_deleted == 0) {
@@ -229,7 +374,7 @@ class UserController extends Controller
         $profile['id'] = $stack->id;
         $profile['username'] = $user->username;
         $profile['preference'] = $hobby_model;
-        $profile['photoUrl'] = $stack->icon_url;
+        $profile['photoURL'] = $stack->icon_url;
 
         $profile['email'] = $user->email;
         $profile['name'] = $stack->name;
@@ -238,68 +383,70 @@ class UserController extends Controller
         $profile['selfIntro'] = $stack->self_intro;
         $profile['userType'] = $user_type;
         $profile['isActive'] = $is_active;
-        $profile['createTime'] = $stack->created_at;
+        $profile['createTime'] = strtotime($stack->created_at);
         $profile['verified'] = $stack->is_verified;
         
         return $profile;
     }
 
-    // POST, param: user id
-    public function create_profile($id, Request $request) {
-        // create error message
-        $errors = array();
-        $error = array();
+    // 
+    public function edit_profile($id, Request $request) {
+        // profiles: [id], gender, contact, self_intro, icon_url, [user_id]
+        $input = $request->input();
 
-        // check user
-        $user = User::find($id);
-        if($user == null) {
-            $error['message'] = "The user id does not exist.";
-            $error['resource'] = "show_profile()";
-            array_push($errors, $error);
-        }
+        $user_profile = Profile::where('user_id', $id)->first();
+        $user_profile->gender = $input['gender'];
+        $user_profile->contact = $input['contact'];
+        $user_profile->self_intro = $input['selfIntro'];
+        $user_profile->icon_url = $input['photoURL']; // temp
 
-        // check profile
-        $has_profile = Profile::where('user_id', $id)->first();
-        if($has_profile == null) {
-            $error['message'] = "The user profile does not exist.";
-            $error['resource'] = "show_profile()";
-            array_push($errors, $error);
-        }
+        $user_profile->save();
 
-        if(!empty($errors)) {
-            return $errors;
-        }
-
-        $input = $request->all();
-
-
-        $profile->save();
-
-        return "New profile stored successfully with profile id = {$profile->id}, user id = {$profile->user_id}";
-        //dd($profile);
+        return $user_profile;
     }
 
-    // POST, param: user id
-    public function edit_profile($id,  Request $request) {
-        // check user
-        $user = User::find($id);
-        if($user == null) {
-            return "The user id does not exist.";
+    // 
+    public function edit_preference($id, Request $request) {
+        // profile_details: [id], profile_id, item_id <--> preference_items: id
+        $input = $request->input();
+        $result = array();
+
+        $profile = Profile::where('user_id', $id)->first();
+        $profile_details = ProfileDetail::where('profile_id', $profile->id)->get();
+        foreach($profile_details as $profile_detail) {
+            $profile_detail->delete();
         }
 
-        // check profile
-        $has_profile = Profile::where('user_id', $id);
-        if($has_profile->first() == null) {
-            return "The user has not created a profile yet.";
+        $preferenceModel = $input['preference'];
+        foreach ($preferenceModel as $modelDetail) {
+            $preference_category = PreferenceItemCategory::where('category', key($modelDetail))->get()->first();
+            $preference_category_id = intval($preference_category['id']);
+            $preference_item = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->first();
+            $preference_item_id = $preference_item['id'];
+            $preference = new ProfileDetail();
+            $preference->profile_id = $profile->id;
+            $preference->item_id = intval($preference_item_id);
+            $preference->save();
+
+            array_push($result, $preference);
+        }
+        return $result;
+    }
+
+    // 
+    public function check_username(Request $request) {
+        $result = array();
+
+        $input = $request->input();
+        $user = User::where('username', $input['username'])->first();
+        $is_exists = false;
+        if($user) {
+            $is_exists = true;
         }
 
-        $input = $request->all();
+        $result['isExists'] = $is_exists;
 
-        $profile = array();
-
-
-        return $profile;
-           
+        return $result;
     }
 
     
