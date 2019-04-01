@@ -1,4 +1,4 @@
-@extends('layouts.app')
+Blog@extends('layouts.app')
 
 <!-- css style (name corresponds to app.blade.php) -->
 @push('add-style')
@@ -10,14 +10,14 @@
         <div class="col-md-8 col-md-offset-2">  <!--size of form box -->
             <div class="panel panel-default"> <!-- border+background -->
                 <div class="panel-heading text-center">
-                    <h4 class="title text-muted">Add New Apartment</h4>
+                    <h4 class="title text-muted">Add New Blog </h4>
                 </div>
                 <div class="panel-body text-center">
-                    <div class="row"  style="padding-top: 5px; padding-left: 40%;">
+                    <div class="row" style="padding-top: 5px;">
                         <h5>Add Success!</h5>
-                    </div>                 
+                    </div>
                     <div class="row" style="padding:15px;">
-                        <a href="{{ route('house-view', ['id'=>$id])}}"class="btn  form-btn">Back to View Apartment Details</a>
+                        <a href="{{ route('blog-view', ['id'=>$id])}}"class="btn  form-btn">Back to View Blog Details</a>
                     </div>
                 </div>
             </div>

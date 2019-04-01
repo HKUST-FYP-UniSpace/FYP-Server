@@ -1,20 +1,16 @@
-@extends('layouts.app')
+@extends('layouts.user-app')
 
 @section('content')
 <div class="container before-nav">
-
-
     <div class="row">
         <form  class="form-horizontal"  action="{{ url('/user/search')}}" method="GET" id='user-search'>
             <div class="panel panel-default col-md-12">
                 <div class="panel-body">
                     <input class="form-control" type="search" name="search" placeholder="{{ $searchPhrase ?? 'Search' }}">
                     	<div class="text-right">Search</div>
-                </div>  
+                </div>
             </div>
-            
         </form>
-    
     </div>
 
     <div class="row">
@@ -25,16 +21,16 @@
                     <thead>
                         <tr>
                         	<th>ID</th>
-                            <th>Username</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>View More</th>
-                        </tr>            
+                          <th>Username</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>View More</th>
+                        </tr>
                     </thead>
 
                     @foreach ($users as $user)
                         <tbody>
-                         
+
                             <th>{{ $user->id }}</th>
                             <th>{{ $user->username }}</th>
                             <th>{{ $user->name }}</th>

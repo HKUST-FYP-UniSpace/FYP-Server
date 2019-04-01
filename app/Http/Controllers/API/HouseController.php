@@ -22,6 +22,7 @@ use App\ReviewReply;
 use App\Preference;
 use App\PreferenceItem;
 use App\PreferenceItemCategory;
+use App\HouseVisitor;
 
 use Validator;
 use Carbon\Carbon;
@@ -208,16 +209,16 @@ class HouseController extends Controller
     }
 
     // Get House View
-    public function show_houseView($userId, $id){
-      $result_titleView = self::show_house($id, $userId); // may include some extra info
+    public function show_houseView($userId, $houseId){
+      $result_titleView = self::show_house($houseId, $userId); // may include some extra info
 
       $result_teams = array();
-      $groups = Group::where('house_id', $id)->get();
+      $groups = Group::where('house_id', $houseId)->get();
       foreach ($groups as $group) {
         array_push($result_teams, self::get_teamView($group->id));
       }
 
-      $result_reviews = self::get_reviews($id);
+      $result_reviews = self::get_reviews($houseId);
 
       $response = [
         'titleView' => $result_titleView,
@@ -225,13 +226,16 @@ class HouseController extends Controller
         'reviews' => $result_reviews
       ];
 
+      // create house visit record
+      self::count_visitor($userId, $houseId);
+
       return $response;
     }
 
     // Retrieve list of houses saved by a tenant (Get House Saved)
-    //param: $id: userId
-    public function index_houseSaved($id){
-      $bookmarks = HousePostBookmark::where('tenant_id', $id)->get();
+    //param: userId
+    public function index_houseSaved($userId){
+      $bookmarks = HousePostBookmark::where('tenant_id', $userId)->get();
       if($bookmarks == null){
         return "No Bookedmark house can be displayed by this user!";
       }
@@ -261,6 +265,59 @@ class HouseController extends Controller
 
       return $result_savedHouses;
     }
+
+
+    // Get House History
+    // Show the list of apartment that are renting in/out by the user
+    public function index_houseHistory($userId){
+      $result = array();
+      // Check if user is a owner
+      // return rent out record if true
+      if(Owner::where('user_id',$userId)->count()>0){
+        $houses = House::where('owner_id', $userId)->get();
+        foreach ($houses as $house) {
+          $house_id = $house->id;
+          $house_img = HouseImage::where('house_id', $house_id)->first();
+          $house_datail = [
+            'transactionType' => 'out',
+            'id' => $house_id,
+            'title' => $house->title,
+            'price' => $house->price,
+            'size' => $house->size,
+            'starRating' => self::get_averageHouseOverallRating($house_id),
+            'subtitle' => $house->subtitle,
+            'photoURL' =>$house_img
+          ];
+
+          array_push($result, $house_datail);
+        }
+
+        return $result;
+      }
+
+      //Not owner, return tenant rental record
+      $joint_groups = GroupDetail::where('member_user_id', $userId)->get();
+      foreach($joint_groups as $joint_group){
+        $house_id = Group::where('id', $joint_group->group_id)->first()->house_id;
+        $house = House::where('id', $house_id)->first();
+        $house_img = HouseImage::where('house_id', $house_id)->first();
+        $house_datail = [
+          'trasactionType' => 'in',
+          'id' => $house_id,
+          'title' => $house->title,
+          'price' => $house->price,
+          'size' => $house->size,
+          'starRating' => self::get_averageHouseOverallRating($house_id),
+          'subtitle' => $house->subtitle,
+          'photoURL' =>$house_img
+        ];
+
+        array_push($result, $house_datail);
+      }
+
+      return $result;
+    }
+
 
     public function archive_house($id){
       $house = House::where('id', $id)->first();
@@ -316,9 +373,9 @@ class HouseController extends Controller
     //-----------------------------------------------------------------------------------------------
 
     // Get team view
-    // param: id: teamId
-    public function show_group($id){
-      $group = Group::where("id", $id)->first();
+    // param: teamId
+    public function show_group($teamId){
+      $group = Group::where("id", $teamId)->first();
 
       if($group == null){
         return null;
@@ -328,10 +385,10 @@ class HouseController extends Controller
       $result_id = $group->house_id;
 
       // teamView
-      $result_teamView = self::get_teamView($id);
+      $result_teamView = self::get_teamView($teamId);
 
       //teamMembers
-      $result_teamMembers = self::get_teamMembers($id);
+      $result_teamMembers = self::get_teamMembers($teamId);
 
 
       $response = [
@@ -401,12 +458,12 @@ class HouseController extends Controller
     // param:
     // $id: teamId
     // $request should include userId
-    public function join_group($id, Request $request){
+    public function join_group($teamId, Request $request){
       $groupDetail = new GroupDetail();
 
       $groupDetail->member_user_id = $request->input('userId');
       $groupDetail->status = 1; // Status == 1 represent pending to be accepted by group leader (Accepted: 2, Rejected: 3)
-      $groupDetail->group_id = $id;
+      $groupDetail->group_id = $teamId;
 
       $groupDetail->save();
 
@@ -422,8 +479,8 @@ class HouseController extends Controller
     //
     // First delete all preference connected to the group
     // Then re-insert new preference data
-    public function update_preference($id, Request $request){
-      $old_preference = Preference::where('group_id', $id)->delete();
+    public function update_preference($teamId, Request $request){
+      $old_preference = Preference::where('group_id', $teamId)->delete();
 
       $preferenceModel = $request->input('preferenceModel');
       foreach ($preferenceModel as $modelDetail) {
@@ -432,7 +489,7 @@ class HouseController extends Controller
 
         $preference = new Preference();
         $preference->item_id = $preference_item_id;
-        $preference->group_id = $id;
+        $preference->group_id = $teamId;
         $preference->save();
       }
 
@@ -527,7 +584,7 @@ class HouseController extends Controller
     }
 
 
-    // Calculate the average of overall star rating (using the average star rating of all related reviews) of a house
+    // Helper function that calculate the average of overall star rating (using the average star rating of all related reviews) of a house
     // param: $id: houseId
     public function get_averageHouseOverallRating($id){
       $reviews = Review::where('house_id', $id)->get();
@@ -544,7 +601,7 @@ class HouseController extends Controller
     }
 
 
-    // function that create preference model (from Preference table data)
+    // helper function that create preference model (from Preference table data)
     //param: $id (groupId)
     public function create_preferenceModelByPreference($id){
       $preferences = Preference::where('group_id', $id)->get();
@@ -556,8 +613,9 @@ class HouseController extends Controller
       // $gender = '';
       // $petFree = '';
       // $timeInHouse = '';
-      // $personalities = array();
-      // $interests = array();
+      $personalities = array();
+      $interests = array();
+
       foreach ($preferences as $preference) {
         //$preference_category_id = PreferenceItemCategory::where('category', key($modelDetail))->get()->id;
         //$preference_item_id = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->get()->id;
@@ -579,8 +637,18 @@ class HouseController extends Controller
 
         //more dynamic
         $category_name = PreferenceItemCategory::where('id', $category_id)->first()->category;
-        $preference_object =['$category_name'=>$preference_item->name];
-        array_push($result_preferences, $preference_object);
+
+        // push one object at a time
+        // but hardcode on items of category = 4,5, as they return diffferent object structures (array)
+        if($category_id == 4){
+          array_push($personalities, $preference_item->name);
+        }elseif($category_id ==5){
+          array_push($interests, $preference_item->name);
+        }else{
+          $preference_object =["$category_name"=>$preference_item->name];
+          array_push($result_preferences, $preference_object);
+        }
+
       }
 
       // $preference_model=[
@@ -592,25 +660,131 @@ class HouseController extends Controller
       //   'interests'=>$interests
       // ];
 
+      if(count($personalities)>0){
+        array_push($result_preferences, ["personalities"=>$personalities]);
+      }
+      if(count($interests)>0){
+        array_push($result_preferences, ["interests"=>$interests]);
+      }
+
       //return $preference_model;
       return $result_preferences;
     }
 
-    // temporary function for mathching house preference to the user profiled preference
-    // public function match_house($userId){
-    //   $hosue_bookmarkedId = HousePostBookmark::where('tenant_id', $userId)->get();
-    //   $house_notBookmarked = House::whereNotIn('id', $hosue_bookmarkedId->house_id);
-    //   $user_profile = Profile::get('user_id',$id)->first();
-    //   $profile_details = ProfileDetail::get('profile_id', $user_profile->id)->get();
-    //
-    //   $house_filtered = $house_notBookmarked;
-    //   foreach($profile_details as $profile_detail){
-    //     $house_filtered = $house_filtered
-    //   }
-    //
-    //
-    //
-    // }
+
+    // Helper function that record the visitor data on 'get' page request
+    public function count_visitor($userId, $houseId){
+      $visitor_count = new HouseVisitor();
+
+      //Should only accept a duplicated visit request made by the same user only after an hour maybe?
+
+      $visitor_count->user_id = $userId;
+      $visitor_count->house_id = $houseId;
+
+      $visitor_count->save();
+
+      //return true;
+    }
+
+
+    // helper function for mathching houses with reference to users group formation history
+    // return an list of houses?
+    public function match_houses($userId, $required_match_houses){
+      // analyse past rental records first
+      $avereage_price = 0; // first level indicator
+      $average_size = 0; // second level indicator
+      $house_count = 0;
+      $past_groupDetail_history = GroupDetail::where('member_user_id', $userId)->get();
+      foreach ($past_groupDetail_history as $temp_history) {
+        $past_group = Group::where('id', $temp_history->group_id)->first();
+        $past_house = House::where('id', $past_group->house_id)->first();
+
+        // cumulate price, size data
+        $avereage_price += $past_house->price;
+        $average_size += $past_house->size;
+        $house_count += 1;
+      }
+
+      $avereage_price /= $house_count;
+      $average_size /= $house_count;
+
+      // Look for houses (that are not bookmarked) with lower price than average but bigger size than average
+      $hosue_bookmarkedId = HousePostBookmark::where('tenant_id', $userId)->get();
+      $matchHouses = House::whereNotIn('id', $hosue_bookmarkedId->house_id)->where('price', '<=', $avereage_price)->where('size', '>=', $average_size)->get();
+
+      $price_step = 500;
+      $size_step = 50;
+      for($range_tolerated = 1; $matchHouses->count() < $required_match_houses && $range_tolerated < 3; $range_tolerated++){
+        $price_steps = $price_step * $range_tolerated;
+        $size_steps = $size_step * $range_tolerated;
+        $matchHouses = House::whereNotIn('id', $hosue_bookmarkedId->house_id)->where('price', '<=', $avereage_price + $price_steps)->where('size', '>=', $average_size + $size_steps)->get();
+      }
+
+      // first sort the list by size-to-price ratio
+      $matchHouses = $matchHouses->sortBy(function($value, $key){
+        return ($value['size'] / $value['price']);
+      });
+
+      // return mathed houses if the number found exceed the number required
+      if($matchHouses->count() > $required_match_houses){
+        return $matchHouses->take(4)->get();
+      }
+
+      return $matchHouses;
+    }
+
+
+    public function match_group($userId){
+      $mathch_houses = match_houses($userID);
+
+      // retrieve preference records for houses that are not bookmarked (pool for recommentdation)
+      $hosue_bookmarkedId = HousePostBookmark::where('tenant_id', $userId)->get();
+      $house_prefereces = Preference::whereNotIn('id', $hosue_bookmarkedId->house_id);
+      //$house_notBookmarked = House::whereNotIn('id', $hosue_bookmarkedId->house_id);
+
+      // retrieve user preferences (profile detail)
+      $user_profile = Profile::where('user_id',$id)->first();
+      $profile_details = ProfileDetail::where('profile_id', $user_profile->id)->get();
+
+      $house_filtered = $house_notBookmarked;
+      foreach($profile_details as $profile_detail){
+        $house_filtered = $house_filtered;
+      }
+
+    }
+
+    // helper funcion that can the trending houses (popularity by bookmark/visitor number)
+    // return array of houseId of the popular houses ($required_num)
+    public function get_trendingHouses($required_num){
+      $popularity_score = array();
+      // get all common house_id in housePostBookmark table
+      // then distribute score by the number of records they have (Default 10 points per each record)
+      $popular_house_byBookmarkCount = HousePostBookmark::select('house_id')->groupBy('house_id')->get();
+      foreach ($popular_house_byBookmarkCount as $temp_houseId) {
+        if(isset($popularity_score[$temp_houseId])){
+          $popularity_score[$temp_houseId] += HousePostBookmark::where('house_id', $temp_houseId)->count() * 10;
+        }else{
+          $popularity_score[$temp_houseId] = HousePostBookmark::where('house_id', $temp_houseId)->count() * 10;
+        }
+      }
+
+      // get all house_id in houseVisitor table
+      // then distribute score by the number of records they have (Default 2 points per each record)
+      $popular_house_byVisitCount = HouseVisitor::select('house_id')->groupBy('house_id')->get();
+      foreach ($popular_house_byVisitCount as $temp_houseId) {
+        if(isset($popularity_score[$temp_houseId])){
+          $popularity_score[$temp_houseId] += HouseVisitor::where('house_id', $temp_houseId)->count() * 2;
+        }else{
+          $popularity_score[$temp_houseId] = HouseVisitor::where('house_id', $temp_houseId)->count() * 2;
+        }
+      }
+
+      arsort($popularity_score);
+      $result = array_slice($popularity_score, 0, 5);
+
+      return array_keys($result);
+
+    }
 
     // This function is not used in the app but only kept here for testing data structure
     // public function testData(Request $request){

@@ -27,11 +27,19 @@
                        </div>
                     @endif
 
-                    <!-- Name  -->
+                    <!-- Title  -->
                     <div class="form-group row">
                         <dt for="edit-blog-title" class="col-sm-9" style="padding-left:30px"> Blog Title </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
                             <input type="text" class="form-control" id="edit-blog-title" name="edit-blog-title" value="{{ isset($blog) ? old('edit-blog-title', $blog->title) : old('edit-blog-title') }}">
+                        </dd>
+                    </div>
+
+                    <!-- Subitle  -->
+                    <div class="form-group row">
+                        <dt for="edit-blog-subtitle" class="col-sm-9" style="padding-left:30px"> Blog Subtitle </dt>
+                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
+                            <input type="text" class="form-control" id="edit-blog-subtitle" name="edit-blog-subtitle" value="{{ isset($blog) ? old('edit-blog-subtitle', $blog->subtitle) : old('edit-blog-subtitle') }}">
                         </dd>
                     </div>
 
@@ -42,7 +50,7 @@
                         </dd>
                     </div>
 
-                    
+
                     <div class="form-group row">
                         <dt for="edit-blog-admin_id" class="col-sm-9" style="padding-left:30px"> Admin ID </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
@@ -57,11 +65,11 @@
                         </dd>
                     </div>
 
-                    
+
                     <div class="form-group row">
-                        <dt for="edit-blog-description" class="col-sm-9" style="padding-left:30px">blog Description </dt>
+                        <dt for="edit-blog-detail" class="col-sm-9" style="padding-left:30px">Blog Detail</dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                            <textarea class="form-control" id="edit-blog-description" name="edit-blog-description" placeholder="Write something.." style="height:200px" value="{{ isset($blog) ? old('edit-blog-description', $blog->description) : old('edit-blog-description') }}">{{$blog->description}}</textarea>
+                            <textarea class="form-control" id="edit-blog-detail" name="edit-blog-detail" placeholder="Write something.." style="height:200px" value="{{ isset($blog) ? old('edit-blog-detail', $blog->detail) : old('edit-blog-detail') }}">{{$blog->detail}}</textarea>
                         </dd>
                     </div>
 

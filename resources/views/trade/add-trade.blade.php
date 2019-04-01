@@ -15,11 +15,11 @@
                     <h4 class="title text-muted">Add New Trade Item</h4>
                 </div>
                 <div class="panel-body-edit">
-                    
+
                     <!-- Title -->
                     <div class="form-group row {{ $errors->has('add-trade-title') ? 'has-error' : '' }}">
                         <label for="add-trade-title" class="col-sm-2 col-form-label"> Title </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-12">
                             <input type="text" class="form-control" id="add-trade-title" name="add-trade-title" value="{{ old('add-trade-title') }}">
                             @if($errors->has('add-trade-title'))
                                 <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-trade-title') }}</span>
@@ -30,7 +30,7 @@
                     <!-- Price -->
                     <div class="form-group row {{ $errors->has('add-trade-price') ? 'has-error' : '' }}">
                         <label for="add-trade-price" class="col-sm-2 col-form-label"> Price </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-12">
                             <input type="text" class="form-control" id="add-trade-price" name="add-trade-price" value="{{ old('add-trade-price') }}">
                             @if($errors->has('add-trade-price'))
                                 <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-trade-price') }}</span>
@@ -49,8 +49,8 @@
                                 <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-trade-post_date') }}</span>
                             @endif
                         </div>
-                    </div>               
-                    
+                    </div>
+
                     <!-- Quantity-->
                     <div class="form-group row {{ $errors->has('add-trade-quantity') ? 'has-error' : '' }}">
                         <label for="add-trade-quantity" class="col-sm-2 col-form-label">Quantity</label>
@@ -60,19 +60,19 @@
                                     <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-trade-quantity') }}</span>
                                 @endif
                             </div>
-                    </div>                
+                    </div>
 
                     <!-- Description -->
                     <div class="form-group row {{ $errors->has('add-trade-description') ? 'has-error' : '' }}">
                         <label for="add-trade-description" class="col-sm-2 col-form-label">Description </label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-12">
                             <textarea class="form-control form-textarea" id="add-trade-description" name="add-trade-description" rows="4">{{ old('add-trade-description') }}</textarea>
                             @if($errors->has('add-trade-description'))
                                     <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-trade-description') }}</span>
                             @endif
                         </div>
                     </div>
-                   
+
                     <!-- submit button -->
                     <div class="row text-center">
                         <button type="submit" class="btn  form-btn" id="add-trade-submit">Submit</button>

@@ -104,8 +104,22 @@
         </nav>
 
         <div id="mainDiv">
-            <div id="mydiv" style="height:150px; "></div>
+            <div id="mydiv" style="height:100px; "></div>
         </div>
+
+        <div class="container ">
+          <nav>
+            <!-- House Owners -->
+              <div class="navbar navbar-light bg-light col-md-6">
+                     <a href="{{ url('/user') }}">Apartment Owners</a>
+              </div>
+
+              <!-- Tenants -->
+              <div class="navbar navbar-light bg-light col-md-6">
+                       <a href="{{ url('/user') }}">Tenants</a>
+                </div>
+            </nav>
+          </div>
          @yield('content')
 
     </div>

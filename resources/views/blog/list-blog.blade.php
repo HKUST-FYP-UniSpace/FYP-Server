@@ -8,9 +8,20 @@
 
 @section('content')
 <div class="container before-nav">
+  <div class="row">
+      <form  class="form-horizontal"  action="{{ url('/blog/search')}}" method="GET" id='blog-search'>
+          <div class="panel panel-default col-md-12">
+              <div class="panel-body">
+                  <input class="form-control" type="search" name="search" placeholder="{{ $searchPhrase ?? 'Search' }}">
+                      <div class="text-right">Search</div>
+              </div>
+          </div>
+      </form>
+
+  </div>
 
     <div class="row">
-        <a href="{{ route('trade-add') }}">
+        <a href="{{ route('blog-add') }}">
         <button class="btn btn-default add-new-item">Add New Blog</button></a>
     </div>
 
@@ -19,7 +30,7 @@
             <div class="panel-body">
                 <h3>Blog List</h3>
                 <hr>
-                
+
                 <table class="table" >
                     <thead>
                         <tr>
@@ -27,15 +38,16 @@
                             <th>Title</th>
                             <th>Post Date</th>
                             <th>Update Date</th>
-                            <th>Admin ID </th>    
+                            <th>Admin ID </th>
                             <th>Status</th>
-                            <th>View More</th>
+                            <th>View Detail</th>
+                            <th>Blog Comments</th>
 
                         </tr>
                     </thead>
                     @foreach ($blogs as $blog)
                         <tbody>
-                         
+
                             <th>{{ $blog->id }}</th>
                             <th>{{ $blog->title }}</th>
                             <th>{{ $blog->created_at }}</th>
@@ -43,9 +55,10 @@
                             <th>{{ $blog->admin_id }}</th>
                             <th>{{ $blog->status }}</th>
                             <td><a href="{{ route('blog-view', $blog->id) }}">details</a></td>
+                            <td><a href="{{ route('blog-comment', $blog->id) }}">show comments</a></td>
                         </tbody>
                      @endforeach
-                </table> 
+                </table>
                 <div>
                     {{ $blogs->links() }}
                 </div>
