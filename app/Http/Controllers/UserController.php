@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\User;
+use App\Profile;
+
 
 class UserController extends Controller
 {
@@ -19,7 +21,7 @@ class UserController extends Controller
     		$user['id'] = $stack->id;
     		$user['username'] = $stack->username;
     		$user['name'] = $stack->name;
-    		$user['email'] = $stack->email; 
+    		$user['email'] = $stack->email;
     	}
     	return $users;
     }
@@ -31,4 +33,26 @@ class UserController extends Controller
 
         return view('user.list-user', compact('users'));
     }
+
+    public function search(Request $request){
+    if ( $request->has('search') ){
+        // get profiles
+        $user_ids = Profile::where('name', "LIKE", "%".$request->search."%")
+                            ->orWhere('self_intro', "LIKE", "%".$request->search."%")
+                            ->orWhere('contact', "LIKE", "%".$request->search."%")
+                            ->orWhere('gender', "LIKE", "%".$request->search."%")
+                            ->pluck('user_id')->toArray();
+        $users = User::where('email', "LIKE", "%".$request->search."%")
+                        ->orWhere('username', "LIKE", "%".$request->search."%")
+                        ->orWhereIn('id',$user_ids)
+                        ->latest()
+                        ->paginate(2)
+                        ->appends('search', $request->search);
+
+    }else{
+      $users = User::latest()->paginate(2);
+    }
+    $searchPhrase = $request->search;
+    return view('user.list-user', compact('users','searchPhrase'));
+}
 }

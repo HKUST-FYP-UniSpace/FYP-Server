@@ -24,22 +24,22 @@ class TradeController extends Controller
     		$trade['description'] = $stack->description;
     		$trade['post_date'] = $stack->post_date;
     		$trade['status'] = $stack->status;
-    		$trade['trade_transaction_id'] = $stack->trade_transaction_id; 
+    		$trade['trade_transaction_id'] = $stack->trade_transaction_id;
     		$trade['trade_category_id'] = $stack->trade_category_id;
     		$trade['trade_condition_type_id'] = $stack->trade_condition_type_id;
     		$trade['trade_status_id'] = $stack->trade_status_id;
-    		$trade['status'] = $stack->status;
     		$trade['is_deleted'] = $stack->is_deleted;
-    		$trade['created_at'] = $stack->created_at;  
+    		$trade['created_at'] = $stack->created_at;
+        $trade['updated_at'] = $stack->updated_at;
     	}
     	return $trades;
     }
-     	 
+
     public function show_trade() {
 
         $trades = Trade::paginate(2);
 
-        return view('trade.list-trade', compact('trades')); 	
+        return view('trade.list-trade', compact('trades'));
     }
 
 	public function show_trade_details($id) {
@@ -50,20 +50,20 @@ class TradeController extends Controller
 
     public function edit_trade_form($id) { // $id is user id
         $trade = Trade::where('id', $id)->first();
-          
+
         return view('trade.edit-trade', compact('trade'));
 
     }
 
     public function add_trade_form() { // $id is user id
         $trade = Trade::get();
-          
+
         return view('trade.add-trade');
     }
 
 
     public function update_trade($id, Request $request) {
-        
+
         $this->validate($request, [
             'edit-trade-title' => 'required|max:255',
             'edit-trade-price' => 'required|max:255',
@@ -74,7 +74,7 @@ class TradeController extends Controller
             'edit-trade-trade_status_id'  => 'required|max:255',
             'edit-trade-status' => 'required|max:255',
             'edit-trade-description' => 'nullable|max:255'
-            ], 
+            ],
 
            [
             'edit-trade-title' => 'Input Title',
@@ -91,7 +91,7 @@ class TradeController extends Controller
 
         // get targeted data
         $trade = Trade::where('id', $id)->first();
-        
+
 
         $trade->title = $request->input('edit-trade-title');
         $trade->price = $request->input('edit-trade-price');
@@ -121,9 +121,9 @@ class TradeController extends Controller
                 'add-trade-description' => 'required|max:255',
                 'add-trade-post_date' => 'required',
                 // 'add-trade-trade_category_id' => 'required'
-            ], 
+            ],
             [
- 
+
                 'add-trade-title.required' => 'Input trade title',
                 'add-trade-title.max' => 'Title cannot be too long',
 
@@ -146,7 +146,7 @@ class TradeController extends Controller
 
         // $trade->id="1111";
         $trade->status = "1";
-        $trade->trade_transaction_id = "1"; 
+        $trade->trade_transaction_id = "1";
         $trade->trade_category_id = "1";
         $trade->trade_condition_type_id = "1";
         $trade->trade_status_id = "1";
@@ -172,13 +172,12 @@ class TradeController extends Controller
         $trade->save();
 
         // calculate trade_id
-        
-       
+
+
         // redirect to add success page
         return view('trade.add-trade-success', ['id'=> $trade->id]);
     }
-    
+
 
 
 }
-

@@ -1,12 +1,11 @@
-
-
-
 @extends('layouts.app')
 
 @section('content')
 <div class="container before-nav">
+
+
     <div class="row">
-        <form  class="form-horizontal"  action="{{ url('/trade/search')}}" method="GET" id='trade-search'>
+        <form  class="form-horizontal"  action="{{ url('/message/search')}}" method="GET" id='message-search'>
             <div class="panel panel-default col-md-12">
                 <div class="panel-body">
                     <input class="form-control" type="search" name="search" placeholder="{{ $searchPhrase ?? 'Search' }}">
@@ -17,45 +16,41 @@
 
     </div>
 
-    <div class="row">
-        <a href="{{ route('trade-add') }}">
-        <button class="btn btn-default add-new-item">Add New Trade Item</button></a>
-    </div>
 
     <div class="row">
         <div class="panel panel-default col-md-12">
             <div class="panel-body">
-                <h3>Trade List</h3>
+                <h3>Message List</h3>
                 <hr>
 
                 <table class="table" >
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Title</th>
-                            <th>Price</th>
-                            <th>Description</th>
-                            <th>Quantity</th>
+                            <th>Sender ID</th>
+                            <th>Receiver ID</th>
+                            <th>Chatroom ID</th>
+                            <th>Message</th>
+                            <th>Deleted</th>
                             <th>Post Date</th>
-                            <th>View More</th>
-
                         </tr>
                     </thead>
-                    @foreach ($trades as $trade)
+                    @foreach ($messages as $message)
                         <tbody>
 
-                            <th>{{ $trade->id }}</th>
-                            <th>{{ $trade->title }}</th>
-                            <th>{{ $trade->price }}</th>
-                            <th>{{ $trade->description }}</th>
-                            <th>{{ $trade->quantity }}</th>
-                            <th>{{ $trade->post_date }}</th>
-                            <td><a href="{{ route('trade-view', $trade->id) }}">details</a></td>
+                            <th>{{ $message->id }}</th>
+                            <th>{{ $message->sender}}</th>
+                            <th>{{ $message->receiver}}</th>
+                            <th>{{ $message->chatroom_id }}</th>
+                            <th>{{ $message->message}}</th>
+                            <th>{{ $message->deleted }}</th>
+                            <th>{{ $message->created_at}}</th>
                         </tbody>
                      @endforeach
+
                 </table>
                 <div>
-                    {{ $trades->links() }}
+                    {{ $messages->links() }}
                 </div>
             </div>
         </div>
