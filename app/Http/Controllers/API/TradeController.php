@@ -11,6 +11,7 @@ use App\TradeConditionType;
 use App\TradeImage;
 use App\TradeStatus;
 use App\TradeTransaction;
+use App\TradeVisitor;
 
 use Validator;
 use Carbon\Carbon;
@@ -225,6 +226,8 @@ class TradeController extends Controller
       // $result_all['result'] = $result;
       // $result_all['status'] = '1';
 
+      self::count_visitor($userId, $id);
+
       //return $result_all;
       return $result_trade;
     }
@@ -233,7 +236,7 @@ class TradeController extends Controller
     // Get Trade Selling Items
     //param: userId (ownerId)
     Public function show_sellingTrade($userId){
-      $trades = Trade::where('user_id', $userId)->get();
+      $trades = Trade::where('user_id', $userId)->where('trade_status_id', 1)->get(); // status 1 for selling item
 
       $result_trades = array();
       foreach($trades as $trade){
@@ -245,7 +248,7 @@ class TradeController extends Controller
           'id'=>$trade_id,
           'title'=>$trade->title,
           'price'=>$trade->price,
-          //'views'=>, //visitor counter to be added
+          'views'=>TradeVisitor::where('trade_item_id', $trade_id)->count(), //visitor counter to be added
           'photoURL'=>$trade_img
         ];
         array_push($result_trades, $result_trade);
@@ -306,34 +309,52 @@ class TradeController extends Controller
 
     // Get Trade History
     // Show the list of items that are traded in/out by the user given the owner's user id
-    // public function index_tradeHistory($userId){
-    //   $result_pastTrades = array();
-    //   $pastTransaction = TradeTransaction::where('user_id', $userId)->get();
-    //
-    //   //Trade out
-    //   $pastTradeOuts = Trade::where('user_id', $userId)->get();
-    //
-    //   foreach($pastTradeOuts as $pastTradeOut){
-    //     $trade_id = $pastTradeOut->id;
-    //
-    //     $result_pastTrade = [
-    //       'TransactionType'=>'out',
-    //       'id' => $trade_id,
-    //       'title'=> $pastTradeOut->title,
-    //       'price' => $pastTradeOut->price,
-    //       //'views' => TradeVisitor::where('trade_item_id', $trade_id)->count(),
-    //       'status'=>,
-    //       'description'=>,
-    //       'photoURL' => TradeImage::where('trade_id', $trade_id)->get()
-    //     ];
-    //
-    //     array_push($result_pastTrades, $result_pastTrade);
-    //   }
-    //
-    //   //Trade in
-    //
-    //   return $result_pastTrades;
-    // }
+    public function index_tradeHistory($userId){
+      $result_pastTrades = array();
+
+      //Trade out
+      $pastTradeOuts = Trade::where('user_id', $userId)->get();
+
+      foreach($pastTradeOuts as $pastTradeOut){
+        $trade_id = $pastTradeOut->id;
+
+        $result_pastTrade = [
+          'TransactionType'=>'out',
+          'id' => $trade_id,
+          'title'=> $pastTradeOut->title,
+          'price' => $pastTradeOut->price,
+          'views' => TradeVisitor::where('trade_item_id', $trade_id)->count(), //extra
+          'status'=> $pastTradeOut->trade_status_id,
+          'description'=> $pastTradeOut->description,
+          'photoURL' => TradeImage::where('trade_id', $trade_id)->get()
+        ];
+
+        array_push($result_pastTrades, $result_pastTrade);
+      }
+
+      //Trade in
+      $pastTransactionIn = TradeTransaction::where('user_id', $userId)->get();
+      foreach($pastTransactionIn as $pastTransaction){
+        $pastTradeIn = Trade::where('id',$pastTransaction->trade_id)->first();
+        $trade_id = $pastTradeIn->id;
+
+        $result_pastTrade = [
+          'TransactionType'=>'in',
+          'id' => $trade_id,
+          'title'=> $pastTradeIn->title,
+          'price' => $pastTradeIn->price,
+          'views' => TradeVisitor::where('trade_item_id', $trade_id)->count(), //extra
+          'status'=> $pastTradeIn->trade_status_id,
+          'description'=> $pastTradeIn->description,
+          'photoURL' => TradeImage::where('trade_id', $trade_id)->get()
+        ];
+
+        array_push($result_pastTrades, $result_pastTrade);
+      }
+
+
+      return $result_pastTrades;
+    }
 
 
     // Get Trade Saved
@@ -493,6 +514,19 @@ class TradeController extends Controller
 
       $success_msg = "Trade revealed Successfully (House ID = {$id})";
       return $success_msg;
+    }
+
+
+    // helper function
+    public function count_visitor($userId, $tradeId){
+      $visitor_count = new TradeVisitor();
+
+      //Should only accept a duplicated visit request made by the same user only after an hour maybe?
+
+      $visitor_count->user_id = $userId;
+      $visitor_count->trade_item_id = $tradeId;
+
+      $visitor_count->save();
     }
 
 
