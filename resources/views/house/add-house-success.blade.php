@@ -13,7 +13,7 @@
                     <h4 class="title text-muted">Add New Apartment</h4>
                 </div>
                 <div class="panel-body text-center">
-                    <div class="row" style="padding-top: 5px;">
+                    <div class="row"  style="padding-top: 5px; padding-left: 40%;">
                         <h5>Add Success!</h5>
                     </div>                 
                     <div class="row" style="padding:15px;">

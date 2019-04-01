@@ -27,11 +27,27 @@
                        </div>
                     @endif
 
-                    <!-- Name  -->
+                    <!-- Address  -->
                     <div class="form-group row">
                         <dt for="edit-house-address" class="col-sm-9" style="padding-left:30px"> Address </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
                             <input type="text" class="form-control" id="edit-house-address" name="edit-house-address" value="{{ isset($house) ? old('edit-house-address', $house->address) : old('edit-house-address') }}">
+                        </dd>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="form-group row">
+                        <dt for="edit-house-address" class="col-sm-9" style="padding-left:30px"> Title </dt>
+                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
+                            <input type="text" class="form-control" id="edit-house-title" name="edit-house-title" value="{{ isset($house) ? old('edit-house-title', $house->title) : old('edit-house-title') }}">
+                        </dd>
+                    </div>
+
+                    <!-- Subtitle -->
+                    <div class="form-group row">
+                        <dt for="edit-house-address" class="col-sm-9" style="padding-left:30px"> Subtitle </dt>
+                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
+                            <input type="text" class="form-control" id="edit-house-subtitle" name="edit-house-subtitle" value="{{ isset($house) ? old('edit-house-subtitle', $house->subtitle) : old('edit-house-subtitle') }}">
                         </dd>
                     </div>
 
@@ -65,7 +81,7 @@
                             <input type="text" class="form-control" id="edit-house-max_ppl" name="edit-house-max_ppl" value="{{ isset($house) ? old('edit-house-max_ppl', $house->max_ppl) : old('edit-house-max_ppl') }}">
                         </dd>
                     </div>
-                    
+
                     <div class="form-group row">
                         <dt for="edit-house-owner_id" class="col-sm-9" style="padding-left:30px"> Owner ID </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
@@ -79,7 +95,7 @@
                             <input type="text" class="form-control" id="edit-house-status" name="edit-house-status" value="{{ isset($house) ? old('edit-house-status', $house->status) : old('edit-house-status') }}">
                         </dd>
                     </div>
-                    
+
                     <div class="form-group row">
                         <dt for="edit-house-description" class="col-sm-9" style="padding-left:30px">House Description </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
