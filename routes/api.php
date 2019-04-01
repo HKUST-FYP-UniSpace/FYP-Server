@@ -47,6 +47,8 @@ Route::post('/users/preference/{id}/edit', 'API\UserController@edit_preference')
 Route::post('/users/check/username', 'API\UserController@check_username');
 // Route::post('/users/profile/{id}/edit', 'API\UserController@edit_profile');
 
+// Upload
+Route::post('image/upload', 'API\UploadController@image_upload');
 
 // House
 // Route::get('/house/create', 'API\HouseController@create_house');
