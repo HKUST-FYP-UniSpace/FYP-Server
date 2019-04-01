@@ -115,6 +115,7 @@ class BlogController extends Controller
         'time' => $blog->updated_at, //switch to created_at maybe?
         'created_at' => $blog->created_at,
         'photoURL' => $blog->image_url
+        'status' => blog->status; // extra
       ];
 
       return $result_blog;
@@ -211,9 +212,9 @@ class BlogController extends Controller
           'title' => $blog->title,
           'subtitle' => $blog->subtitle,
           'detail' => null,
-          //'status' => $blog->status, //extra
-          //'admin_id' => $blog->admin_id, //extra
-          //'created_at' => $blog->created_at, //extra
+          'status' => $blog->status, //extra
+          'admin_id' => $blog->admin_id, //extra
+          'created_at' => $blog->created_at, //extra
           'time' => $blog->updated_at, // may need only one of "created_at" and "updated_at"
           'photoURL' => $blog->image_url
         ];
