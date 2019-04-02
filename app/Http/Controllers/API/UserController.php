@@ -15,9 +15,12 @@ use App\PreferenceItem;
 use App\PreferenceItemCategory;
 use Validator;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -36,13 +39,8 @@ class UserController extends Controller
     }
 
     // POST
-    // "username" : (String)    --> username
-    // "name" : (String)        --> name
-    // "email" : (String)       --> email
-    // "password" : (String)    --> password + hash
-    // "userType" : (int)       --> tenants/owners: user_id
-    // 0 = tenant, 1 = owner
     public function register(Request $request) {
+        // dd($request);
         // prepare for errors
         $errors = array();
         $error = array();
@@ -75,7 +73,7 @@ class UserController extends Controller
         $new_user->name = $input['name'];
         $new_user->email = $input['email'];
         $new_user->password = Hash::make($input['password']);
-        // $new_user->is_verified = 0;
+        $new_user->is_verified = 0;
         // $new_is_deleted = 0;
 
         $new_user->save();
@@ -104,19 +102,37 @@ class UserController extends Controller
         if(isset($input['gender'])) {
             $new_profile->gender = $input['gender'];
         }
+        else {
+            $new_profile->gender = null;
+        }
         if(isset($input['contact'])) {
-            $new->profile->contact = $input['contact'];
-        }
-        if(isset($input['selfIntro'])) {
-            $new_profile->self_intro = $input['self_intro'];
-        }
-        $new_profile->icon_url = null;
-        $new_profile->save();
-
-        if(isset($input['preferenceModel'])) {
-
+            $new_profile->contact = $input['contact'];
         }
         else {
+            $new_profile->contact = null;
+        }
+        if(isset($input['selfIntro'])) {
+            $new_profile->self_intro = $input['selfIntro'];
+        }
+        else {
+            $new_profile->self_intro = null;
+        }
+        if(!empty($request->file('photoURL'))) {
+            $image = $request->file('photoURL');
+            $extension = $image->getClientOriginalExtension();
+
+            $now = strtotime(Carbon::now());
+            $url = $new_user->username.$now.'.'.$extension;
+            Storage::disk('public')->put($url,  File::get($image));
+            
+
+            $new_profile->icon_url = url('uploads/'.$url);
+        }
+
+        $new_profile->save();
+
+        // create preference
+        if(isset($input['preference'])) {
             $preferenceModel = $input['preference'];
             foreach ($preferenceModel as $modelDetail) {
                 $preference_category = PreferenceItemCategory::where('category', key($modelDetail))->get()->first();
@@ -125,58 +141,27 @@ class UserController extends Controller
                 $preference_item_id = $preference_item['id'];
 
                 $preference = new ProfileDetail();
-                $preference->profile_id = $profile->id;
+                $preference->profile_id = $new_profile->id;
                 $preference->item_id = intval($preference_item_id);
                 $preference->save();
             }
+        }
+        else {
+            $preference = null;
         }
         
         // for return object
         $profile = array();
         $profile['id'] = $new_user->id;
         $profile['username'] = $new_user->username;
-
-        $has_profile = Profile::where('user_id', $new_user->id)->first();
-        if($has_profile == null) {
-            $profile['photoURL'] = null;
-            $profile['gender'] = null;
-            $profile['contact'] = null;
-            $profile['selfIntro'] = null;
-        }
-        else {
-            $user_profile = $new_user->profile()->first();
-            $profile['photoURL'] = $user_profile->icon_url;
-            $profile['gender'] = $user_profile->gender;
-            $profile['contact'] = $user_profile->contact;
-            $profile['selfIntro'] = $user_profile->self_intro;
-
-
-            // check profile detail
-            $hobby_model = null;
-            $has_profile_detail = ProfileDetail::where('profile_id', $new_user->profile()->first()->id)->first();
-            if($has_profile_detail == null) {
-                $profile['preference'] = null;
-            }
-            else {
-                // get preference model
-                $profile_details = $user_profile->profile_detail()->get();
-                $hobby_model = array();
-                foreach($profile_details as $profile_detail) {
-                    $hobby_model_record = array();
-                    $hobbies = $profile_detail->hobby_item()->get();
-                    foreach($hobbies as $hobby) {
-                        $category_name = $hobby->category()->first()->category;
-                        $item = $hobby->name;
-                        $hobby_model_record[$category_name] = $item;
-                    }
-                    array_push($hobby_model, $hobby_model_record);
-                }
-                $profile['preference'] = $hobby_model;
-            }
-        }
+        $profile['preference'] = $preferenceModel;
+        $profile['photoURL'] = $new_profile->icon_url;
 
         $profile['email'] = $new_user->email;
         $profile['name'] = $new_user->name;
+        $profile['gender'] = $new_profile->gender;
+        $profile['contact'] = $new_profile->contact;
+        $profile['selfIntro'] = $new_profile->self_intro;
         
         // check user type
         $user_type = 0; // default is a tenant
@@ -395,10 +380,27 @@ class UserController extends Controller
         $input = $request->input();
 
         $user_profile = Profile::where('user_id', $id)->first();
-        $user_profile->gender = $input['gender'];
-        $user_profile->contact = $input['contact'];
-        $user_profile->self_intro = $input['selfIntro'];
-        $user_profile->icon_url = $input['photoURL']; // temp
+        $user = $user_profile->user()->first();
+        if(isset($input['gender'])) {
+            $user_profile->gender = $input['gender'];
+        }
+        if(isset($input['contact'])) {
+            $user_profile->contact = $input['contact'];
+        }
+        if(isset($input['selfIntro'])) {
+            $user_profile->self_intro = $input['selfIntro'];
+        }
+        if(!empty($request->file('photoURL'))) {
+            $image = $request->file('photoURL');
+            $extension = $image->getClientOriginalExtension();
+
+            $now = strtotime(Carbon::now());
+            $url = $user->username.$now.'.'.$extension;
+            Storage::disk('public')->put($url,  File::get($image));
+            
+
+            $user_profile->icon_url = url('uploads/'.$url);
+        }
 
         $user_profile->save();
 
