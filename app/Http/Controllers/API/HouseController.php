@@ -25,6 +25,8 @@ use App\PreferenceItemCategory;
 use App\HouseVisitor;
 
 use Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
 
 class HouseController extends Controller
@@ -496,6 +498,30 @@ class HouseController extends Controller
       $response = ['isSuccess' => true];
       return $response;
     }
+
+
+    // Create Team:[Image]
+    public function upload_teamPhoto(Request $request){
+      $group_id = $request->input('groupId');
+
+      if(!empty($request->file('photoURL'))) {
+        $image = $request->file('photoURL');
+        $extension = $image->getClientOriginalExtension();
+
+        $now = strtotime(Carbon::now());
+        $url = 'team' . '.' . $group_id . '_' . $now . '.' . $extension;
+        Storage::disk('public')->put($url,  File::get($image));
+
+
+        $response = ['isSuccess' => true];
+
+      }else{
+        $response = ['isSuccess' => false];
+      }
+
+      return $response;
+    }
+
 
     // ------------------------------------------------------------------------------------------
     // -----------------------------Helper functions---------------------------------------------
