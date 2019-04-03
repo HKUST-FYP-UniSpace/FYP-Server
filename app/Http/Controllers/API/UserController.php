@@ -413,7 +413,7 @@ class UserController extends Controller
         $profile['photoURL'] = $user_profile->icon_url;
         $profile['userId'] = $id;
         $profile['createTime'] = strtotime($user_profile->created_at);
-        
+
         return $profile;
     }
 
@@ -424,6 +424,7 @@ class UserController extends Controller
         $result = array();
 
         $profile = Profile::where('user_id', $id)->first();
+
         $profile_details = ProfileDetail::where('profile_id', $profile->id)->get();
         foreach($profile_details as $profile_detail) {
             $profile_detail->delete();
@@ -440,7 +441,14 @@ class UserController extends Controller
             $preference->item_id = intval($preference_item_id);
             $preference->save();
 
-            array_push($result, $preference);
+            $temp = array();
+            $temp['itemId'] = $preference->item_id;
+            $temp['item'] = $preference_item['name'];
+            $temp['categoryId'] = $preference_category_id;
+            $temp['category'] = $preference_category['category'];
+            $temp['createdTime'] = strtotime($preference->created_at);
+
+            array_push($result, $temp);
         }
         return $result;
     }
