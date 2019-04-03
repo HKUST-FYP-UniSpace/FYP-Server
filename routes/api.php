@@ -47,6 +47,8 @@ Route::post('/users/preference/{id}/edit', 'API\UserController@edit_preference')
 Route::post('/users/check/username', 'API\UserController@check_username');
 // Route::post('/users/profile/{id}/edit', 'API\UserController@edit_profile');
 
+// Upload
+Route::post('image/upload', 'API\UploadController@image_upload');
 
 // House
 // Route::get('/house/create', 'API\HouseController@create_house');
@@ -70,6 +72,7 @@ Route::get('/housePostGroup', 'API\HouseController@index_housePostGroup');
 Route::post('/housePostGroup', 'API\HouseController@store_group'); // Create Team //Tested
 Route::post('/housePostGroup/{teamId}/join', 'API\HouseController@join_group'); // Join Team //Tested
 Route::post('/housePostGroup/{id}/delete', 'API\HouseController@delete_housePostGroup'); //
+Route::post('/housePostGroup/image/upload', 'API\HouseController@upload_teamPhoto'); // Create Team:[Image]
 Route::put('/housePostGroup/{id}', 'API\HouseController@update_housePostGroup'); //
 Route::put('housePostGroup/{teamId}/preference', 'API\HouseController@update_preference'); //Update Preference //Tested
 
@@ -86,13 +89,14 @@ Route::post('/houseBookmark/{id}/delete', 'API\HouseBookmarkController@delete_ho
 // Trade
 // Route::get('/trade/create', 'API\TradeController@create_trade');
 // Route::get('/trade/{id}/edit', 'API\TradeController@edit_trade');
-Route::get('/trade/{userId}/trade/{id}', 'API\TradeController@show_trade'); // Get Trade Detail //Tested
+Route::get('/trade/{userId}/detail/{id}', 'API\TradeController@show_trade'); // Get Trade Detail //Tested
 Route::get('/trade/{userId}/index', 'API\TradeController@index_trade'); // Get Trade List // filter to be added
 Route::get('/trade/{userId}/selling', 'API\TradeController@show_sellingTrade'); // Get Trade Selling Items // Tested
 Route::get('/trade/{userId}/bookmarked', 'API\TradeController@index_bookmarkedTrade'); // Get Trade Saved // Tested
 Route::get('/trade/{userId}/history', 'API\TradeController@index_tradeHistory'); // Get Past Trade // Tested
 Route::post('/trade', 'API\TradeController@store_trade'); // Create Trade Item //Tested
 Route::post('/trade/{id}/delete', 'API\TradeController@delete_trade'); //
+Route::post('/trade/image/upload', 'API\TradeController@upload_tradeItemPhoto'); // Create Trade Item:[Image]
 Route::put('/trade/{id}', 'API\TradeController@update_trade'); // Edit Trade Item //PhotoURL handling to be added
 Route::put('/trade/{id}/archive', 'API\TradeController@archive_trade'); //
 Route::put('/trade/{id}/hide', 'API\TradeController@hide_trade'); //

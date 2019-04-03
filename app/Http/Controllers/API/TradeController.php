@@ -14,6 +14,8 @@ use App\TradeTransaction;
 use App\TradeVisitor;
 
 use Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
 
 class TradeController extends Controller
@@ -203,7 +205,7 @@ class TradeController extends Controller
         'id' => $id,
         'title' => $trade->title,
         'price' => $trade->price,
-        'status' => $trade->status,
+        'status' => self::convertTradeConditionIdtoStr($trade->trade_condition_type_id),
         'description' => $trade->description,
         'isBookmarked' => (TradeBookmark::where('trade_id', $id)->where('user_id', $userId)->count()>0)?true:false,
         'photoURL' => ($trade_img->count()!=0)?$trade_img->image_url:null,
@@ -274,7 +276,7 @@ class TradeController extends Controller
           'id' => $trade_id,
           'title' => $trade->title,
           'price' => $trade->price,
-          'status' => $trade->status,
+          'status' => self::convertTradeConditionIdtoStr($trade->trade_condition_type_id),
           'description' => $trade->description,
           'isBookmarked' => (TradeBookmark::where('trade_id', $trade_id)->where('user_id', $userId)->count()>0)?true:false,
           'photoURL' => ($trade_img->count()!=0)?$trade_img->image_url:null,
@@ -319,12 +321,12 @@ class TradeController extends Controller
         $trade_id = $pastTradeOut->id;
 
         $result_pastTrade = [
-          'TransactionType'=>'out',
+          'transactionType'=>'out',
           'id' => $trade_id,
           'title'=> $pastTradeOut->title,
           'price' => $pastTradeOut->price,
           'views' => TradeVisitor::where('trade_item_id', $trade_id)->count(), //extra
-          'status'=> $pastTradeOut->trade_status_id,
+          'status'=> self::convertTradeConditionIdtoStr($pastTradeOut->trade_condition_type_id),
           'description'=> $pastTradeOut->description,
           'photoURL' => TradeImage::where('trade_id', $trade_id)->get()
         ];
@@ -344,7 +346,7 @@ class TradeController extends Controller
           'title'=> $pastTradeIn->title,
           'price' => $pastTradeIn->price,
           'views' => TradeVisitor::where('trade_item_id', $trade_id)->count(), //extra
-          'status'=> $pastTradeIn->trade_status_id,
+          'status'=> self::convertTradeConditionIdtoStr($pastTradeIn->trade_condition_type_id),
           'description'=> $pastTradeIn->description,
           'photoURL' => TradeImage::where('trade_id', $trade_id)->get()
         ];
@@ -371,7 +373,7 @@ class TradeController extends Controller
           'id' => $trade_id,
           'title' => $trade->title,
           'price' => $trade->price,
-          'status' => $trade->status,
+          'status' => self::convertTradeConditionIdtoStr($trade->trade_condition_type_id),
           'description' => $trade->description,
           'photoURL' => TradeImage::where('trade_id', $trade_id)->get()
         ];
@@ -393,7 +395,7 @@ class TradeController extends Controller
       $trade->quantity = $request->input('quantity');
       //$trade->post_date = $request->input('post_date'); //obsolete
       //$trade->status = $request->input('status'); //obsolete
-      $trade->trade_transaction_id = 0; //should be null by default (no transaction has been done)
+      //$trade->trade_transaction_id = 0; //should be null by default (no transaction has been done) //obsolete
       $trade->trade_category_id = $request->input('trade_category_id');
       $trade->trade_condition_type_id = $request->input('trade_condition_type_id');
       $trade->trade_status_id = 1; //'Reveal' when first create
@@ -517,6 +519,29 @@ class TradeController extends Controller
     }
 
 
+    // Create Trade Item:[Image]
+    public function upload_tradeItemPhoto(Request $request){
+      $trade_id = $request->input('tradeId');
+
+      if(!empty($request->file('photoURL'))) {
+        $image = $request->file('photoURL');
+        $extension = $image->getClientOriginalExtension();
+
+        $now = strtotime(Carbon::now());
+        $url = 'trade_' . $trade_id . '_' . $now . '.' . $extension;
+        Storage::disk('public')->put($url,  File::get($image));
+
+
+        $response = ['isSuccess' => true];
+
+      }else{
+        $response = ['isSuccess' => false];
+      }
+
+      return $response;
+    }
+
+
     // helper function
     public function count_visitor($userId, $tradeId){
       $visitor_count = new TradeVisitor();
@@ -530,4 +555,24 @@ class TradeController extends Controller
     }
 
 
+    // heper function
+    public function convertTradeConditionIdtoStr($statusId){
+      switch($statusId){
+        case 1:
+          return 'Perfect';
+          break;
+
+        case 2:
+          return 'Almost Perfect';
+          break;
+
+        case 3:
+          return 'Okay';
+          break;
+
+        default:
+          return 'Worn';
+          break;
+      }
+    }
 }
