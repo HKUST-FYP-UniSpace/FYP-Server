@@ -404,7 +404,17 @@ class UserController extends Controller
 
         $user_profile->save();
 
-        return $user_profile;
+        $profile = array();
+        $profile['profileId'] = $user_profile->id;
+        
+        $profile['gender'] = $user_profile->gender;
+        $profile['contact'] = $user_profile->contact;
+        $profile['selfIntro'] = $user_profile->self_intro;
+        $profile['photoURL'] = $user_profile->icon_url;
+        $profile['userId'] = $id;
+        $profile['createTime'] = strtotime($user_profile->created_at);
+        
+        return $profile;
     }
 
     // 
