@@ -9,7 +9,7 @@
 @section('content')
 <div class="container before-nav">
     <div class="row">
-        <div class="panel panel-default col-md-12">
+        <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">
             <div class="panel-body">
                 <h3>Admin List</h3>
                 <hr>
@@ -19,7 +19,7 @@
                             <th>Admin ID</th>
                             <th>Name</th>
                             <th>Email</th>
-                            
+
                         </tr>
                     </thead>
                     @foreach ($admins as $admin)

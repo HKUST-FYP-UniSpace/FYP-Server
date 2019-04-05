@@ -13,10 +13,10 @@
                     <h4 class="title text-muted">Edit Blog</h4>
                 </div>
                 <div class="panel-body text-center">
-                    <div class="row" style="padding-top: 5px; padding-left: 40%;">
+                    <div class="row" style="padding-top: 5px;">
                         <h5>Edit Success!!!</h5>
-                    </div>                 
-                    <div class="row" style="padding:15px;">
+                    </div>
+                    <div class="row">
                         <a href="{{ route('blog-view', ['id'=>$id])}}" class="btn  form-btn" > Back to Blog Details</a>
                     </div>
                 </div>

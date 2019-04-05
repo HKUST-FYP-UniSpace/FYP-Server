@@ -1,6 +1,3 @@
-
-
-
 @extends('layouts.app')
 
 @section('content')
@@ -19,11 +16,11 @@
 
     <div class="row">
         <a href="{{ route('trade-add') }}">
-        <button class="btn btn-default add-new-item">Add New Trade Item</button></a>
+        <button class="btn btn-default" style="float: right">Add New Trade Item</button></a>
     </div>
 
-    <div class="row">
-        <div class="panel panel-default col-md-12">
+    <div class="row" >
+        <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">
             <div class="panel-body">
                 <h3>Trade List</h3>
                 <hr>
@@ -61,6 +58,7 @@
         </div>
     </div>
 </div>
+
 @endsection
 
 <!-- javascript (name corresponds to app.blade.php) -->

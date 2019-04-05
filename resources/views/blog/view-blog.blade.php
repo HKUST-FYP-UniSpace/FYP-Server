@@ -9,19 +9,13 @@
 <div class="container before-nav">
     <div id="blog-view">
         {{ csrf_field() }}
-        <div class="col-md-8 col-md-offset-2">
-            <a href="{{ route('blog-edit', $blog->id) }}">
-            <button class="btn btn-default add-new-item">Edit</button></a>
-        </div>
 
-        <div class="col-md-8 col-md-offset-2">  <!--size of form box -->
+        <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">  <!--size of form box -->
 
             <div class="panel panel-default"> <!-- border+background -->
 
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Blog</h4>
-
-
                 </div>
 
                 <div class="panel-body-edit">
@@ -56,14 +50,17 @@
 
                     <!-- back button -->
 
-				 	<a href="{{ url('/blog') }}">
-						<button type="button" class="btn btn-primary btn-lg btn-block" >Back</button>
-
-                    </a>
-
-
                 </div>
             </div>
+
+            <div class = "buttonView">
+                <a href="{{ route('blog-edit', $blog->id) }}">
+                <button class="btn" style="width: 120px;">Edit</button></a>
+
+                <a href="{{ url('/blog') }}">
+                <button type="button" class="btn" style="width: 120px; background-color: orange;">Back</button></a>
+            </div>
+
         </div>
     </div>
 </div>

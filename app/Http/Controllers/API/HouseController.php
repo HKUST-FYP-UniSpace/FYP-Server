@@ -12,6 +12,7 @@ use App\Group;
 use App\GroupDetail;
 use App\User;
 use App\Profile;
+use App\ProfileDetail;
 use App\Tenant;
 use App\Owner;
 use App\OwnerComment;
@@ -25,6 +26,7 @@ use App\PreferenceItemCategory;
 use App\HouseVisitor;
 
 use Validator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
@@ -177,13 +179,22 @@ class HouseController extends Controller
 
 
     //Get House List
+    // Filter to be added
     public function index_house($userId){
       $result_houses = array();
       $houses = House::get();
 
       foreach ($houses as $house) {
         $house_id = $house->id;
-        $house_img = HouseImage::where('house_id', $house_id);
+
+        $house_imgList = HouseImage::where('house_id', $house_id);
+        $house_imgArray = array();
+        if($house_imgList->count()>0){
+          $house_imgs = $house_imgList->get();
+          foreach($house_imgs as $house_img){
+            array_push($house_imgArray, $house_img->image_url);
+          }
+        }
 
         $result_house = [
           'id' => $house_id,
@@ -194,7 +205,7 @@ class HouseController extends Controller
           'subtitle' => $house->subtitle, // refering to the description in the DB maybe?
           'address' => $house->address,
           'isBookmarked' => (HousePostBookmark::where('house_id', $house->id)->where('tenant_id', $userId)->count()>0)?true:false,
-          'PhotoURL' => ($house_img->count()>0)?$house_img->first()->image_url:null
+          'PhotoURLs' => $house_imgArray
           // 'district_id' => $house->district_id,
           // 'description' => $house->description,
           // 'max_ppl' => $house->max_ppl,
@@ -233,6 +244,37 @@ class HouseController extends Controller
 
       return $response;
     }
+
+
+    // Get House Suggestion (suggest group)
+    public function index_houseSuggestion($userId){
+      $required_num = 4; // Default set the number of suggested group to 4
+      $groups = self::match_group($userId, $required_num);
+      $result = array();
+      foreach($groups as $group){
+        $group_id = $group->id;
+        $house_id = $group->house_id;
+        //$house = House::where('id', $house_id)->first();
+        $occupiedCount = GroupDetail::where('group_id', $group_id)->count();
+        $preference_model = self::create_preferenceModelByPreference($group_id);
+
+        $result_group = [
+          'houseId'=>$house_id,
+          'teamId'=>$group_id,
+          'title'=>$group->title,
+          'preference'=>$occupiedCount,
+          'duration'=>$group->duration,
+          'groupSize'=>$group->max_ppl,
+          'occupiedCount'=>$occupiedCount,
+          'photoURL'=>$group->image_url
+        ];
+
+        array_push($result, $result_group);
+      }
+
+      return $result;
+    }
+
 
     // Retrieve list of houses saved by a tenant (Get House Saved)
     //param: userId
@@ -421,24 +463,27 @@ class HouseController extends Controller
       $group->save();
 
       // Put the leader information into group detail
+      $teamId = $group->id;
+
       $group_detail = new GroupDetail();
       $group_detail->member_user_id = $request->input('userId');
       $group_detail->status = 2; //Default to be "accepted" status
-      $group_detail->group_id = $group->id;
+      $group_detail->group_id = $teamId;
       $group_detail->save();
 
       //save preference model
       $preferenceModel = $request->input('preferenceModel');
-      foreach ($preferenceModel as $modelDetail) {
-        $preference_category_id = PreferenceItemCategory::where('category', key($modelDetail))->first()->id;
-        $preference_item_id = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->first()->id;
-
-        $preference = new Preference();
-        $preference->item_id = $preference_item_id;
-        $preference->group_id = $group->id;
-        $preference->save();
-
-      }
+      // foreach ($preferenceModel as $modelDetail) {
+      //   $preference_category_id = PreferenceItemCategory::where('category', key($modelDetail))->first()->id;
+      //   $preference_item_id = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->first()->id;
+      //
+      //   $preference = new Preference();
+      //   $preference->item_id = $preference_item_id;
+      //   $preference->group_id = $group->id;
+      //   $preference->save();
+      //
+      // }
+      self::regenerate_preference($teamId, $preferenceModel);
 
 
 
@@ -464,7 +509,7 @@ class HouseController extends Controller
       $groupDetail = new GroupDetail();
 
       $groupDetail->member_user_id = $request->input('userId');
-      $groupDetail->status = 1; // Status == 1 represent pending to be accepted by group leader (Accepted: 2, Rejected: 3)
+      $groupDetail->status = 2; //*!!Test: 2 for accpeted // Status == 1 represent pending to be accepted by group leader (Accepted: 2, Rejected: 3)
       $groupDetail->group_id = $teamId;
 
       $groupDetail->save();
@@ -475,34 +520,58 @@ class HouseController extends Controller
 
 
     // Update Preference
+    //
     // param:
     // ------ $id: 'groupId',
     // ------ $request: 'preferenceModel'
     //
-    // First delete all preference connected to the group
+    // First delete all preference connected to the group (if exist)
     // Then re-insert new preference data
     public function update_preference($teamId, Request $request){
-      $old_preference = Preference::where('group_id', $teamId)->delete();
-
       $preferenceModel = $request->input('preferenceModel');
-      foreach ($preferenceModel as $modelDetail) {
-        $preference_category_id = PreferenceItemCategory::where('category', key($modelDetail))->first()->id;
-        $preference_item_id = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->first()->id;
-
-        $preference = new Preference();
-        $preference->item_id = $preference_item_id;
-        $preference->group_id = $teamId;
-        $preference->save();
+      if($preferenceModel == null){
+        $response = ['isSuccess' => false];
+        return $response;
       }
 
-      $response = ['isSuccess' => true];
+      // $old_preferences = Preference::where('group_id', $teamId);
+      // if($old_preferences->count() > 0){
+      //   $old_preferences->delete();
+      // }
+      //
+      // foreach ($preferenceModel as $modelDetail) {
+      //   $preference_category_id = PreferenceItemCategory::where('category', key($modelDetail))->first()->id;
+      //
+      //   // Cases for array object (personalities / interests)
+      //   if($preference_category_id == 4 || $preference_category_id == 5){
+      //     foreach($modelDetail as $detailItem){
+      //       $preference_item_id = PreferenceItem::where('category_id', $preference_category_id)->where('name', $detailItem)->first()->id;
+      //
+      //       $preference = new Preference();
+      //       $preference->item_id = $preference_item_id;
+      //       $preference->group_id = $teamId;
+      //       $preference->save();
+      //     }
+      //   }
+      //
+      //   // Otherwise (not personalities / interests), objects should not be array
+      //   $preference_item_id = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->first()->id;
+      //
+      //   $preference = new Preference();
+      //   $preference->item_id = $preference_item_id;
+      //   $preference->group_id = $teamId;
+      //   $preference->save();
+      // }
+      $response = self::regenerate_preference($teamId, $preferenceModel);
+
+      //$response = ['isSuccess' => true];
       return $response;
     }
 
 
     // Create Team:[Image]
     public function upload_teamPhoto(Request $request){
-      $group_id = $request->input('groupId');
+      $group_id = $request->input('teamId');
 
       if(!empty($request->file('photoURL'))) {
         $image = $request->file('photoURL');
@@ -616,6 +685,11 @@ class HouseController extends Controller
       $reviews = Review::where('house_id', $id)->get();
 
       $numOfReviews = $reviews->count();
+
+      if($numOfReviews == 0){
+        return null;
+      }
+
       $total_score = 0;
 
       foreach($reviews as $review){
@@ -624,6 +698,47 @@ class HouseController extends Controller
       }
 
       return ($total_score/$numOfReviews);
+    }
+
+
+    // helper function that regenerate (delete and store) data in preference table
+    // given teamId and preferenceModel
+    //
+    // First delete all preference connected to the group (if exist)
+    // Then re-insert new preference data
+    public function regenerate_preference($teamId, $preferenceModel){
+      $old_preferences = Preference::where('group_id', $teamId);
+      if($old_preferences->count() > 0){
+        $old_preferences->delete();
+      }
+
+      //$preferenceModel = $request->input('preferenceModel');
+      foreach ($preferenceModel as $modelDetail) {
+        $preference_category_id = PreferenceItemCategory::where('category', key($modelDetail))->first()->id;
+
+        // Cases for array object (personalities / interests)
+        if($preference_category_id == 4 || $preference_category_id == 5){
+          foreach($modelDetail as $detailItem){
+            $preference_item_id = PreferenceItem::where('category_id', $preference_category_id)->where('name', $detailItem)->first()->id;
+
+            $preference = new Preference();
+            $preference->item_id = $preference_item_id;
+            $preference->group_id = $teamId;
+            $preference->save();
+          }
+        }
+
+        // Otherwise (not personalities / interests), objects should not be array
+        $preference_item_id = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->first()->id;
+
+        $preference = new Preference();
+        $preference->item_id = $preference_item_id;
+        $preference->group_id = $teamId;
+        $preference->save();
+      }
+
+      $response = ['isSuccess' => true];
+      return $response;
     }
 
 
@@ -668,23 +783,22 @@ class HouseController extends Controller
         // but hardcode on items of category = 4,5, as they return diffferent object structures (array)
         if($category_id == 4){
           array_push($personalities, $preference_item->name);
-        }elseif($category_id ==5){
+        }elseif($category_id == 5){
           array_push($interests, $preference_item->name);
-        }else{
-          $preference_object =["$category_name"=>$preference_item->name];
-          array_push($result_preferences, $preference_object);
+        // }else{
+        //   $preference_object =["$category_name"=>$preference_item->name];
+        //   array_push($result_preferences, $preference_object);
+        // }
+        }elseif($category_id == 1){
+          $gender = $preference_item->name;
+        }elseif ($category_id == 2) {
+          $petFree = $preference_item->name;
+        }elseif($category_id == 3){
+          $timeInHouse = $preference_item->name;
         }
 
       }
 
-      // $preference_model=[
-      //   'id'=>$id, // should be an alternative id, currently using group id which may be conflict to profile detail
-      //   'gender'=>$gender,
-      //   'petFree'=>$petFree,
-      //   'timeInHouse'=>$timeInHouse,
-      //   'personalities'=>$personalities,
-      //   'interests'=>$interests
-      // ];
 
       if(count($personalities)>0){
         array_push($result_preferences, ["personalities"=>$personalities]);
@@ -693,8 +807,17 @@ class HouseController extends Controller
         array_push($result_preferences, ["interests"=>$interests]);
       }
 
-      //return $preference_model;
-      return $result_preferences;
+      $preference_model=[
+        'id'=>$id, // should be an alternative id, currently using group id which may be conflict to profile detail
+        'gender'=>$gender,
+        'petFree'=>$petFree,
+        'timeInHouse'=>$timeInHouse,
+        'personalities'=>$personalities,
+        'interests'=>$interests
+      ];
+
+      return $preference_model;
+      //return $result_preferences;
     }
 
 
@@ -714,7 +837,7 @@ class HouseController extends Controller
 
 
     // helper function for mathching houses with reference to users group formation history
-    // return an list of houses?
+    // return an collection of matched houses (size depends in $required_match_houses)
     public function match_houses($userId, $required_match_houses){
       // analyse past rental records first
       $avereage_price = 0; // first level indicator
@@ -731,19 +854,24 @@ class HouseController extends Controller
         $house_count += 1;
       }
 
+      if($house_count == 0){
+        return null;
+      }
+
       $avereage_price /= $house_count;
       $average_size /= $house_count;
 
       // Look for houses (that are not bookmarked) with lower price than average but bigger size than average
-      $hosue_bookmarkedId = HousePostBookmark::where('tenant_id', $userId)->get();
-      $matchHouses = House::whereNotIn('id', $hosue_bookmarkedId->house_id)->where('price', '<=', $avereage_price)->where('size', '>=', $average_size)->get();
+      //$hosue_bookmarkedId = HousePostBookmark::where('tenant_id', $userId)->get();
+      $hosue_bookmarkedId = HousePostBookmark::where('tenant_id', $userId)->select('tenant_id')->groupBy('tenant_id')->get();
+      $matchHouses = House::whereNotIn('id', $hosue_bookmarkedId)->where('price', '<=', $avereage_price)->where('size', '>=', $average_size)->get();
 
       $price_step = 500;
       $size_step = 50;
       for($range_tolerated = 1; $matchHouses->count() < $required_match_houses && $range_tolerated < 3; $range_tolerated++){
         $price_steps = $price_step * $range_tolerated;
         $size_steps = $size_step * $range_tolerated;
-        $matchHouses = House::whereNotIn('id', $hosue_bookmarkedId->house_id)->where('price', '<=', $avereage_price + $price_steps)->where('size', '>=', $average_size + $size_steps)->get();
+        $matchHouses = House::whereNotIn('id', $hosue_bookmarkedId)->where('price', '<=', $avereage_price + $price_steps)->where('size', '>=', $average_size + $size_steps)->get();
       }
 
       // first sort the list by size-to-price ratio
@@ -751,43 +879,83 @@ class HouseController extends Controller
         return ($value['size'] / $value['price']);
       });
 
-      // return mathed houses if the number found exceed the number required
+      // return matched houses if the number found exceed the number required
       if($matchHouses->count() > $required_match_houses){
-        return $matchHouses->take(4)->get();
+        return $matchHouses->take($required_match_houses)->get();
       }
 
       return $matchHouses;
     }
 
-
-    public function match_group($userId){
-      $mathch_houses = match_houses($userID);
-
-      // retrieve preference records for houses that are not bookmarked (pool for recommentdation)
-      $hosue_bookmarkedId = HousePostBookmark::where('tenant_id', $userId)->get();
-      $house_prefereces = Preference::whereNotIn('id', $hosue_bookmarkedId->house_id);
-      //$house_notBookmarked = House::whereNotIn('id', $hosue_bookmarkedId->house_id);
-
+    // helper function that return matched group according to user/house preference and
+    // given userId, required_num
+    // return an array of groups of size = required_num
+    public function match_group($userId, $required_num){
       // retrieve user preferences (profile detail)
-      $user_profile = Profile::where('user_id',$id)->first();
-      $profile_details = ProfileDetail::where('profile_id', $user_profile->id)->get();
+      $user_profile = Profile::where('user_id',$userId)->first();
+      $profile_details = ProfileDetail::where('profile_id', $user_profile->id);
+      $user_profileItems = $profile_details->select('item_id')->groupBy('item_id')->get();
 
-      $house_filtered = $house_notBookmarked;
-      foreach($profile_details as $profile_detail){
-        $house_filtered = $house_filtered;
+      $matched_group = array();
+
+      // look for matched group in matched houses
+      $match_houses = self::match_houses($userId, $required_num*2); // get a collection of matched house (default: search double quantity of house by required no. of groups)
+      if($match_houses->count() > 0){
+        foreach($match_houses as $match_house){
+          $house_id = $match_house->id;
+          $groups = Group::where('house_id', $house_id)->get();
+          foreach($groups as $group){
+            $group_id = $group->id;
+            $house_preferecesCount = Preference::where('group_id', $group_id)->whereIn('item_id', $user_profileItems)->count();
+
+            if($house_preferecesCount > 0){
+              $matched_group[$group_id]=$house_preferecesCount;
+            }
+          }
+        }
       }
 
+      if(sizeof($matched_group) >= $required_num){
+        arsort($matched_group);
+        $result = array_slice($matched_group, 0, $required_num);
+
+        return Group::whereIn('id', array_keys($result));
+      }
+
+      // look for matched group in trending houses
+      $trending_houses = self::get_trendingHouses($required_num*2); //get a colection of trending houses
+      if($trending_houses->count() > 0){
+        foreach($trending_houses as $trending_house){
+          $house_id = $trending_house->id;
+          $groups = Group::where('house_id', $house_id)->get();
+          foreach($groups as $group){
+            $group_id = $group->id;
+            $house_preferecesCount = Preference::where('group_id', $group_id)->whereIn('item_id', $user_profileItems)->count();
+
+            if($house_preferecesCount > 0){
+              $matched_group[$group_id]=$house_preferecesCount;
+            }
+          }
+        }
+      }
+
+      arsort($matched_group);
+      $result = array_slice($matched_group, 0, $required_num);
+
+      return Group::whereIn('id', array_keys($result));
     }
 
-    // helper funcion that can the trending houses (popularity by bookmark/visitor number)
-    // return array of houseId of the popular houses ($required_num)
+
+    // helper funcion that can get the trending houses (popularity by bookmark/visitor number)
+    // return a collection of the popular houses ($required_num)
     public function get_trendingHouses($required_num){
       $popularity_score = array();
       // get all common house_id in housePostBookmark table
       // then distribute score by the number of records they have (Default 10 points per each record)
       $popular_house_byBookmarkCount = HousePostBookmark::select('house_id')->groupBy('house_id')->get();
-      foreach ($popular_house_byBookmarkCount as $temp_houseId) {
-        if(isset($popularity_score[$temp_houseId])){
+      foreach ($popular_house_byBookmarkCount as $popular_houseId) {
+        $temp_houseId = $popular_houseId->house_id;
+        if(Arr::exists($popularity_score, $temp_houseId)){
           $popularity_score[$temp_houseId] += HousePostBookmark::where('house_id', $temp_houseId)->count() * 10;
         }else{
           $popularity_score[$temp_houseId] = HousePostBookmark::where('house_id', $temp_houseId)->count() * 10;
@@ -797,19 +965,33 @@ class HouseController extends Controller
       // get all house_id in houseVisitor table
       // then distribute score by the number of records they have (Default 2 points per each record)
       $popular_house_byVisitCount = HouseVisitor::select('house_id')->groupBy('house_id')->get();
-      foreach ($popular_house_byVisitCount as $temp_houseId) {
-        if(isset($popularity_score[$temp_houseId])){
+      foreach ($popular_house_byVisitCount as $popular_houseId) {
+        $temp_houseId = $popular_houseId->house_id;
+        if(Arr::exists($popularity_score, $temp_houseId)){
           $popularity_score[$temp_houseId] += HouseVisitor::where('house_id', $temp_houseId)->count() * 2;
         }else{
           $popularity_score[$temp_houseId] = HouseVisitor::where('house_id', $temp_houseId)->count() * 2;
         }
       }
-
+      // return $popularity_score;
       arsort($popularity_score);
-      $result = array_slice($popularity_score, 0, 5);
+      // return $popularity_score;
+      //$result = array_slice($popularity_score, 0, $required_num);
+      $result = array();
+      $i = 0;
+      foreach($popularity_score as $temp){
+        if($i < $required_num){
+          array_push($result, $temp);
+          $i++;
+        }else{
+          break;
+        }
+      }
+      // return $result;
+      // return array_keys($result);
 
-      return array_keys($result);
-
+      //return House::whereIn('id', array_keys($result))->get(); // for testing
+      return House::whereIn('id', array_keys($result));
     }
 
     // This function is not used in the app but only kept here for testing data structure

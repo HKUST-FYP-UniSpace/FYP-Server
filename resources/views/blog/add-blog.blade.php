@@ -77,7 +77,7 @@
                     </div>
 
                     <!-- Image  -->
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                             <label for="add-file" class="col-sm-2">Blog Image </label>
                             <div class="col-sm-12">
                                 <div class="form-group row">
@@ -97,12 +97,12 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
 
                     <!-- submit button -->
-                    <div class="row text-center" style="padding-left:45%">
+                    <div class="row text-center">
                         <button type="submit" class="btn  form-btn" id="add-blog-submit">Submit</button>
                     </div>
 
