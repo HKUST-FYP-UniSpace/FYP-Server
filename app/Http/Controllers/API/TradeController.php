@@ -271,7 +271,17 @@ class TradeController extends Controller
       $trades = Trade::get();
       foreach ($trades as $trade) {
         $trade_id = $trade->id;
-        $trade_img = TradeImage::where('trade_id', $trade_id)->get();
+        //$trade_img = TradeImage::where('trade_id', $trade_id)->get();
+
+        $trade_imgList = TradeImage::where('trade_id', $trade_id);
+        $trade_imgArray = array();
+        if($trade_imgList->count()>0){
+          $trade_imgs = $trade_imgList->get();
+          foreach($trade_imgs as $trade_img){
+            array_push($trade_imgArray, $trade_img->image_url);
+          }
+        }
+
         $result_trade = [
           'id' => $trade_id,
           'title' => $trade->title,
@@ -279,7 +289,7 @@ class TradeController extends Controller
           'status' => self::convertTradeConditionIdtoStr($trade->trade_condition_type_id),
           'description' => $trade->description,
           'isBookmarked' => (TradeBookmark::where('trade_id', $trade_id)->where('user_id', $userId)->count()>0)?true:false,
-          'photoURL' => ($trade_img->count()!=0)?$trade_img->image_url:null,
+          'photoURL' => $trade_imgArray,
         ];
         // $result_trade = array();
         // $result_trade['id'] = $trade->id;
