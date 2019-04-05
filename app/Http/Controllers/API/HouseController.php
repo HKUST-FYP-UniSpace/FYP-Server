@@ -792,7 +792,7 @@ class HouseController extends Controller
         }elseif($category_id == 1){
           $gender = $preference_item->name;
         }elseif ($category_id == 2) {
-          $petFree = $preference_item->name;
+          $petFree = (bool)$preference_item->name;
         }elseif($category_id == 3){
           $timeInHouse = $preference_item->name;
         }

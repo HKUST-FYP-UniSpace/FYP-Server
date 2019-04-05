@@ -362,18 +362,26 @@ class UserController extends Controller
             else {
                 // get preference model
                 $profile_details = $user_profile->profile_detail()->get();
-                $hobby_model = array();
+                $preferenceModel = array();
                 foreach($profile_details as $profile_detail) {
-                    $hobby_model_record = array();
-                    $hobbies = $profile_detail->hobby_item()->get();
-                    foreach($hobbies as $hobby) {
-                        $category_name = $hobby->category()->first()->category;
-                        $item = $hobby->name;
-                        $hobby_model_record[$category_name] = $item;
+                    $preference_name = PreferenceItem::where('id', $profile_detail->item_id)->first()->name;
+                    $category_id = PreferenceItem::where('id', $profile_detail->item_id)->first()->category_id;
+                    $category_name = PreferenceItemCategory::where('id', $category_id)->first()->category;
+                    if($category_name == "gender" || $category_name == "petFree" || $category_name == "timeInHouse") {
+                        $preferenceModel[$category_name] = $preference_name;
                     }
-                    array_push($hobby_model, $hobby_model_record);
+                    elseif($category_name == "personalities" || $category_name == "interests") {
+                        if(!isset($preferenceModel['personalities'])) {
+                        $preferenceModel['personalities'] = array();
+                        }
+                        if(!isset($preferenceModel['interests'])) {
+                            $preferenceModel['interests'] = array();
+                        }
+                        $temp = $preference_name;
+                        array_push($preferenceModel[$category_name], $temp);
+                    }
                 }
-                $profile['preference'] = $hobby_model;
+                $profile['preference'] = $preferenceModel;
             }
         }
 
