@@ -461,6 +461,7 @@ class UserController extends Controller
         $hobby_model = null;
         $has_profile_detail = ProfileDetail::where('profile_id', $user->profile()->first()->id)->first();
         if($has_profile_detail == null) {
+            $preferenceModel = null;
         }
         else {
             // get preference model
