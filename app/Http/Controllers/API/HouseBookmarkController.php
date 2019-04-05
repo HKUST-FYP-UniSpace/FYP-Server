@@ -85,12 +85,30 @@ class HouseBookmarkController extends Controller
 
     // Bookmark House
     public function store_houseBookmark(Request $request){
-      $bookmark = new HousePostBookmark();
+      $input_houseId = $request->input('houseId');
+      $input_userId = $request->input('userId');
 
-      $bookmark->house_id = $request->input('houseId');
-      $bookmark->tenant_id = $request->input('userId'); // should be using user_id instead?
+      // Just return false for not creating new bookmark record
+      if($input_houseId == null || $input_userId == null){
+        $response = ['isSuccess' => false];
+        return $response;
+      }
 
-      $bookmark->save();
+      // For cases where the same bookmark had previously been created
+      $current_bookmark = HousePostBookmark::where('house_id', $input_houseId)->where('tenant_id', $input_userId);
+      if($current_bookmark->count() > 0){
+        // In case the same function may wnat to handle bookmark removal on click as well
+        $current_bookmark->delete();
+
+      }else{
+        // create bookmark
+        $bookmark = new HousePostBookmark();
+
+        $bookmark->house_id = $input_houseId;
+        $bookmark->tenant_id = $input_userId;
+
+        $bookmark->save();
+      }
 
       //$success_msg = "New houseBookmark stored Successfully! (House ID = {$bookmark->id})";
       //return $success_msg;

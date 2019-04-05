@@ -18,7 +18,7 @@ class TradeBookmarkController extends Controller
   //
   // }
 
-  //Bookmark Trade Item
+  //
   public function show_tradeBookmark($id){
     $bookmark = TradeBookmark::where("id", $id)->first();
 
@@ -75,15 +75,34 @@ class TradeBookmarkController extends Controller
 
   // Bookmark Item
   public function store_tradeBookmark(Request $request){
-    $bookmark = new TradeBookmark();
+    $input_tradeId = $request->input('tradeId');
+    $input_userId = $request->input('userId');
 
-    $bookmark->trade_id = $request->input('itemId');
-    $bookmark->user_id = $request->input('userId');
+    // Just return false for not creating new bookmark record
+    if($input_tradeId == null || $input_userId == null){
+      $response = ['isSuccess' => false];
+      return $response;
+    }
 
-    $bookmark->save();
+    // For cases where the same bookmark had previously been created
+    $current_bookmark = TradeBookmark::where('trade_id', $input_tradeId)->where('user_id', $input_userId);
+    if($current_bookmark->count() > 0){
+      // In case the same function may wnat to handle bookmark removal on click as well
+      $current_bookmark->delete();
 
-    // $success_msg = "New tradeBookmark stored Successfully! (Trade ID = {$bookmark->id})";
-    // return $success_msg;
+    }else{
+      // create bookmark
+      $bookmark = new TradeBookmark();
+
+      $bookmark->trade_id = $input_tradeId;
+      $bookmark->user_id = $input_userId;
+
+      $bookmark->save();
+    }
+
+    //$success_msg = "New tradeBookmark stored Successfully! (Bookmark ID = {$bookmark->id})";
+    //return $success_msg;
+
     $response = ['isSuccess' => true];
     return $response;
   }
