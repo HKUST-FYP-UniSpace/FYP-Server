@@ -500,7 +500,7 @@ class UserController extends Controller
         $profile['photoURL'] = $stack->icon_url;
 
         $profile['email'] = $user->email;
-        $profile['name'] = $stack->name;
+        $profile['name'] = $user->name;
         $profile['gender'] = $stack->gender;
         $profile['contact'] = $stack->contact;
         $profile['selfIntro'] = $stack->self_intro;
