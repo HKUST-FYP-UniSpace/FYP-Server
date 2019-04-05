@@ -78,7 +78,7 @@ class UserController extends Controller
         $new_user->name = $input['name'];
         $new_user->email = $input['email'];
         $new_user->password = Hash::make($input['password']);
-        $new_user->verified = 1;    // hard code first
+        $new_user->is_verified = 1;    // hard code first
         // $new_is_deleted = 0;
 
         // generate a random verification code
@@ -149,17 +149,83 @@ class UserController extends Controller
 
         // create preference
         if(isset($input['preference'])) {
-            $preferenceModel = $input['preference'];
-            foreach ($preferenceModel as $modelDetail) {
-                $preference_category = PreferenceItemCategory::where('category', key($modelDetail))->get()->first();
-                $preference_category_id = intval($preference_category['id']);
-                $preference_item = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->first();
-                $preference_item_id = $preference_item['id'];
+            $preferenceModel = array();
 
-                $preference = new ProfileDetail();
-                $preference->profile_id = $new_profile->id;
-                $preference->item_id = intval($preference_item_id);
-                $preference->save();
+            if(isset($input['preference']['gender'])) {
+            $preference_id = PreferenceItem::where('category_id', 1)->where('name', $input['preference']['gender'])->first()->id;
+
+            $new_preference_detail = new ProfileDetail();
+            $new_preference_detail->profile_id = $new_profile->id;
+            $new_preference_detail->item_id = intval($preference_id);
+            $new_preference_detail->save();
+
+            $preferenceModel['gender'] = PreferenceItem::where('id', $new_preference_detail->item_id)->first()->name;
+            }
+            else {  // null means no preference
+                $new_preference_detail = new ProfileDetail();
+                $new_preference_detail->profile_id = $profile->id;
+                $new_preference_detail->item_id = 3;
+                $new_preference_detail->save();
+
+                $preferenceModel['gender'] = PreferenceItem::where('id', $new_preference_detail->item_id)->first()->name;
+            }
+
+            if(isset($input['petFree'])) {
+                if($input['preference']['petFree'] == true) {
+                    $petfree = "true";
+                }
+                elseif($input['preference']['petFree'] == false) {
+                    $petfree = "false";
+                }
+                $preference_id = PreferenceItem::where('category_id', 2)->where('name', $petfree)->first()->id;
+
+                $new_preference_detail = new ProfileDetail();
+                $new_preference_detail->profile_id = $profile->id;
+                $new_preference_detail->item_id = intval($preference_id);
+                $new_preference_detail->save();
+
+                $preferenceModel['petFree'] = PreferenceItem::where('id', $new_preference_detail->item_id)->first()->name;
+            }
+
+            if(isset($input['preference']['timeInHouse'])) {
+                $preference_id = PreferenceItem::where('category_id', 3)->where('name', $input['preference']['timeInHouse'])->first()->id;
+
+                $new_preference_detail = new ProfileDetail();
+                $new_preference_detail->profile_id = $new_profile->id;
+                $new_preference_detail->item_id = intval($preference_id);
+                $new_preference_detail->save();
+
+                $preferenceModel['timeInHouse'] = PreferenceItem::where('id', $new_preference_detail->item_id)->first()->name;
+            }
+
+            if(isset($input['preference']['personalities'])) {
+                $preferenceModel['personalities'] = array();
+                foreach($input['preference']['personalities'] as $personalities) {
+                    $preference_id = PreferenceItem::where('category_id', 4)->where('name', $personalities)->first()->id;
+
+                    $new_preference_detail = new ProfileDetail();
+                    $new_preference_detail->profile_id = $new_profile->id;
+                    $new_preference_detail->item_id = intval($preference_id);
+                    $new_preference_detail->save();
+
+                    $temp = PreferenceItem::where('id', $new_preference_detail->item_id)->first()->name;
+                    array_push($preferenceModel['personalities'], $temp);
+                }
+            }
+
+            if(isset($input['preference']['interests'])) {
+                $preferenceModel['interests'] = array();
+                foreach($input['preference']['interests'] as $interests) {
+                    $preference_id = PreferenceItem::where('category_id', 5)->where('name', $interests)->first()->id;
+
+                    $new_preference_detail = new ProfileDetail();
+                    $new_preference_detail->profile_id = $new_profile->id;
+                    $new_preference_detail->item_id = intval($preference_id);
+                    $new_preference_detail->save();
+
+                    $temp = PreferenceItem::where('id', $new_preference_detail->item_id)->first()->name;
+                    array_push($preferenceModel['interests'], $temp);
+                }
             }
         }
         else {
@@ -195,7 +261,7 @@ class UserController extends Controller
         }
         $profile['isActive'] = $is_active;
         $profile['createTime'] = strtotime($new_user->created_at);
-        $profile['verified'] = $new_user->verified;
+        $profile['verified'] = $new_user->is_verified;
         
         return response($profile)->cookie('token', $new_user->token, 1440);
     }
@@ -330,7 +396,7 @@ class UserController extends Controller
         }
         $profile['isActive'] = $is_active;
         $profile['createTime'] = strtotime($user->created_at);
-        $profile['verified'] = $user->verified;
+        $profile['verified'] = $user->is_verified;
 
         return response($profile)->cookie('token', $user->token, 1440);
 
@@ -424,7 +490,7 @@ class UserController extends Controller
         $profile['userType'] = $user_type;
         $profile['isActive'] = $is_active;
         $profile['createTime'] = strtotime($stack->created_at);
-        $profile['verified'] = $stack->verified;
+        $profile['verified'] = $stack->is_verified;
         
         return $profile;
     }
