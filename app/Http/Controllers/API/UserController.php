@@ -13,14 +13,19 @@ use App\ProfileDetail;
 use App\Preference;
 use App\PreferenceItem;
 use App\PreferenceItemCategory;
+use App\Mail\UserVerification;
+
 use Validator;
-use Symfony\Component\HttpFoundation\Response;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use Carbon\Carbon;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+
+use Symfony\Component\HttpFoundation\Response;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
@@ -73,8 +78,19 @@ class UserController extends Controller
         $new_user->name = $input['name'];
         $new_user->email = $input['email'];
         $new_user->password = Hash::make($input['password']);
-        $new_user->is_verified = 0;
+        // $new_user->verified = 0;
         // $new_is_deleted = 0;
+
+        // generate a random verification code
+        $number1 = (string) mt_rand(0, 9);
+        $number2 = (string) mt_rand(0, 9);
+        $number3 = (string) mt_rand(0, 9);
+        $number4 = (string) mt_rand(0, 9);
+        $number5 = (string) mt_rand(0, 9);
+        $number6 = (string) mt_rand(0, 9);
+
+        $new_user->verification_code = $number1.$number2.$number3.$number4.$number5.$number6;
+        // dd($new_user->verification_code);
 
         $new_user->save();
 
@@ -147,7 +163,7 @@ class UserController extends Controller
             }
         }
         else {
-            $preference = null;
+            $preferenceModel = null;
         }
         
         // for return object
@@ -179,9 +195,48 @@ class UserController extends Controller
         }
         $profile['isActive'] = $is_active;
         $profile['createTime'] = strtotime($new_user->created_at);
-        $profile['verified'] = $new_user->is_verified;
+        $profile['verified'] = $new_user->verified;
         
         return response($profile)->cookie('token', $new_user->token, 1440);
+    }
+
+    // POST
+    public function send_verification_code($id, Request $request) {
+        $user = User::where('id', $id)->first();
+        $email = $user->email;
+
+        $result = array();
+        $is_success = false;
+
+        // send email with code
+        $mail = Mail::to($email)->send(new UserVerification($user));
+        dd($mail);
+        $is_success = true;
+
+        $result['isSuccess'] = $is_success;
+
+        return $result;
+    }
+
+    public function verify_code($id, Request $request) {
+        $user = User::where('id', $id)->first();
+        $code_db = $user->verification_code;
+
+        $result = array();
+        $is_success = false;
+
+        // grab all the input
+        $input = $request->input();
+        $code_input = $input['code'];
+
+        if($code_db == $code_input) {
+            $user->is_verified = 1;
+            $is_success = true;
+        }
+
+        $result['isSuccess'] = $is_success;
+
+        return $result;
     }
 
     // POST
@@ -275,7 +330,7 @@ class UserController extends Controller
         }
         $profile['isActive'] = $is_active;
         $profile['createTime'] = strtotime($user->created_at);
-        $profile['verified'] = $user->is_verified;
+        $profile['verified'] = $user->verified;
 
         return response($profile)->cookie('token', $user->token, 1440);
 
@@ -369,7 +424,7 @@ class UserController extends Controller
         $profile['userType'] = $user_type;
         $profile['isActive'] = $is_active;
         $profile['createTime'] = strtotime($stack->created_at);
-        $profile['verified'] = $stack->is_verified;
+        $profile['verified'] = $stack->verified;
         
         return $profile;
     }
