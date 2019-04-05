@@ -516,9 +516,12 @@ class UserController extends Controller
     public function edit_profile($id, Request $request) {
         // profiles: [id], gender, contact, self_intro, icon_url, [user_id]
         $input = $request->input();
-
+        $user = User::where('id', $id)->first();
         $user_profile = Profile::where('user_id', $id)->first();
         $user = $user_profile->user()->first();
+        if(isset($input['name'])) {
+            $user->name = $input['name'];
+        }
         if(isset($input['gender'])) {
             $user_profile->gender = $input['gender'];
         }
@@ -540,11 +543,12 @@ class UserController extends Controller
             $user_profile->icon_url = url('uploads/'.$url);
         }
 
+        $user->save();
         $user_profile->save();
 
         $profile = array();
-        $profile['profileId'] = $user_profile->id;
-        
+        $profile['id'] = $id;
+        $profile['name'] = $user->name;
         $profile['gender'] = $user_profile->gender;
         $profile['contact'] = $user_profile->contact;
         $profile['selfIntro'] = $user_profile->self_intro;
