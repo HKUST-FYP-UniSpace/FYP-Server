@@ -58,13 +58,14 @@ Route::get('/house/{userId}/index', 'API\HouseController@index_house'); //Get Ho
 Route::get('/house/{userId}/houseView/{houseId}', 'API\HouseController@show_houseView'); //Get House View //Tested
 Route::get('/house/{userId}/saved', 'API\HouseController@index_houseSaved'); //Get House Saved //Tested
 Route::get('/house/{userId}/history', 'API\HouseController@index_houseHistory'); // Get House History // Tested
+Route::get('/house/{userId}/suggestion', 'API\HouseController@index_houseSuggestion'); // Get House Suggestion //
 Route::post('/house', 'API\HouseController@store_house'); //
 Route::post('/house/{id}/delete', 'API\HouseController@delete_house'); //
 Route::put('/house/{id}', 'API\HouseController@update_house'); //
 Route::put('/house/{id}/archive', 'API\HouseController@archive_house'); //
 Route::put('/house/{id}/hide', 'API\HouseController@hide_house'); //
 Route::put('/house/{id}/reveal', 'API\HouseController@reveal_house'); //
-
+Route::get('/house/{required_num}/trending', 'API\HouseController@get_trendingHouses'); // testing helper function
 
 // Group (House Team/ House Post Group)
 Route::get('/housePostGroup/{teamId}', 'API\HouseController@show_group'); // Get Team View // Tested
@@ -118,7 +119,7 @@ Route::post('/tradeTransaction', 'API\TradeController@store_trade_transaction');
 // Route::get('/tradeBookmark/{id}/edit', 'API\TradeBookmarkController@edit_tradeBookmark');
 Route::get('/tradeBookmark/{id}', 'API\TradeBookmarkController@show_tradeBookmark'); //
 Route::get('/tradeBookmark', 'API\TradeBookmarkController@index_tradeBookmark'); //
-Route::post('/tradeBookmark', 'API\TradeBookmarkController@store_tradeBookmark'); //
+Route::post('/tradeBookmark', 'API\TradeBookmarkController@store_tradeBookmark'); // Bookmark Item //tested
 Route::post('/tradeBookmark/{id}/delete', 'API\TradeBookmarkController@delete_tradeBookmark'); //
 //Route::put('/tradeBookmark/{id}', 'API\TradeBookmarkController@update_tradeBookmark');
 
