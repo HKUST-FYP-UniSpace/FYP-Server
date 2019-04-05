@@ -27,12 +27,6 @@
                   <dt class="col-sm-3">Title</dt>
                   <dd class="col-sm-9">{{ $blog->title }}</dd>
 
-                  <dt class="col-sm-3">Post Date</dt>
-                  <dd class="col-sm-9">{{ $blog->created_at}}</dd>
-
-                  <dt class="col-sm-3">Update Date</dt>
-                  <dd class="col-sm-9">{{ $blog->updated_at}}</dd>
-
                   <dt class="col-sm-3">Status</dt>
                   <dd class="col-sm-9">{{ $blog->status}}</dd>
 
@@ -44,6 +38,12 @@
 
                   <dt class="col-sm-3">Image</dt>
                   <dd class="col-sm-9">{{ $blog->image_url }}</dd>
+
+                  <dt class="col-sm-3">Post Date</dt>
+                  <dd class="col-sm-9">{{ $blog->created_at}}</dd>
+
+                  <dt class="col-sm-3">Update Date</dt>
+                  <dd class="col-sm-9">{{ $blog->updated_at}}</dd>
 
 
               </div>

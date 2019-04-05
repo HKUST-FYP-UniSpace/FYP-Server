@@ -13,10 +13,10 @@
                     <h4 class="title text-muted">Edit User Profile</h4>
                 </div>
                 <div class="panel-body text-center">
-                    <div class="row" style="padding-top: 5px; padding-left: 40%;">
+                    <div class="row" style="padding-top: 5px;">
                         <h5>Edit Success!!!</h5>
-                    </div>                 
-                    <div class="row" style="padding:15px;">
+                    </div>
+                    <div class="row">
                         <a href="{{ route('user-view', ['id'=>$id])}}" class="btn  form-btn" > Back to User Profile</a>
                     </div>
                 </div>

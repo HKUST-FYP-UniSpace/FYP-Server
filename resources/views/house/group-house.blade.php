@@ -9,7 +9,7 @@
     <div id="house-group">
         {{ csrf_field() }}
 
-        <div class="col-md-8 col-md-offset-2">  <!--size of form box -->
+        <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">  <!--size of form box -->
             <div class="panel panel-default"> <!-- border+background -->
                 <div class="panel-heading text-center">
 
@@ -47,11 +47,13 @@
 			          </div>
 
                 <!-- edit button -->
-                <a href="{{ url('/{id}/view-house') }}">
-                <button type="button" class="btn btn-primary btn-lg btn-block">Back</button>
-                </a>
 
                 </div>
+            </div>
+
+            <div class = "buttonView">
+                <a href="{{ url('/house') }}">
+                <button type="button" class="btn" style="width: 120px; background-color: orange;">Back</button></a>
             </div>
         </div>
     </div>
