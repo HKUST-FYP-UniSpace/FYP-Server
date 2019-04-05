@@ -74,7 +74,7 @@
                     </div>
 
                     <!-- edit button -->
-                    <div class="row text-center" style="padding-left:49%">
+                    <div class="row text-center">
                         <button type="submit" class="btn form-btn" id="edit-blog-submit">Submit</button>
                     </div>
                 </div>

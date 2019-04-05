@@ -48,7 +48,7 @@
                             <input type="text" class="form-control" id="edit-trade-quantity" name="edit-trade-quantity" value="{{ isset($trade) ? old('edit-trade-quantity', $trade->quantity) : old('edit-trade-quantity') }}">
                         </dd>
                     </div>
-                    
+
                     <div class="form-group row">
                         <dt for="edit-trade-trade_transaction_id" class="col-sm-9" style="padding-left:30px"> Trade Transaction ID </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
@@ -91,7 +91,7 @@
                             <input type="text" class="form-control" id="edit-trade-status" name="edit-trade-status" value="{{ isset($trade) ? old('edit-trade-status', $trade->status) : old('edit-trade-status') }}">
                         </dd>
                     </div>
-                    
+
                     <div class="form-group row">
                         <dt for="edit-trade-description" class="col-sm-9" style="padding-left:30px">trade Description </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">

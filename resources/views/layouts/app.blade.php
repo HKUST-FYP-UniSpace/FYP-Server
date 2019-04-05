@@ -11,9 +11,12 @@
     <title>{{ env('APP_TITLE') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Nunito" />
     <link href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
 
     @stack('add-style')
 
@@ -22,91 +25,103 @@
         window.Laravel = <?php echo json_encode([
             'csrfToken' => csrf_token(),
         ]); ?>
-    </script>
 
+    </script>
 
 
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-default navbar-fixed-top">
+        <nav class="navbar navbar-default navbar-fixed-top" style="height: 150px;">
         <div class="container">
-            <nav class="navbar navbar-light bg-light">
-              <a class="navbar-brand" href=="{{ url('/admin') }}">UniSpace CMS</a>
+            <nav class="nav navbar-light bg-light">
+              <a class="navbar-brand" href="{{ url('/admin') }}">
+                <img src="{{ asset('/images/AppLogo.png')}}" style="height: 100px; width:100px;"/>
+                <span>UniSpace CMS</span></a>
             </nav>
 
           <nav>
             <div>
             <!-- Logout -->
               <ul class="nav navbar-nav navbar-right">
-                     <li><a href="{{ url('/') }}">Logout</a></li>
+                     <li><a href="{{ url('/') }}"><i class="fas fa-sign-out-alt" style=" padding-right: 5px;"></i>Logout</a></li>
               </ul>
 
               <!-- Admin -->
               <ul class="nav navbar-nav navbar-right">
                   @if( \Request::is('message/*') )
-                       <li class="active"><a href="{{ url('/admin') }}"Admin</a></li>
+                       <li class="active"><a href="{{ url('/admin') }}"><i class="fas fa-users-cog" style=" padding-right: 5px;"></i>Admin</a></li>
                   @else
-                       <li ><a href="{{ url('/admin') }}">Admin</a></li>
+                       <li ><a href="{{ url('/admin') }}"><i class="fas fa-users-cog" style=" padding-right: 5px;"></i> Admin</a></li>
                   @endif
               </ul>
 
               <!-- User -->
               <ul class="nav navbar-nav navbar-right">
                     @if( \Request::is('users') || \Request::is('profile/*') || \Request::is('user/*'))
-                            <li class="active"><a href="{{ url('/user') }}">User</a></li>
+                            <li class="active"><a href="{{ url('/user') }}"><i class="fas fa-users" style=" padding-right: 5px;"></i>User</a></li>
                     @else
-                            <li ><a href="{{ url('/user') }}">User</a></li>
+                            <li ><a href="{{ url('/user') }}"><i class="fas fa-users" style=" padding-right: 5px;"></i>User</a></li>
                     @endif
               </ul>
 
                 <!-- Message -->
                 <ul class="nav navbar-nav navbar-right">
                     @if( \Request::is('message/*') )
-                         <li class="active"><a href="{{ url('/message') }}">Message</a></li>
+                         <li class="active"><a href="{{ url('/message') }}"><i class="fas fa-envelope" style=" padding-right: 5px;"></i>Message</a></li>
                     @else
-                         <li ><a href="{{ url('/message') }}">Message</a></li>
+                         <li ><a href="{{ url('/message') }}"><i class="fas fa-envelope" style=" padding-right: 5px;"></i>Message</a></li>
                     @endif
                 </ul>
 
                 <!-- Blog -->
                 <ul class="nav navbar-nav navbar-right">
                     @if( \Request::is('other-mission/*') || \Request::is('other-missions')|| \Request::is('mission/*/othersmission'))
-                         <li class="active"><a href="{{ url('/blog') }}">Blog</a></li>
+                         <li class="active"><a href="{{ url('/blog') }}"><i class="fab fa-blogger" style=" padding-right: 5px;"></i>Blog</a></li>
                     @else
-                         <li ><a href="{{ url('/blog') }}">Blog</a></li>
+                         <li ><a href="{{ url('/blog') }}"><i class="fab fa-blogger" style=" padding-right: 5px;"></i>Blog</a></li>
                      @endif
                 </ul>
 
                 <!-- Trade -->
                 <ul class="nav navbar-nav navbar-right">
                       @if( \Request::is('report/*') || \Request::is('reports'))
-                          <li class="active"><a href="{{ url('/trade') }}">Trade</a></li>
+                          <li class="active"><a href="{{ url('/trade') }}"><i class="fas fa-shopping-cart" style=" padding-right: 5px;"></i>Trade</a></li>
                       @else
-                          <li ><a href="{{ url('/trade') }}">Trade</a></li>
+                          <li ><a href="{{ url('/trade') }}"><i class="fas fa-shopping-cart" style=" padding-right: 5px;"></i>Trade</a></li>
                       @endif
                 </ul>
 
                 <!-- Apartment -->
                 <ul class="nav navbar-nav navbar-right">
                      @if( (\Request::is('mission/*') || \Request::is('missions') ) && !\Request::is('mission/*/othersmission'))
-                          <li class="active"><a href="{{ url('/house') }}">Apartment</a></li>
+                          <li class="active"><a href="{{ url('/house') }}"><i class="fas fa-band-aid" style=" padding-right: 5px;"></i>Apartment</a></li>
                      @else
-                         <li ><a href="{{ url('/house') }}">Apartment</a></li>
+                         <li ><a href="{{ url('/house') }}"><i class="fas fa-band-aid" style=" padding-right: 5px;"></i>Apartment</a></li>
                      @endif
                 </ul>
+
 
             </div>
 
           </nav>
 
             </div>
-        </nav>
 
-        <div id="mainDiv">
+
+        </nav>
+        <div class ="container" id="mainDiv">
             <div id="mydiv" style="height:150px; "></div>
         </div>
-         @yield('content')
+
+
+
+        @yield('userTypes')
+        @yield('content')
+
+         <div class ="container" id="mainDiv">
+             <div id="mydiv" style="height:100px; "></div>
+         </div>
 
     </div>
     <!-- Scripts -->

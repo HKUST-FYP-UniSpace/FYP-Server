@@ -9,7 +9,7 @@
     <div id="user-view">
         {{ csrf_field() }}
         <div class="row">
-            <div class="panel panel-default col-md-12">
+            <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">
                 <div class="panel-body">
                     <h3>Apartment Owner Rating on Tenants</h3>
                     <hr>
@@ -41,12 +41,8 @@
         </div>
 
         <div class= "row">
-        <div class="panel panel-default">
-            <a href="{{ route('user-edit', $user->id) }}">
-            <button class="btn btn-default add-new-item">Edit</button></a>
-        </div>
 
-        <div class="panel panel-default col-md-12">  <!--size of form box -->
+        <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">  <!--size of form box -->
             <div class="panel panel-default"> <!-- border+background -->
                 <div class="panel-heading text-center">
 
@@ -90,14 +86,21 @@
 
 			          </div>
                     <!-- edit button -->
-				 	<a href="{{ url('/user') }}">
-						<button type="button" class="btn btn-primary btn-lg btn-block">Back</button>
-				    </a>
+
 
 
                 </div>
             </div>
         </div>
+
+        <div class = "buttonView">
+            <a href="{{ route('user-edit', $user->id) }}">
+            <button class="btn" style="width: 120px;">Edit</button></a>
+
+            <a href="{{ url('/user') }}">
+            <button type="button" class="btn" style="width: 120px; background-color: orange;">Back</button></a>
+        </div>
+
     </div>
   </div>
 </div>

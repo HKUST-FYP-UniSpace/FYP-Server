@@ -11,7 +11,7 @@
   <div id="house-comment">
 
     <div class="row">
-        <div class="panel panel-default col-md-12">
+        <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">
             <div class="panel-body">
                 <h3>Comments of the current Apartment</h3>
                 <hr>
@@ -40,12 +40,14 @@
 
 
                 <!-- back button -->
-                <a href="{{ url('/house') }}">
-                  <button type="button" class="btn btn-primary btn-lg btn-block" >Back</button>
-                </a>
-
             </div>
         </div>
+
+        <div class = "buttonView">
+            <a href="{{ url('/house') }}">
+            <button type="button" class="btn" style="width: 120px; background-color: orange;">Back</button></a>
+        </div>
+
     </div>
 </div>
 </div>

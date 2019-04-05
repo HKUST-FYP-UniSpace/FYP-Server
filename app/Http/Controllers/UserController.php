@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 
 use App\User;
 use App\Profile;
+use App\Tenant;
+use App\Owner;
 
 
 class UserController extends Controller
@@ -30,9 +32,18 @@ class UserController extends Controller
 
     public function show_user() {
         $users = User::paginate(2);
+        $tenants = Tenant::get();
+        $owners = Owner::get();
 
-        return view('user.list-user', compact('users'));
+        return view('user.list-user', compact('users','tenants', 'owners'));
     }
+
+    // public function show_tenant($id) {
+    //     $tenants = Tenant::paginate(2);
+    //     $users = User::where('id', $id)->first();
+    //
+    //     return view('user.list-tenant', compact('users'));
+    // }
 
     public function search(Request $request){
     if ( $request->has('search') ){

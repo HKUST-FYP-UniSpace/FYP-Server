@@ -37,7 +37,7 @@
 
                     <!-- Title -->
                     <div class="form-group row">
-                        <dt for="edit-house-address" class="col-sm-9" style="padding-left:30px"> Title </dt>
+                        <dt for="edit-house-title" class="col-sm-9" style="padding-left:30px"> Title </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
                             <input type="text" class="form-control" id="edit-house-title" name="edit-house-title" value="{{ isset($house) ? old('edit-house-title', $house->title) : old('edit-house-title') }}">
                         </dd>
@@ -45,7 +45,7 @@
 
                     <!-- Subtitle -->
                     <div class="form-group row">
-                        <dt for="edit-house-address" class="col-sm-9" style="padding-left:30px"> Subtitle </dt>
+                        <dt for="edit-house-subtitle" class="col-sm-9" style="padding-left:30px"> Subtitle </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
                             <input type="text" class="form-control" id="edit-house-subtitle" name="edit-house-subtitle" value="{{ isset($house) ? old('edit-house-subtitle', $house->subtitle) : old('edit-house-subtitle') }}">
                         </dd>
@@ -104,7 +104,7 @@
                     </div>
 
                     <!-- edit button -->
-                    <div class="row text-center" style="padding-left:49%">
+                    <div class="row text-center">
                         <button type="submit" class="btn form-btn" id="edit-house-submit">Submit</button>
                     </div>
                 </div>
