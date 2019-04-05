@@ -50,7 +50,6 @@ class ProfileController extends Controller
     public function update_user($id, Request $request) {
 
         $this->validate($request, [
-        	'edit-profile-name' => 'required|max:255',
 			'edit-profile-username' => 'required|max:255',
 			'edit-profile-contact' => 'required|max:255',
 			'edit-profile-email' => 'email',
@@ -58,7 +57,7 @@ class ProfileController extends Controller
 			'edit-profile-selfIntroduction' => 'nullable|max:255'
         	],
 
-           ['edit-profile-name.required' => 'Input Name',
+           [
         	'edit-profile-username.required' => 'Input Username',
         	'edit-profile-contact' => 'Input Contact',
 			'edit-profile-email' => 'Input Email',
@@ -71,7 +70,6 @@ class ProfileController extends Controller
     	$user = User::where('id', $id)->first();
     	$profile = $user->profile()->first();
 
-    	$profile->name = $request->input('edit-profile-name');
     	$user->username = $request->input('edit-profile-username');
     	$profile->contact = $request->input('edit-profile-contact');
     	$user->email = $request->input('edit-profile-email');

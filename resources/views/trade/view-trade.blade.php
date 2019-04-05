@@ -29,12 +29,6 @@
                   <dt class="col-sm-3">Price</dt>
                   <dd class="col-sm-9">{{ $trade->price }}</dd>
 
-                  <dt class="col-sm-3">Post Date</dt>
-                  <dd class="col-sm-9">{{ $trade->post_date }}</dd>
-
-                  <dt class="col-sm-3">Update Date</dt>
-                  <dd class="col-sm-9">{{ $trade->updated_at}}</dd>
-
                   <dt class="col-sm-3">Quantity</dt>
                   <dd class="col-sm-9">{{ $trade->quantity }}</dd>
 
@@ -52,6 +46,12 @@
 
                   <dt class="col-sm-3">Trade Status ID</dt>
                   <dd class="col-sm-9">{{ $trade->trade_status_id }}</dd>
+
+                  <dt class="col-sm-3">Post Date</dt>
+                  <dd class="col-sm-9">{{ $trade->post_date }}</dd>
+
+                  <dt class="col-sm-3">Update Date</dt>
+                  <dd class="col-sm-9">{{ $trade->updated_at}}</dd>
 
               </div>
 

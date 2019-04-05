@@ -54,9 +54,6 @@
       				  <dt class="col-sm-5">Profile ID</dt>
       				  <dd class="col-sm-7">{{ $profile->id}}</dd>
 
-      				  <dt class="col-sm-5">Name</dt>
-      				  <dd class="col-sm-7">{{ $profile->name }}</dd>
-
       				  <dt class="col-sm-5">Username</dt>
       				  <dd class="col-sm-7">{{ $user->username }}</dd>
 
