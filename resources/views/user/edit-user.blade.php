@@ -25,14 +25,6 @@
                        </div>
                     @endif
 
-                    <!-- Name  -->
-                    <div class="form-group row">
-                        <dt for="edit-profile-name" class="col-sm-3" style="padding-left:30px"> Name </dt>
-                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                            <input type="text" class="form-control" id="edit-profile-name" name="edit-profile-name" value="{{ isset($user) ? old('edit-profile-name', $user->profile->name) : old('edit-profile-name') }}">
-                        </dd>
-                    </div>
-
                     <div class="form-group row">
                         <dt for="edit-profile-username" class="col-sm-3" style="padding-left:30px"> Username </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
@@ -46,7 +38,7 @@
                             <input type="text" class="form-control" id="edit-profile-contact" name="edit-profile-contact" value="{{ isset($user) ? old('edit-profile-contact', $user->profile->contact) : old('edit-profile-contact') }}">
                         </dd>
                     </div>
-                    
+
                     <div class="form-group row">
                         <dt for="edit-profile-email" class="col-sm-3" style="padding-left:30px"> Email </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
@@ -63,7 +55,7 @@
                             </select>
                         </dd>
                     </div>
-                    
+
                     <div class="form-group row">
                         <dt for="edit-profile-selfIntroduction" class="col-sm-3" style="padding-left:30px"> Self Introduction </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">

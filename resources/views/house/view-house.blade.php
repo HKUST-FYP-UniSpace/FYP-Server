@@ -63,12 +63,6 @@
                   <dt class="col-sm-3">Subtitle</dt>
                   <dd class="col-sm-9">{{ $house->subtitle }}</dd>
 
-                  <dt class="col-sm-3">Post Date</dt>
-                  <dd class="col-sm-9">{{ $house->created_at }}</dd>
-
-                  <dt class="col-sm-3">Update Date</dt>
-                  <dd class="col-sm-9">{{ $house->updated_at}}</dd>
-
                   <dt class="col-sm-3">Address</dt>
                   <dd class="col-sm-9">{{ $house->address }}</dd>
 
@@ -92,6 +86,12 @@
 
                   <dt class="col-sm-3">Description</dt>
                   <dd class="col-sm-9">{{ $house->description }}</dd>
+
+                  <dt class="col-sm-3">Post Date</dt>
+                  <dd class="col-sm-9">{{ $house->created_at }}</dd>
+
+                  <dt class="col-sm-3">Update Date</dt>
+                  <dd class="col-sm-9">{{ $house->updated_at}}</dd>
 
             </div>
 
