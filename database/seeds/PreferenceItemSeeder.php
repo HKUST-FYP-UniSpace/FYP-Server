@@ -15,27 +15,27 @@ class PreferenceItemSeeder extends Seeder
         DB::table('preference_items')->insert([
           //id: 1
           [
-        		'name' => 'Boys Only',
+        		'name' => 'M',
         		'category_id' => '1',	// Gender
         	],
           //id: 2
         	[
-        		'name' => 'Girls Only',
+        		'name' => 'F',
         		'category_id' => '1',	// Gender
         	],
           //id: 3
         	[
-        		'name' => 'No Preference',
+        		'name' => 'Nil',
         		'category_id' => '1',	// Gender
         	],
           //id: 4
         	[
-        		'name' => 'TRUE',
+        		'name' => 'true',
         		'category_id' => '2',	// Pet Free
         	],
           //id: 5
         	[
-        		'name' => 'FALSE',
+        		'name' => 'false',
         		'category_id' => '2',	// Pet Free
         	],
           //id: 6
