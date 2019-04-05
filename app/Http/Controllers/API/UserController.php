@@ -78,7 +78,7 @@ class UserController extends Controller
         $new_user->name = $input['name'];
         $new_user->email = $input['email'];
         $new_user->password = Hash::make($input['password']);
-        // $new_user->verified = 0;
+        $new_user->verified = 1;    // hard code first
         // $new_is_deleted = 0;
 
         // generate a random verification code
@@ -477,34 +477,93 @@ class UserController extends Controller
         // profile_details: [id], profile_id, item_id <--> preference_items: id
         $input = $request->input();
         $result = array();
+        $result['id'] = $id;
 
         $profile = Profile::where('user_id', $id)->first();
 
+        // delete all the current records in profile_details
         $profile_details = ProfileDetail::where('profile_id', $profile->id)->get();
         foreach($profile_details as $profile_detail) {
             $profile_detail->delete();
         }
 
-        $preferenceModel = $input['preference'];
-        foreach ($preferenceModel as $modelDetail) {
-            $preference_category = PreferenceItemCategory::where('category', key($modelDetail))->get()->first();
-            $preference_category_id = intval($preference_category['id']);
-            $preference_item = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->first();
-            $preference_item_id = $preference_item['id'];
-            $preference = new ProfileDetail();
-            $preference->profile_id = $profile->id;
-            $preference->item_id = intval($preference_item_id);
-            $preference->save();
+        if(isset($input['gender'])) {
+            $preference_id = PreferenceItem::where('category_id', 1)->where('name', $input['gender'])->first()->id;
 
-            $temp = array();
-            $temp['itemId'] = $preference->item_id;
-            $temp['item'] = $preference_item['name'];
-            $temp['categoryId'] = $preference_category_id;
-            $temp['category'] = $preference_category['category'];
-            $temp['createdTime'] = strtotime($preference->created_at);
+            $new_preference_detail = new ProfileDetail();
+            $new_preference_detail->profile_id = $profile->id;
+            $new_preference_detail->item_id = intval($preference_id);
+            $new_preference_detail->save();
 
-            array_push($result, $temp);
+            $result['gender'] = PreferenceItem::where('id', $new_preference_detail->item_id)->first()->name;
         }
+        else {  // null means no preference
+            $new_preference_detail = new ProfileDetail();
+            $new_preference_detail->profile_id = $profile->id;
+            $new_preference_detail->item_id = 3;
+            $new_preference_detail->save();
+
+            $result['gender'] = PreferenceItem::where('id', $new_preference_detail->item_id)->first()->name;
+        }
+
+        if(isset($input['petFree'])) {
+            if($input['petFree'] == true) {
+                $petfree = "true";
+            }
+            elseif($input['petFree'] == false) {
+                $petfree = "false";
+            }
+            $preference_id = PreferenceItem::where('category_id', 2)->where('name', $petfree)->first()->id;
+
+            $new_preference_detail = new ProfileDetail();
+            $new_preference_detail->profile_id = $profile->id;
+            $new_preference_detail->item_id = intval($preference_id);
+            $new_preference_detail->save();
+
+            $result['petFree'] = PreferenceItem::where('id', $new_preference_detail->item_id)->first()->name;
+        }
+
+        if(isset($input['timeInHouse'])) {
+            $preference_id = PreferenceItem::where('category_id', 3)->where('name', $input['timeInHouse'])->first()->id;
+
+            $new_preference_detail = new ProfileDetail();
+            $new_preference_detail->profile_id = $profile->id;
+            $new_preference_detail->item_id = intval($preference_id);
+            $new_preference_detail->save();
+
+            $result['timeInHouse'] = PreferenceItem::where('id', $new_preference_detail->item_id)->first()->name;
+        }
+
+        if(isset($input['personalities'])) {
+            $result['personalities'] = array();
+            foreach($input['personalities'] as $personalities) {
+                $preference_id = PreferenceItem::where('category_id', 4)->where('name', $personalities)->first()->id;
+
+                $new_preference_detail = new ProfileDetail();
+                $new_preference_detail->profile_id = $profile->id;
+                $new_preference_detail->item_id = intval($preference_id);
+                $new_preference_detail->save();
+
+                $temp = PreferenceItem::where('id', $new_preference_detail->item_id)->first()->name;
+                array_push($result['personalities'], $temp);
+            }
+        }
+
+        if(isset($input['interests'])) {
+            $result['interests'] = array();
+            foreach($input['interests'] as $interests) {
+                $preference_id = PreferenceItem::where('category_id', 5)->where('name', $interests)->first()->id;
+
+                $new_preference_detail = new ProfileDetail();
+                $new_preference_detail->profile_id = $profile->id;
+                $new_preference_detail->item_id = intval($preference_id);
+                $new_preference_detail->save();
+
+                $temp = PreferenceItem::where('id', $new_preference_detail->item_id)->first()->name;
+                array_push($result['interests'], $temp);
+            }
+        }
+
         return $result;
     }
 
