@@ -22,11 +22,11 @@
 
     <div class="row">
         <a href="{{ route('blog-add') }}">
-        <button class="btn btn-default add-new-item">Add New Blog</button></a>
+        <button class="btn btn-default" style="float: right">Add New Blog</button></a>
     </div>
 
     <div class="row">
-        <div class="panel panel-default col-md-12">
+        <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">
             <div class="panel-body">
                 <h3>Blog List</h3>
                 <hr>

@@ -18,7 +18,7 @@
 
 
     <div class="row">
-        <div class="panel panel-default col-md-12">
+        <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">
             <div class="panel-body">
                 <h3>Message List</h3>
                 <hr>

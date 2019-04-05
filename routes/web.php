@@ -90,7 +90,8 @@ Route::prefix('blog')->group(function(){
 //User
 Route::prefix('user')->group(function(){
   Route::name('search')->get('/search','UserController@search');
-	Route::name('user-list')->get('/', 'UserController@show_user');
+	// Route::name('tenant-list')->get('/tenant', 'UserController@show_tenant');//tenants
+  Route::name('user-list')->get('/', 'UserController@show_user');//all
 	Route::name('user-view')->get('/{id}/view-user','ProfileController@view_user_profile');
 	Route::name('user-edit')->get('/{id}/edit-user', 'ProfileController@edit_user_form'); //click edit
 	Route::name('user-edit-form')->post('/{id}/edit-user/update', 'ProfileController@update_user');//do edit

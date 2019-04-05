@@ -9,7 +9,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
         <!-- Styles -->
         <style>
@@ -20,6 +20,7 @@
                 font-weight: 100;
                 height: 100vh;
                 margin: 0;
+                font-size: 20px;
             }
 
             .full-height {
@@ -87,10 +88,10 @@
                 </div>
                 <h1>UniSpace CMS</h1>
                 <a href="{{ url('/login') }}">
-                <button class="btn btn-default" id='login'>Login</button>
+                <button class="btn btn-default" id='login' style="background-color: #f0ead6; color: black;">Login</button>
                 </a>
 
-                
+
 
 
             </div>

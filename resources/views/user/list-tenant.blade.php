@@ -28,15 +28,15 @@
                         </tr>
                     </thead>
 
-                    @foreach ($users as $user)
+                    @foreach ($users as user)
                         <tbody>
-
                             <th>{{ $user->id }}</th>
                             <th>{{ $user->username }}</th>
                             <th>{{ $user->name }}</th>
                             <th>{{ $user->email }}</th>
                             <td><a href="{{ route('user-view', $user->id) }}">details</a></td>
                         </tbody>
+
                      @endforeach
 
 				</table>

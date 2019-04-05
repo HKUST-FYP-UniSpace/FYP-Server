@@ -16,13 +16,13 @@
 
     <div class="row">
         <a href="{{ route('house-add') }}">
-        <button class="btn btn-default add-new-item">Add New Apartment</button></a>
+        <button class="btn btn-default" style="float: right">Add New Apartment</button></a>
     </div>
 
     <div class="row">
-        <div class="panel panel-default col-md-12">
+        <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">
             <div class="panel-body">
-                <h3>Apartment List</h3>
+                <h3 >Apartment List</h3>
                 <hr>
 
                 <table class="table" >
