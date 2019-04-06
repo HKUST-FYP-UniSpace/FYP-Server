@@ -25,7 +25,7 @@ class TradeController extends Controller
     		$trade['description'] = $stack->description;
     		// $trade['post_date'] = $stack->post_date;
     		$trade['status'] = $stack->status;
-    		// $trade['trade_transaction_id'] = $stack->trade_transaction_id;
+    		$trade['user_id'] = $stack->user_id;
     		$trade['trade_category_id'] = $stack->trade_category_id;
     		$trade['trade_condition_type_id'] = $stack->trade_condition_type_id;
     		$trade['trade_status_id'] = $stack->trade_status_id;
@@ -148,6 +148,7 @@ class TradeController extends Controller
         $trade->trade_category_id = "1";
         $trade->trade_condition_type_id = "1";
         $trade->is_deleted = "1";
+        $trade->user_id = "1";
 
 
         // title
