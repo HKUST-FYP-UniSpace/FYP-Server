@@ -31,7 +31,7 @@ class UserController extends Controller
     // ==================
 
     public function show_user() {
-        $users = User::paginate(2);
+        $users = User::paginate(5);
         $tenants = Tenant::get();
         $owners = Owner::get();
 

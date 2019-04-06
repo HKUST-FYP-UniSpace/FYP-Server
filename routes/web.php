@@ -41,7 +41,7 @@ Route::prefix('trade')->group(function(){
 	Route::name('trade-edit-form')->post('/{id}/edit-trade/update', 'TradeController@update_trade');//do
 
 	Route::name('trade-add')->get('/new', 'TradeController@add_trade_form');
-	Route::name('trade-add-form')->post('/new/add','TradeController@add_trade');// submit add
+	Route::name('addtrade-form')->post('/new/add','TradeController@add_trade');// submit add
 });
 
 
@@ -76,12 +76,11 @@ Route::prefix('blog')->group(function(){
   Route::name('search')->get('/search','BlogController@search');
 	Route::name('blog-list')->get('/', 'BlogController@show_blog');
 	Route::name('blog-view')->get('/{id}/view-blog','BlogController@show_blog_details');
-	Route::name('blog-add')->get('/add-blog','BlogController@add_blog');
 	Route::name('blog-edit')->get('/{id}/edit-blog', 'BlogController@edit_blog_form'); //click edit
 	Route::name('blog-edit-form')->post('/{id}/edit-blog/update', 'BlogController@update_blog');//do edit
 
   Route::name('blog-add')->get('/new', 'BlogController@add_blog_form');
-  Route::name('blog-add-form')->post('/new/add','BlogController@add_blog');// submit add
+  Route::name('addblog-form')->post('/new/add','BlogController@add_blog');// submit add
 
   Route::name('blog-comment')->get('/{id}/comment-blog', 'BlogController@show_comments'); //blog comments
 });

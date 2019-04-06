@@ -111,7 +111,7 @@
 
         </nav>
         <div class ="container" id="mainDiv">
-            <div id="mydiv" style="height:150px; "></div>
+            <div id="mydiv" style="height:180px; "></div>
         </div>
 
 
@@ -125,7 +125,7 @@
 
     </div>
     <!-- Scripts -->
-    <script src="{{ asset('/js/app.js') }}"></script>
+    <!-- <script src="{{ asset('/js/app.js') }}"></script> -->
     @stack('add-script')
 
 

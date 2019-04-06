@@ -1405,7 +1405,7 @@ body {
   font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.846;
-  color: #666;
+  color: black;
   background-color: #fff;
 }
 
@@ -1690,7 +1690,7 @@ mark,
 }
 
 .text-muted {
-  color: #bbb;
+  color:black;
 }
 
 .text-primary {
@@ -7120,7 +7120,7 @@ button.list-group-item-danger.active:focus {
 
 .panel-default > .panel-heading {
   color: #212121;
-  background-color:  #ffcc99;
+  background-color:  #f7f7f7;
   border-color: #ddd;
 }
 

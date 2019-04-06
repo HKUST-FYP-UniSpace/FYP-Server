@@ -146,7 +146,17 @@ class HouseController extends Controller
       //$result['errors'] = array();
 
       $house_id = $house->id;
-      $house_img = HouseImage::where('house_id', $house_id);
+      //$house_img = HouseImage::where('house_id', $house_id);
+      $house_imgList = HouseImage::where('house_id', $house_id);
+      $house_imgArray = array(); 
+      if($house_imgList->count()>0){
+        $house_imgs = $house_imgList->get();
+        foreach($house_imgs as $house_img){
+          array_push($house_imgArray, $house_img->img_url);
+        }
+      }
+
+      
 
       $result_house = [
         'id' => $house->id,
@@ -157,7 +167,7 @@ class HouseController extends Controller
         'subtitle' => $house->subtitle, // refering to the description in the DB maybe?
         'address' => $house->address,
         'isBookmarked' => (HousePostBookmark::where('house_id', $house_id)->where('tenant_id', $userId)->count()>0)?true:false,
-        'PhotoURL' => ($house_img->count()>0)?$house_img->first()->image_url:null
+        'photoURLs' => $house_imgArray
         // 'district_id' => $house->district_id,
         // 'description' => $house->description,
         // 'max_ppl' => $house->max_ppl,
@@ -205,7 +215,7 @@ class HouseController extends Controller
           'subtitle' => $house->subtitle, // refering to the description in the DB maybe?
           'address' => $house->address,
           'isBookmarked' => (HousePostBookmark::where('house_id', $house->id)->where('tenant_id', $userId)->count()>0)?true:false,
-          'PhotoURLs' => $house_imgArray
+          'photoURLs' => $house_imgArray
           // 'district_id' => $house->district_id,
           // 'description' => $house->description,
           // 'max_ppl' => $house->max_ppl,
@@ -258,6 +268,16 @@ class HouseController extends Controller
         $occupiedCount = GroupDetail::where('group_id', $group_id)->count();
         $preference_model = self::create_preferenceModelByPreference($group_id);
 
+        $house_imgList = HouseImage::where('house_id', $house_id);
+        $house_imgArray = array();
+        if($house_imgList->count()>0){
+          $house_imgs = $house_imgList->get();
+          foreach($house_imgs as $house_img){
+            array_push($house_imgArray, $house_img->img_url);
+          }
+        }
+
+
         $result_group = [
           'houseId'=>$house_id,
           'teamId'=>$group_id,
@@ -266,7 +286,7 @@ class HouseController extends Controller
           'duration'=>$group->duration,
           'groupSize'=>$group->max_ppl,
           'occupiedCount'=>$occupiedCount,
-          'photoURL'=>$group->image_url
+          'photoURLs'=>$house_imgArray
         ];
 
         array_push($result, $result_group);
@@ -288,7 +308,17 @@ class HouseController extends Controller
       foreach($bookmarks as $bookmark){
         $savedHouse = House::where('id', $bookmark->house_id)->first();
         $savedHouse_id = $savedHouse->id;
-        $savedHouse_img = HouseImage::where('house_id', $savedHouse_id);
+
+        //$savedHouse_img = HouseImage::where('house_id', $savedHouse_id);
+        $house_imgList = HouseImage::where('house_id', $savedHouse_id);
+        $savedHouse_img = array();
+        if($house_imgList->count()>0){
+          $house_imgs = $house_imgList->get();
+          foreach($house_imgs as $house_img){
+            array_push($savedHouse_img, $house_img->img_url);
+          }
+        }
+
 
         if($savedHouse == null){
           return "Saved house does not exist!";
@@ -301,7 +331,7 @@ class HouseController extends Controller
           'size' => $savedHouse->size,
           'starRating' => self::get_averageHouseOverallRating($savedHouse_id),
           'subtitle' => $savedHouse->subtitle, //refering to the "description" in the db maybe?
-          'PhotoURL' => ($savedHouse_img->count()>0)?$savedHouse_img->first()->img_url:null
+          'photoURLs' => $savedHouse_img
         ];
 
         array_push($result_savedHouses, $result_savedHouse);
@@ -321,7 +351,17 @@ class HouseController extends Controller
         $houses = House::where('owner_id', $userId)->get();
         foreach ($houses as $house) {
           $house_id = $house->id;
-          $house_img = HouseImage::where('house_id', $house_id)->first();
+
+          //$house_img = HouseImage::where('house_id', $house_id)->first();
+          $house_imgList = HouseImage::where('house_id', $house_id);
+          $house_imgArray = array(); 
+          if($house_imgList->count()>0){
+            $house_imgs = $house_imgList->get();
+            foreach($house_imgs as $house_img){
+              array_push($house_imgArray, $house_img->img_url);
+            }
+          }
+
           $house_datail = [
             'transactionType' => 'out',
             'id' => $house_id,
@@ -330,7 +370,7 @@ class HouseController extends Controller
             'size' => $house->size,
             'starRating' => self::get_averageHouseOverallRating($house_id),
             'subtitle' => $house->subtitle,
-            'photoURL' =>$house_img
+            'photoURLs' =>$house_imgArray
           ];
 
           array_push($result, $house_datail);
@@ -344,7 +384,17 @@ class HouseController extends Controller
       foreach($joint_groups as $joint_group){
         $house_id = Group::where('id', $joint_group->group_id)->first()->house_id;
         $house = House::where('id', $house_id)->first();
-        $house_img = HouseImage::where('house_id', $house_id)->first();
+        
+        //$house_img = HouseImage::where('house_id', $house_id)->first();
+        $house_imgList = HouseImage::where('house_id', $house_id);
+        $house_imgArray = array(); 
+        if($house_imgList->count()>0){
+          $house_imgs = $house_imgList->get();
+          foreach($house_imgs as $house_img){
+            array_push($house_imgArray, $house_img->img_url);
+          }
+        }
+
         $house_datail = [
           'trasactionType' => 'in',
           'id' => $house_id,
@@ -353,7 +403,7 @@ class HouseController extends Controller
           'size' => $house->size,
           'starRating' => self::get_averageHouseOverallRating($house_id),
           'subtitle' => $house->subtitle,
-          'photoURL' =>$house_img
+          'photoURLs' =>$house_imgArray
         ];
 
         array_push($result, $house_datail);
@@ -600,14 +650,25 @@ class HouseController extends Controller
     public function get_teamView($id){
       //$housePostGroup = HousePostGroup::where("id", $id)->first();
       $group = Group::where("id", $id)->first();
+      $house_id = $group->house_id;
 
       if($group == null){
         return null;
       }
 
       $occupiedCount = GroupDetail::where('group_id', $id)->count();
-      $original_price = House::where('id', $group->house_id)->first()->price;
+      $original_price = House::where('id', $house_id)->first()->price;
       $preference_model = self::create_preferenceModelByPreference($id);
+
+      $house_imgList = HouseImage::where('house_id', $house_id);
+      $house_imgArray = array(); 
+      if($house_imgList->count()>0){
+        $house_imgs = $house_imgList->get();
+        foreach($house_imgs as $house_img){
+          array_push($house_imgArray, $house_img->img_url);
+        }
+      }
+
 
       //HousePostGroup::where('id', $id)->get();
       $team_view = [
@@ -618,7 +679,8 @@ class HouseController extends Controller
         'preference' => $preference_model,// to be added to the ERD
         'description' => $group->description,// should be the house group description, to be added to the ERD
         'groupSize' => $group->max_ppl,
-        'occupiedCount' => $occupiedCount
+        'occupiedCount' => $occupiedCount,
+        'photoURLs' => $house_imgArray
       ];
 
       return $team_view;
@@ -631,7 +693,7 @@ class HouseController extends Controller
         $teamMembers = GroupDetail::where('group_id', $id)->get();
         foreach($teamMembers as $teamMember){
           //$user_id = Tenant::where('id', $teamMember->tenant_id)->first()->user_id;
-          $user_id = $teamMember->member_user_id;
+          $user_id = (int)$teamMember->member_user_id;
           $result_teamMember = [
             'id' => $user_id,
             'name' => User::where('id',$user_id)->first()->username,
@@ -872,7 +934,7 @@ class HouseController extends Controller
       }
 
       $preference_model=[
-        'id'=>$id, // should be an alternative id, currently using group id which may be conflict to profile detail
+        'id'=>(int)$id, // should be an alternative id, currently using group id which may be conflict to profile detail
         'gender'=>$gender,
         'petFree'=>$petFree,
         'timeInHouse'=>$timeInHouse,
@@ -981,7 +1043,7 @@ class HouseController extends Controller
 
       if(sizeof($matched_group) >= $required_num){
         arsort($matched_group);
-        $result = array_slice($matched_group, 0, $required_num);
+        $result = array_slice($matched_group, 0, $required_num, $preserve_keys = TRUE);
 
         return Group::whereIn('id', array_keys($result));
       }
@@ -1004,7 +1066,7 @@ class HouseController extends Controller
       }
 
       arsort($matched_group);
-      $result = array_slice($matched_group, 0, $required_num);
+      $result = array_slice($matched_group, 0, $required_num, $preserve_keys = TRUE);
 
       return Group::whereIn('id', array_keys($result));
     }
@@ -1037,25 +1099,35 @@ class HouseController extends Controller
           $popularity_score[$temp_houseId] = HouseVisitor::where('house_id', $temp_houseId)->count() * 2;
         }
       }
+
       // return $popularity_score;
       arsort($popularity_score);
-      // return $popularity_score;
-      //$result = array_slice($popularity_score, 0, $required_num);
-      $result = array();
-      $i = 0;
-      foreach($popularity_score as $temp){
-        if($i < $required_num){
-          array_push($result, $temp);
-          $i++;
-        }else{
-          break;
-        }
-      }
+      // dd($popularity_score);
+
+      $result = array_slice($popularity_score, 0, $required_num, $preserve_keys = TRUE);
+      // dd($result);
+      // $houses = array();
+      // foreach($result as $key => $value) {
+      //   $house = House::where('id', $key)->first();
+      //   array_push($houses, $house);
+      // }
+      // dd($result);
+      // $result = array();
+      // $i = 0;
+      // foreach($popularity_score as $temp){
+      //   if($i < $required_num){
+      //     array_push($result, $temp);
+      //     $i++;
+      //   }else{
+      //     break;
+      //   }
+      // }
       // return $result;
       // return array_keys($result);
 
       //return House::whereIn('id', array_keys($result))->get(); // for testing
       return House::whereIn('id', array_keys($result));
+      // return $houses;
     }
 
     // This function is not used in the app but only kept here for testing data structure

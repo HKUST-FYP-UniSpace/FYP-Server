@@ -76,19 +76,14 @@
                         </dd>
                     </div>
                     <div class="form-group row">
-                        <dt for="edit-trade-trade_status_id" class="col-sm-9" style="padding-left:30px"> Trade Status ID </dt>
+                        <dt for="edit-trade-trade_status_id" class="col-sm-9" style="padding-left:30px"> Status </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                            <select class="form-control" id="edit-trade-trade_status_id" name="edit-trade-trade_status_id" value="{{ isset($trade) ? old('edit-trade-trade_status_id', $trade->trade_status_id) : old('edit-trade-trade_status_id') }}">
-                                <option>1</option>
-                                <option>2</option>
-                            </select>
-                        </dd>
-                    </div>
-
-                    <div class="form-group row">
-                        <dt for="edit-trade-status" class="col-sm-9" style="padding-left:30px"> Status </dt>
-                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                            <input type="text" class="form-control" id="edit-trade-status" name="edit-trade-status" value="{{ isset($trade) ? old('edit-trade-status', $trade->status) : old('edit-trade-status') }}">
+                          <select class="form-control" id="edit-trade-trade_status_id" name="edit-trade-trade_status_id" value="{{ old('edit-trade-trade_status_id')}}">
+                              <option value="" selected disabled hidden> Please Select </option>
+                              @foreach($trade_statuses as $trade_status)
+                                  <option value="{{ $trade_status ->id }}">{{ $trade_status->status }}</option>
+                              @endforeach
+                          </select>
                         </dd>
                     </div>
 
