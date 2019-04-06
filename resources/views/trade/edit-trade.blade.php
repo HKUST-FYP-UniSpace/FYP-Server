@@ -49,12 +49,12 @@
                         </dd>
                     </div>
 
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                         <dt for="edit-trade-trade_transaction_id" class="col-sm-9" style="padding-left:30px"> Trade Transaction ID </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
                             <input type="text" class="form-control" id="edit-trade-trade_transaction_id" name="edit-trade-trade_transaction_id" value="{{ isset($trade) ? old('edit-trade-trade_transaction_id', $trade->trade_transaction_id) : old('edit-trade-trade_transaction_id') }}">
                         </dd>
-                    </div>
+                    </div> -->
 
                     <div class="form-group row">
                         <dt for="edit-trade-trade_category_id" class="col-sm-9" style="padding-left:30px"> Trade Category ID </dt>
