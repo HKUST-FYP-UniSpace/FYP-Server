@@ -505,7 +505,7 @@ class HouseController extends Controller
       $group->description = $request->input('description');
       $group->max_ppl = $request->input('groupSize');
 
-      // $group->image_url = $request->input('image_url'); //extra
+      $group->image_url = null; //$request->input('image_url'); //extra
       $group->leader_user_id = $request->input('userId');
       $group->duration = $request->input('duration');//extra
       $group->is_rent = 0;
