@@ -25,7 +25,7 @@ class TradeController extends Controller
     		$trade['description'] = $stack->description;
     		$trade['post_date'] = $stack->post_date;
     		$trade['status'] = $stack->status;
-    		$trade['trade_transaction_id'] = $stack->trade_transaction_id;
+    		// $trade['trade_transaction_id'] = $stack->trade_transaction_id;
     		$trade['trade_category_id'] = $stack->trade_category_id;
     		$trade['trade_condition_type_id'] = $stack->trade_condition_type_id;
     		$trade['trade_status_id'] = $stack->trade_status_id;
@@ -69,7 +69,7 @@ class TradeController extends Controller
             'edit-trade-title' => 'required|max:255',
             'edit-trade-price' => 'required|max:255',
             'edit-trade-quantity' => 'required|max:255',
-            'edit-trade-trade_transaction_id' => 'required|max:255',
+            // 'edit-trade-trade_transaction_id' => 'required|max:255',
             'edit-trade-trade_category_id' => 'required|max:255',
             'edit-trade-trade_condition_type_id' => 'required|max:255',
             'edit-trade-trade_status_id'  => 'required|max:255',
@@ -80,7 +80,7 @@ class TradeController extends Controller
             'edit-trade-title' => 'Input Title',
             'edit-trade-price' => 'Input Price',
             'edit-trade-quantity' => 'Input Quantity',
-            'edit-trade-trade_transaction_id' => 'Input Trade Transaction ID',
+            // 'edit-trade-trade_transaction_id' => 'Input Trade Transaction ID',
             'edit-trade-trade_category_id' => 'Select Trade Category ID',
             'edit-trade-trade_condition_type_id' => 'Select Trade Condition Type ID',
             'edit-trade-trade_status_id'  => 'Select Trade Status ID',
@@ -95,7 +95,7 @@ class TradeController extends Controller
         $trade->title = $request->input('edit-trade-title');
         $trade->price = $request->input('edit-trade-price');
         $trade->quantity = $request->input('edit-trade-quantity');
-        $trade->trade_transaction_id = $request->input('edit-trade-trade_transaction_id');
+        // $trade->trade_transaction_id = $request->input('edit-trade-trade_transaction_id');
         $trade->trade_category_id = $request->input('edit-trade-trade_category_id');
         $trade->trade_condition_type_id = $request->input('edit-trade-trade_condition_type_id');
         $trade->trade_status_id= $request->input('edit-trade-trade_status_id');
@@ -146,7 +146,7 @@ class TradeController extends Controller
         $trade= new Trade();
 
         // $trade->id="1111";
-        $trade->trade_transaction_id = "1";
+        // $trade->trade_transaction_id = "1";
         $trade->trade_category_id = "1";
         $trade->trade_condition_type_id = "1";
         $trade->is_deleted = "1";
