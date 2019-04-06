@@ -505,7 +505,7 @@ class HouseController extends Controller
       $group->description = $request->input('description');
       $group->max_ppl = $request->input('groupSize');
 
-      $group->image_url = $request->input('image_url'); //extra
+      // $group->image_url = $request->input('image_url'); //extra
       $group->leader_user_id = $request->input('userId');
       $group->duration = $request->input('duration');//extra
       $group->is_rent = 0;
@@ -623,6 +623,8 @@ class HouseController extends Controller
     public function upload_teamPhoto(Request $request){
       $group_id = $request->input('teamId');
 
+      $team = Group::where('id', $group_id)->first();
+
       if(!empty($request->file('photoURL'))) {
         $image = $request->file('photoURL');
         $extension = $image->getClientOriginalExtension();
@@ -631,6 +633,8 @@ class HouseController extends Controller
         $url = 'team' . '.' . $group_id . '_' . $now . '.' . $extension;
         Storage::disk('public')->put($url,  File::get($image));
 
+        $team->image_url = url('uploads/'.$url);
+        $team->save();
 
         $response = ['isSuccess' => true];
 

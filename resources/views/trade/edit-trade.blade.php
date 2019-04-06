@@ -66,6 +66,7 @@
                         </dd>
 
                     </div>
+
                     <div class="form-group row">
                         <dt for="edit-trade-trade_condition_type_id" class="col-sm-9" style="padding-left:30px"> Trade Condition Type ID </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
@@ -75,6 +76,7 @@
                             </select>
                         </dd>
                     </div>
+                    
                     <div class="form-group row">
                         <dt for="edit-trade-trade_status_id" class="col-sm-9" style="padding-left:30px"> Status </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
@@ -95,7 +97,7 @@
                     </div>
 
                     <!-- edit button -->
-                    <div class="row text-center" style="padding-left:49%">
+                    <div class="row text-center">
                         <button type="submit" class="btn form-btn" id="edit-trade-submit">Submit</button>
                     </div>
                 </div>

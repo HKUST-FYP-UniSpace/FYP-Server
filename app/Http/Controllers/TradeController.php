@@ -23,7 +23,7 @@ class TradeController extends Controller
     		$trade['price'] = $stack->price;
     		$trade['quantity'] = $stack->quantity;
     		$trade['description'] = $stack->description;
-    		$trade['post_date'] = $stack->post_date;
+    		// $trade['post_date'] = $stack->post_date;
     		$trade['status'] = $stack->status;
     		// $trade['trade_transaction_id'] = $stack->trade_transaction_id;
     		$trade['trade_category_id'] = $stack->trade_category_id;
@@ -117,7 +117,7 @@ class TradeController extends Controller
                 'add-trade-price' => 'required|max:255',
                 'add-trade-quantity' => 'required|integer',
                 'add-trade-description' => 'required|max:255',
-                'add-trade-post_date' => 'required',
+                // 'add-trade-post_date' => 'required',
                 'add-trade-status' => 'required'
                 // 'add-trade-trade_category_id' => 'required'
             ],
@@ -134,7 +134,7 @@ class TradeController extends Controller
                 'add-trade-description.required' => 'Input description',
                 'add-trade-description.max' => 'Description cannot be too long',
 
-                'add-trade-post_date.required' => 'Input Post Date in YYYY-MM-DD',
+                // 'add-trade-post_date.required' => 'Input Post Date in YYYY-MM-DD',
 
                 'add-trade-status.required' => 'Select Status' //select from database
 
@@ -145,8 +145,6 @@ class TradeController extends Controller
         // form information filled by users
         $trade= new Trade();
 
-        // $trade->id="1111";
-        // $trade->trade_transaction_id = "1";
         $trade->trade_category_id = "1";
         $trade->trade_condition_type_id = "1";
         $trade->is_deleted = "1";
@@ -162,8 +160,8 @@ class TradeController extends Controller
         $trade->quantity = $request->input('add-trade-quantity');
         // price
         $trade->price = $request->input('add-trade-price');
-        // quantity
-        $trade->post_date = $request->input('add-trade-post_date');
+        // // quantity
+        // $trade->post_date = $request->input('add-trade-post_date');
         // status
         $trade->trade_status_id = intval($request->input('add-trade-status'));
 
