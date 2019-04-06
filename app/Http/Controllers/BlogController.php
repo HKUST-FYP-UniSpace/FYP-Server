@@ -29,7 +29,7 @@ class BlogController extends Controller
 
     //
     public function show_blog() {
-        $blogs = Blog::paginate(2);
+        $blogs = Blog::paginate(5);
 
         return view('blog.list-blog', compact('blogs'));
     }
@@ -50,9 +50,7 @@ class BlogController extends Controller
 
 
     public function add_blog_form() {
-        $blog = Blog::get();
-
-        return view('blog.add-blog', compact('blog'));
+        return view('blog.add-blog');
     }
 
 
@@ -107,13 +105,13 @@ class BlogController extends Controller
     // process POST request
     public function add_blog(Request $request) {
         // validation
-        //dd($request);
+        // dd($request);
         $this->validate($request, [
                 'add-blog-title' => 'required|max:255',
                 'add-blog-subtitle' => 'required|max:255',
                 'add-blog-status' => 'required',
                 'add-blog-admin_id' => 'required|max:255',
-                'add-blog-description' => 'required|max:255',
+                'add-blog-detail' => 'required|max:255',
                 'add-file' => 'image|mimes:jpeg,png,jpg|max:2048'
             ],
             [
@@ -134,7 +132,7 @@ class BlogController extends Controller
         );
 
         // form information filled by users
-        $blog= new blog();
+        $blog= new Blog();
 
         // title
         $blog->title = $request->input('add-blog-title');
@@ -143,7 +141,7 @@ class BlogController extends Controller
         // blog status
         $blog->status = intval($request->input('add-blog-status'));
         // description
-        $blog->description = $request->input('add-blog-description');
+        $blog->detail = $request->input('add-blog-detail');
         // owner_id
         $blog->admin_id = $request->input('add-blog-admin_id');
         //image: need to handle image upload later
@@ -152,6 +150,7 @@ class BlogController extends Controller
 
         // save in database
         $blog->save();
+
         // redirect to add success page
         return view('blog.add-blog-success', ['id'=> $blog->id]);
     }

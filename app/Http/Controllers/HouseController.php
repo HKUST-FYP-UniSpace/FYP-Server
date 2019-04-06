@@ -43,7 +43,7 @@ class HouseController extends Controller
 
 
     public function show_house() {
-        $houses = House::paginate(3);
+        $houses = House::paginate(5);
 
         return view('house.list-house', compact('houses'));
     }

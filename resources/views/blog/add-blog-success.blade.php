@@ -1,8 +1,8 @@
-Blog@extends('layouts.app')
+@extends('layouts.app')
 
 <!-- css style (name corresponds to app.blade.php) -->
 @push('add-style')
-    <link href="{{ asset('css/form.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -16,8 +16,8 @@ Blog@extends('layouts.app')
                     <div class="row" style="padding-top: 5px;">
                         <h5>Add Success!</h5>
                     </div>
-                    <div class="row" style="padding:15px;">
-                        <a href="{{ route('blog-view', ['id'=>$id])}}"class="btn  form-btn">Back to View Blog Details</a>
+                    <div class="row">
+                        <a href="{{ route('blog-view', ['id'=> $id])}}"class="btn  form-btn">Back to View Blog Details</a>
                     </div>
                 </div>
             </div>

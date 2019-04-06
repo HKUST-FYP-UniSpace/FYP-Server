@@ -64,12 +64,4 @@
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function webpackMissingModule() { throw new Error("Cannot find module \"/Users/Heidi/Documents/GitHub/FYP-Server/resources/js/app.js\""); }());
-(function webpackMissingModule() { throw new Error("Cannot find module \"/Users/Heidi/Documents/GitHub/FYP-Server/resources/sass/app.scss\""); }());
-
-
-/***/ })
 /******/ ]);

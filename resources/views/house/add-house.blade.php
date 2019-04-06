@@ -2,10 +2,14 @@
 
 <!-- css style (name corresponds to app.blade.php) -->
 @push('add-style')
-    <link href="{{ asset('css/form.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
+<div class ="container" id="mainDiv">
+    <div id="mydiv" style="height:50px; "></div>
+</div>
+
 <div class="container before-nav">
     <form id="add-house-form" method="POST" action="{{ route('house-add-form')}}">
         {{ csrf_field() }}
@@ -157,7 +161,7 @@
                     </div>
 
                     <!-- submit button -->
-                    <div class="row text-center" style="padding-left:45%">
+                    <div class="row text-center">
                         <button type="submit" class="btn  form-btn" id="add-house-submit">Submit</button>
                     </div>
 

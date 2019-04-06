@@ -2,21 +2,25 @@
 
 <!-- css style (name corresponds to app.blade.php) -->
 @push('add-style')
-    <link href="{{ asset('css/form.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
+<div class ="container" id="mainDiv">
+    <div id="mydiv" style="height:50px; "></div>
+</div>
+
 <div class="container before-nav">
-    <form id="add-blog-form" method="POST" action="{{ route('blog-add-form')}}">
+    <form id="add-blog-form" method="POST" action="{{ route('addblog-form')}}">
         {{ csrf_field() }}
         <div class="col-md-8 col-md-offset-2">  <!--size of form box -->
             <div class="panel panel-default"> <!-- border+background -->
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Add New Blog</h4>
                 </div>
+
                 <div class="panel-body-edit">
                 <div class="col-sm-12" style="padding-left:30px; padding-right:30px">
-
                     <!-- Title -->
                     <div class="form-group row {{ $errors->has('add-blog-title') ? 'has-error' : '' }}">
                         <label for="add-blog-title" class="col-sm-2 col-form-label"> Title  </label>
@@ -45,8 +49,8 @@
                         <div class="col-sm-12">
                             <select class="form-control" id="add-blog-status" name="add-blog-status" value="{{ old('add-blog-status')}}">
                                 <option value= "" selected disabled hidden> Please Select </option>
-                                <option value = "0"> Available </option>
-                                <option value = "1"> Unavailable </option>
+                                <option value = "0" {{ old('add-blog-status') == 0 ? 'selected' : '' }}> Available </option>
+                                <option value = "1" {{ old('add-blog-status') == 1 ? 'selected' : '' }}> Unavailable </option>
                             </select>
                             @if($errors->has('add-blog-status'))
                                 <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-blog-status') }}</span>
@@ -116,5 +120,5 @@
 
 <!-- javascript (name corresponds to app.blade.php) -->
 @push('add-script')
-    <script src="{{ asset('/js/blog/add.js') }}"></script>
+    <!-- <script src="{{ asset('/js/blog/add.js') }}"></script> -->
 @endpush

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Trade;
+use App\TradeStatus;
 
 
 class TradeController extends Controller
@@ -37,7 +38,7 @@ class TradeController extends Controller
 
     public function show_trade() {
 
-        $trades = Trade::paginate(2);
+        $trades = Trade::paginate(5);
 
         return view('trade.list-trade', compact('trades'));
     }
@@ -50,15 +51,15 @@ class TradeController extends Controller
 
     public function edit_trade_form($id) { // $id is user id
         $trade = Trade::where('id', $id)->first();
+        $trade_statuses = TradeStatus::get();
 
-        return view('trade.edit-trade', compact('trade'));
+        return view('trade.edit-trade', compact('trade','trade_statuses'));
 
     }
 
     public function add_trade_form() { // $id is user id
-        $trade = Trade::get();
-
-        return view('trade.add-trade');
+        $trade_statuses = TradeStatus::get();
+        return view('trade.add-trade',compact('trade_statuses'));
     }
 
 
@@ -72,7 +73,6 @@ class TradeController extends Controller
             'edit-trade-trade_category_id' => 'required|max:255',
             'edit-trade-trade_condition_type_id' => 'required|max:255',
             'edit-trade-trade_status_id'  => 'required|max:255',
-            'edit-trade-status' => 'required|max:255',
             'edit-trade-description' => 'nullable|max:255'
             ],
 
@@ -84,7 +84,6 @@ class TradeController extends Controller
             'edit-trade-trade_category_id' => 'Select Trade Category ID',
             'edit-trade-trade_condition_type_id' => 'Select Trade Condition Type ID',
             'edit-trade-trade_status_id'  => 'Select Trade Status ID',
-            'edit-trade-status' => 'Input Status',
             'edit-trade-description' => 'Input Description'
             ]);
 
@@ -100,7 +99,6 @@ class TradeController extends Controller
         $trade->trade_category_id = $request->input('edit-trade-trade_category_id');
         $trade->trade_condition_type_id = $request->input('edit-trade-trade_condition_type_id');
         $trade->trade_status_id= $request->input('edit-trade-trade_status_id');
-        $trade->status = $request->input('edit-trade-status');
         $trade->description = $request->input('edit-trade-description');
 
         $trade->save();
@@ -120,6 +118,7 @@ class TradeController extends Controller
                 'add-trade-quantity' => 'required|integer',
                 'add-trade-description' => 'required|max:255',
                 'add-trade-post_date' => 'required',
+                'add-trade-status' => 'required'
                 // 'add-trade-trade_category_id' => 'required'
             ],
             [
@@ -137,6 +136,8 @@ class TradeController extends Controller
 
                 'add-trade-post_date.required' => 'Input Post Date in YYYY-MM-DD',
 
+                'add-trade-status.required' => 'Select Status' //select from database
+
                 // 'add-trade-trade_category_id' => 'Select Trade Category'
             ]
         );
@@ -145,12 +146,9 @@ class TradeController extends Controller
         $trade= new Trade();
 
         // $trade->id="1111";
-        $trade->status = "1";
         $trade->trade_transaction_id = "1";
         $trade->trade_category_id = "1";
         $trade->trade_condition_type_id = "1";
-        $trade->trade_status_id = "1";
-        $trade->status = "1";
         $trade->is_deleted = "1";
 
 
@@ -166,13 +164,11 @@ class TradeController extends Controller
         $trade->price = $request->input('add-trade-price');
         // quantity
         $trade->post_date = $request->input('add-trade-post_date');
-
+        // status
+        $trade->trade_status_id = intval($request->input('add-trade-status'));
 
         // save in database
         $trade->save();
-
-        // calculate trade_id
-
 
         // redirect to add success page
         return view('trade.add-trade-success', ['id'=> $trade->id]);
