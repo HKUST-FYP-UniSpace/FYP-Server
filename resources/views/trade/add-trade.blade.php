@@ -44,8 +44,8 @@
 
 
 
-  <!--                   <!-- Post Date -->
-                    <div class="form-group row {{ $errors->has('add-trade-post_date') ? 'has-error' : '' }}" id="add-trade-post_date">
+                    <!-- Post Date -->
+<!--                     <div class="form-group row {{ $errors->has('add-trade-post_date') ? 'has-error' : '' }}" id="add-trade-post_date">
                         <label for="add-trade-post_date" class="col-sm-2 col-form-label">Post Date</label>
                         <div class="col-sm-4">
                             <input type="date" class="form-control" id="add-trade-post_date" name="add-trade-post_date" placeholder="YYYY-MM-DD" value="{{ old('add-trade-post_date') }}">
