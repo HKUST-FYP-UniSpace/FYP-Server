@@ -44,7 +44,7 @@
 
 
 
-                    <!-- Post Date -->
+  <!--                   <!-- Post Date -->
                     <div class="form-group row {{ $errors->has('add-trade-post_date') ? 'has-error' : '' }}" id="add-trade-post_date">
                         <label for="add-trade-post_date" class="col-sm-2 col-form-label">Post Date</label>
                         <div class="col-sm-4">
@@ -53,7 +53,7 @@
                                 <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-trade-post_date') }}</span>
                             @endif
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Quantity-->
                     <div class="form-group row {{ $errors->has('add-trade-quantity') ? 'has-error' : '' }}">
