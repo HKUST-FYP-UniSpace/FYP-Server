@@ -192,7 +192,7 @@ class HouseController extends Controller
         if($house_imgList->count()>0){
           $house_imgs = $house_imgList->get();
           foreach($house_imgs as $house_img){
-            array_push($house_imgArray, $house_img->image_url);
+            array_push($house_imgArray, $house_img->img_url);
           }
         }
 
@@ -472,7 +472,7 @@ class HouseController extends Controller
       $group_detail->save();
 
       //save preference model
-      $preferenceModel = $request->input('preferenceModel');
+      $preferenceModel = $request->input('preference');
       // foreach ($preferenceModel as $modelDetail) {
       //   $preference_category_id = PreferenceItemCategory::where('category', key($modelDetail))->first()->id;
       //   $preference_item_id = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->first()->id;
@@ -712,30 +712,94 @@ class HouseController extends Controller
         $old_preferences->delete();
       }
 
-      //$preferenceModel = $request->input('preferenceModel');
-      foreach ($preferenceModel as $modelDetail) {
-        $preference_category_id = PreferenceItemCategory::where('category', key($modelDetail))->first()->id;
+      $input = $preferenceModel;
+      // //$preferenceModel = $request->input('preferenceModel');
+      // foreach ($preferenceModel as $modelDetail) {
+      //   $preference_category_id = PreferenceItemCategory::where('category', key($modelDetail))->first()->id;
 
-        // Cases for array object (personalities / interests)
-        if($preference_category_id == 4 || $preference_category_id == 5){
-          foreach($modelDetail as $detailItem){
-            $preference_item_id = PreferenceItem::where('category_id', $preference_category_id)->where('name', $detailItem)->first()->id;
+      //   // Cases for array object (personalities / interests)
+      //   if($preference_category_id == 4 || $preference_category_id == 5){
+      //     foreach($modelDetail as $detailItem){
+      //       $preference_item_id = PreferenceItem::where('category_id', $preference_category_id)->where('name', $detailItem)->first()->id;
 
-            $preference = new Preference();
-            $preference->item_id = $preference_item_id;
-            $preference->group_id = $teamId;
-            $preference->save();
-          }
+      //       $preference = new Preference();
+      //       $preference->item_id = $preference_item_id;
+      //       $preference->group_id = $teamId;
+      //       $preference->save();
+      //     }
+      //   }
+
+      //   // Otherwise (not personalities / interests), objects should not be array
+      //   $preference_item_id = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->first()->id;
+
+      //   $preference = new Preference();
+      //   $preference->item_id = $preference_item_id;
+      //   $preference->group_id = $teamId;
+      //   $preference->save();
+      // }
+      // dd($preferenceModel);
+      if(isset($input['gender'])) {
+            $preference_id = PreferenceItem::where('category_id', 1)->where('name', $input['gender'])->first()->id;
+
+            $new_preference_detail = new Preference();
+            $new_preference_detail->group_id = $teamId;
+            $new_preference_detail->item_id = intval($preference_id);
+            $new_preference_detail->save();
+        }
+        else {  // null means no preference
+            $new_preference_detail = new Preference();
+            $new_preference_detail->group_id = $teamId;
+            $new_preference_detail->item_id = 3;
+            $new_preference_detail->save();
         }
 
-        // Otherwise (not personalities / interests), objects should not be array
-        $preference_item_id = PreferenceItem::where('category_id', $preference_category_id)->where('name', $modelDetail)->first()->id;
+        if(isset($input['petFree'])) {
+            if($input['petFree'] == true) {
+                $petfree = "true";
+            }
+            elseif($input['petFree'] == false) {
+                $petfree = "false";
+            }
+            $preference_id = PreferenceItem::where('category_id', 2)->where('name', $petfree)->first()->id;
 
-        $preference = new Preference();
-        $preference->item_id = $preference_item_id;
-        $preference->group_id = $teamId;
-        $preference->save();
-      }
+            $new_preference_detail = new Preference();
+            $new_preference_detail->group_id = $teamId;
+            $new_preference_detail->item_id = intval($preference_id);
+            $new_preference_detail->save();
+        }
+
+        if(isset($input['timeInHouse'])) {
+            $preference_id = PreferenceItem::where('category_id', 3)->where('name', $input['timeInHouse'])->first()->id;
+
+            $new_preference_detail = new Preference();
+            $new_preference_detail->group_id = $teamId;
+            $new_preference_detail->item_id = intval($preference_id);
+            $new_preference_detail->save();
+        }
+
+        if(isset($input['personalities'])) {
+            $result['personalities'] = array();
+            foreach($input['personalities'] as $personalities) {
+                $preference_id = PreferenceItem::where('category_id', 4)->where('name', $personalities)->first()->id;
+
+                $new_preference_detail = new Preference();
+                $new_preference_detail->group_id = $teamId;
+                $new_preference_detail->item_id = intval($preference_id);
+                $new_preference_detail->save();
+            }
+        }
+
+        if(isset($input['interests'])) {
+            $result['interests'] = array();
+            foreach($input['interests'] as $interests) {
+                $preference_id = PreferenceItem::where('category_id', 5)->where('name', $interests)->first()->id;
+
+                $new_preference_detail = new Preference();
+                $new_preference_detail->group_id = $teamId;
+                $new_preference_detail->item_id = intval($preference_id);
+                $new_preference_detail->save();
+            }
+        }
 
       $response = ['isSuccess' => true];
       return $response;
@@ -751,9 +815,9 @@ class HouseController extends Controller
       }
 
       $result_preferences = array();
-      // $gender = '';
-      // $petFree = '';
-      // $timeInHouse = '';
+      $gender = '';
+      $petFree = '';
+      $timeInHouse = '';
       $personalities = array();
       $interests = array();
 

@@ -531,20 +531,26 @@ class TradeController extends Controller
 
     // Create Trade Item:[Image]
     public function upload_tradeItemPhoto(Request $request){
+      // dd($request);
       $trade_id = $request->input('tradeId');
+      $temp = 0;
+      $images = $request->file('photoURLs');
+      $size = sizeof($images);
 
-      if(!empty($request->file('photoURL'))) {
-        $image = $request->file('photoURL');
-        $extension = $image->getClientOriginalExtension();
+      if(!empty($images)) {
+        // foreach($images as $image) {
+        for($i = 0; $i < $size; $i++) {
+          $extension = $images[$i]->getClientOriginalExtension();
 
-        $now = strtotime(Carbon::now());
-        $url = 'trade_' . $trade_id . '_' . $now . '.' . $extension;
-        Storage::disk('public')->put($url,  File::get($image));
+          $now = strtotime(Carbon::now());
+          $url = 'trade_' . $trade_id . '_' . $now . '_' .$i .'.' . $extension;
+          Storage::disk('public')->put($url,  File::get($images[$i]));
+          $temp++;
+        }
+        $response = ['isSuccess' => true, 'counter' => $temp];
 
-
-        $response = ['isSuccess' => true];
-
-      }else{
+      }
+      else{
         $response = ['isSuccess' => false];
       }
 
