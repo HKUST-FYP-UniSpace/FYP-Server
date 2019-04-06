@@ -2,7 +2,7 @@
 
 <!-- css style (name corresponds to app.blade.php) -->
 @push('add-style')
-    <link href="{{ asset('css/form.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -15,8 +15,8 @@
                 <div class="panel-body text-center">
                     <div class="row" style="padding-top: 5px;">
                         <h5>Add Success!</h5>
-                    </div>                 
-                    <div class="row" style="padding:15px;">
+                    </div>
+                    <div class="row">
                         <a href="{{ route('trade-view', ['id'=>$id])}}"class="btn  form-btn">Back to View Trade Details</a>
                     </div>
                 </div>

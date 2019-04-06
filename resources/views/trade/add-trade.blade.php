@@ -2,19 +2,23 @@
 
 <!-- css style (name corresponds to app.blade.php) -->
 @push('add-style')
-    <link href="{{ asset('css/form.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
+<div class ="container" id="mainDiv">
+    <div id="mydiv" style="height:50px; "></div>
+</div>
+
 <div class="container before-nav">
-    <form id="add-trade-form" method="POST" action="{{ route('trade-add-form')}}">
+    <form id="add-trade-form" method="POST" action="{{ route('addtrade-form')}}">
         {{ csrf_field() }}
         <div class="col-md-8 col-md-offset-2">  <!--size of form box -->
             <div class="panel panel-default"> <!-- border+background -->
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Add New Trade Item</h4>
                 </div>
-                <div class="panel-body-edit">
+                <div class="panel-body-edit"  style="padding-left:30px; padding-right:30px">
 
                     <!-- Title -->
                     <div class="form-group row {{ $errors->has('add-trade-title') ? 'has-error' : '' }}">
@@ -62,6 +66,22 @@
                             </div>
                     </div>
 
+                    <!-- Status: need to select -->
+                     <div class="form-group row {{ $errors->has('add-trade-status') ? 'has-error' : '' }}">
+                        <label for="add-trade-status" class="col-sm-3 col-form-label"> Status </label>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="add-trade-status" name="add-trade-status" value="{{ old('add-trade-status')}}">
+                                <option value="" selected disabled hidden> Please Select </option>
+                                @foreach($trade_statuses as $trade_status)
+                                    <option value="{{ $trade_status ->id }}">{{ $trade_status->status }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('add-trade-status'))
+                                <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-trade-status') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
                     <!-- Description -->
                     <div class="form-group row {{ $errors->has('add-trade-description') ? 'has-error' : '' }}">
                         <label for="add-trade-description" class="col-sm-2 col-form-label">Description </label>
@@ -75,7 +95,7 @@
 
                     <!-- submit button -->
                     <div class="row text-center">
-                        <button type="submit" class="btn  form-btn" id="add-trade-submit">Submit</button>
+                        <button type="submit" class="btn form-btn" id="add-trade-submit">Submit</button>
                     </div>
                 </div>
             </div>
@@ -87,5 +107,5 @@
 
 <!-- javascript (name corresponds to app.blade.php) -->
 @push('add-script')
-    <script src="{{ asset('/js/trade/add.js') }}"></script>
+    <!-- <script src="{{ asset('/js/trade/add.js') }}"></script> -->
 @endpush
