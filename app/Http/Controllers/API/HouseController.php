@@ -660,15 +660,6 @@ class HouseController extends Controller
       $original_price = House::where('id', $house_id)->first()->price;
       $preference_model = self::create_preferenceModelByPreference($id);
 
-      $house_imgList = HouseImage::where('house_id', $house_id);
-      $house_imgArray = array(); 
-      if($house_imgList->count()>0){
-        $house_imgs = $house_imgList->get();
-        foreach($house_imgs as $house_img){
-          array_push($house_imgArray, $house_img->img_url);
-        }
-      }
-
 
       //HousePostGroup::where('id', $id)->get();
       $team_view = [
@@ -680,7 +671,7 @@ class HouseController extends Controller
         'description' => $group->description,// should be the house group description, to be added to the ERD
         'groupSize' => $group->max_ppl,
         'occupiedCount' => $occupiedCount,
-        'photoURLs' => $house_imgArray
+        'photoURL' => $group->image_url
       ];
 
       return $team_view;
