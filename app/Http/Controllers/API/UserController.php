@@ -43,7 +43,7 @@ class UserController extends Controller
         return response($content)->cookie('token', $token, 60);
     }
 
-    // POST
+    // user registration/register
     public function register(Request $request) {
         // dd($request);
         // prepare for errors
@@ -78,7 +78,7 @@ class UserController extends Controller
         $new_user->name = $input['name'];
         $new_user->email = $input['email'];
         $new_user->password = Hash::make($input['password']);
-        $new_user->is_verified = 1;    // hard code first
+        // $new_user->is_verified = 1;    // hard code first
         // $new_is_deleted = 0;
 
         // generate a random verification code
@@ -266,7 +266,7 @@ class UserController extends Controller
         return response($profile)->cookie('token', $new_user->token, 1440);
     }
 
-    // POST
+    // send verification email/verify
     public function send_verification_code($id, Request $request) {
         $user = User::where('id', $id)->first();
         $email = $user->email;
@@ -276,7 +276,7 @@ class UserController extends Controller
 
         // send email with code
         $mail = Mail::to($email)->send(new UserVerification($user));
-        dd($mail);
+        // dd($mail);
         $is_success = true;
 
         $result['isSuccess'] = $is_success;
@@ -284,6 +284,7 @@ class UserController extends Controller
         return $result;
     }
 
+    // verify
     public function verify_code($id, Request $request) {
         $user = User::where('id', $id)->first();
         $code_db = $user->verification_code;
@@ -297,6 +298,7 @@ class UserController extends Controller
 
         if($code_db == $code_input) {
             $user->is_verified = 1;
+            $user->save();
             $is_success = true;
         }
 
@@ -305,7 +307,7 @@ class UserController extends Controller
         return $result;
     }
 
-    // POST
+    // user login
     public function login(Request $request) {
         // prepare for errors
         $errors = array();
@@ -410,17 +412,7 @@ class UserController extends Controller
 
     }
 
-    // GET, param: token
-    public function get_user_details(Request $request) {
-        $input = $request->all();
-        $user = JWTAuth::toUser($input['token']);
-
-        return response()->json(['result' => $user]);
-    }
-
-    // -------------------------------------------------------
-
-    // GET, param: user id
+    // display user profile
     public function show_profile($id) {
         // prepare for errors
         $errors = array();
@@ -512,7 +504,7 @@ class UserController extends Controller
         return $profile;
     }
 
-    // 
+    // edit user profile
     public function edit_profile($id, Request $request) {
         // profiles: [id], gender, contact, self_intro, icon_url, [user_id]
         $input = $request->input();
@@ -559,7 +551,7 @@ class UserController extends Controller
         return $profile;
     }
 
-    // 
+    // edit user preference model
     public function edit_preference($id, Request $request) {
         // profile_details: [id], profile_id, item_id <--> preference_items: id
         $input = $request->input();
@@ -654,7 +646,7 @@ class UserController extends Controller
         return $result;
     }
 
-    // 
+    // check existence of username
     public function check_username(Request $request) {
         $result = array();
 

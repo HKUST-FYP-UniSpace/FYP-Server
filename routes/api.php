@@ -32,9 +32,6 @@ Route::get('/test_cookie', 'API\UserController@test_cookie');
 Route::group(['middleware' => ['api','cors']], function () {
     Route::post('users/register', 'API\UserController@register');     // 注册
     Route::post('users/login', 'API\UserController@login');           // 登陆
-    Route::group(['middleware' => 'jwt.auth'], function () {
-        Route::post('users/get_user_details', 'API\UserController@get_user_details');  // 获取用户详情
-    });
 });
 
 
