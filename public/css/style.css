@@ -7291,6 +7291,7 @@ button.list-group-item-danger.active:focus {
   border-radius: 3px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  color: white;
 }
 
 .well blockquote {
@@ -9554,4 +9555,13 @@ select.form-control:focus {
   position: relative;
   top: 80%;
   left: 38%;
+}
+
+.CMSName{
+  display: block;
+  font-size: 45px;
+  color: orange;
+  font-family: "Nunito";
+  padding-top: 35px;
+  padding-left: 110px;
 }

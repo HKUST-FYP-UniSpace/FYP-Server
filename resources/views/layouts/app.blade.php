@@ -37,7 +37,8 @@
             <nav class="nav navbar-light bg-light">
               <a class="navbar-brand" href="{{ url('/admin') }}">
                 <img src="{{ asset('/images/AppLogo.png')}}" style="height: 100px; width:100px;"/>
-                <span>UniSpace CMS</span></a>
+              </a>
+              <span class ="CMSName">UniSpace CMS</span>
             </nav>
 
           <nav>
@@ -45,6 +46,15 @@
             <!-- Logout -->
               <ul class="nav navbar-nav navbar-right">
                      <li><a href="{{ url('/') }}"><i class="fas fa-sign-out-alt" style=" padding-right: 5px;"></i>Logout</a></li>
+              </ul>
+
+              <!-- App Statistics -->
+              <ul class="nav navbar-nav navbar-right">
+                  @if( \Request::is('message/*') )
+                       <li class="active"><a href="{{ url('/statistics') }}"><i class="fas fa-users-cog" style=" padding-right: 5px;"></i>App Statistics</a></li>
+                  @else
+                       <li ><a href="{{ url('/statistics') }}"><i class="fas fa-chart-bar" style=" padding-right: 5px;"></i>App Statistics</a></li>
+                  @endif
               </ul>
 
               <!-- Admin -->

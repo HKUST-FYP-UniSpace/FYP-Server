@@ -3,7 +3,7 @@
 @section('content')
 <div class="container before-nav">
     <div class="row">
-        <form  class="form-horizontal"  action="{{ url('/user/search')}}" method="GET" id='user-search'>
+        <form  class="form-horizontal"  action="{{ url('/tenant/search')}}" method="GET" id='tenant-search'>
             <div class="panel panel-default col-md-12">
                 <div class="panel-body">
                     <input class="form-control" type="search" name="search" placeholder="{{ $searchPhrase ?? 'Search' }}">
@@ -16,7 +16,7 @@
     <div class="row">
 		<div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">
             <div class="panel-body">
-                <h3>Users</h3>
+                <h3>Tenants</h3>
                 <table class="table table-striped table-hover ">
                     <thead>
                         <tr>
@@ -28,20 +28,20 @@
                         </tr>
                     </thead>
 
-                    @foreach ($users as user)
+                    @foreach ($tenants as $tenant)
                         <tbody>
-                            <th>{{ $user->id }}</th>
-                            <th>{{ $user->username }}</th>
-                            <th>{{ $user->name }}</th>
-                            <th>{{ $user->email }}</th>
-                            <td><a href="{{ route('user-view', $user->id) }}">details</a></td>
-                        </tbody>
 
+                            <th>{{ $tenant->id }}</th>
+                            <th>{{ $tenant->username }}</th>
+                            <th>{{ $tenant->name }}</th>
+                            <th>{{ $tenant->email }}</th>
+                            <td><a href="{{ route('user-view', $tenant->id) }}">details</a></td>
+                        </tbody>
                      @endforeach
 
 				</table>
                 <div>
-                    {{ $users->links() }}
+                    {{ $tenants->links() }}
                 </div>
             </div>
         </div>

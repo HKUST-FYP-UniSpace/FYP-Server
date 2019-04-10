@@ -2,7 +2,7 @@
 
 <!-- css style (name corresponds to app.blade.php) -->
 @push('add-style')
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/form.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -42,19 +42,6 @@
                         </div>
                     </div>
 
-
-
-                    <!-- Post Date -->
-<!--                     <div class="form-group row {{ $errors->has('add-trade-post_date') ? 'has-error' : '' }}" id="add-trade-post_date">
-                        <label for="add-trade-post_date" class="col-sm-2 col-form-label">Post Date</label>
-                        <div class="col-sm-4">
-                            <input type="date" class="form-control" id="add-trade-post_date" name="add-trade-post_date" placeholder="YYYY-MM-DD" value="{{ old('add-trade-post_date') }}">
-                            @if($errors->has('add-trade-post_date'))
-                                <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-trade-post_date') }}</span>
-                            @endif
-                        </div>
-                    </div> -->
-
                     <!-- Quantity-->
                     <div class="form-group row {{ $errors->has('add-trade-quantity') ? 'has-error' : '' }}">
                         <label for="add-trade-quantity" class="col-sm-2 col-form-label">Quantity</label>
@@ -65,6 +52,38 @@
                                 @endif
                             </div>
                     </div>
+
+                    <!-- Trade Category ID  -->
+                     <div class="form-group row {{ $errors->has('add-trade-trade_category_id') ? 'has-error' : '' }}">
+                        <label for="add-trade-trade_category_id" class="col-sm-3 col-form-label"> Category </label>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="add-trade-trade_category_id" name="add-trade-trade_category_id" value="{{ old('add-trade-trade_category_id')}}">
+                                <option value="" selected disabled hidden> Please Select </option>
+                                @foreach($trade_categories as $trade_category)
+                                    <option value="{{ $trade_category->id }}">{{ $trade_category->category }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('add-trade-trade_category_id'))
+                                <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-trade-trade_category_id') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Trade Condition Type -->
+                    <div class="form-group row {{ $errors->has('add-trade-trade_condition_type_id') ? 'has-error' : '' }}">
+                       <label for="add-trade-trade_condition_type_id" class="col-sm-3 col-form-label"> Condition Type </label>
+                       <div class="col-sm-4">
+                           <select class="form-control" id="add-trade-trade_condition_type_id" name="add-trade-trade_condition_type_id" value="{{ old('add-trade-trade_condition_type_id')}}">
+                               <option value="" selected disabled hidden> Please Select </option>
+                               @foreach($trade_conditions as $trade_condition)
+                                   <option value="{{ $trade_condition->id }}">{{ $trade_condition->type }}</option>
+                               @endforeach
+                           </select>
+                           @if($errors->has('add-trade-trade_condition_type_id'))
+                               <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-trade-trade_condition_type_id') }}</span>
+                           @endif
+                       </div>
+                   </div>
 
                     <!-- Status: need to select -->
                      <div class="form-group row {{ $errors->has('add-trade-status') ? 'has-error' : '' }}">

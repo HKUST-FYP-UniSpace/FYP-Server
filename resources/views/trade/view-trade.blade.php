@@ -32,26 +32,23 @@
                   <dt class="col-sm-3">Quantity</dt>
                   <dd class="col-sm-9">{{ $trade->quantity }}</dd>
 
-                  <dt class="col-sm-3">Trade Description</dt>
+                  <dt class="col-sm-3">Description</dt>
                   <dd class="col-sm-9">{{ $trade->description }}</dd>
 
-                  <dt class="col-sm-3">Trade Transaction ID</dt>
-                  <dd class="col-sm-9">{{ $trade->trade_transaction_id }}</dd>
-
-                  <dt class="col-sm-3">Trade Category ID</dt>
+                  <dt class="col-sm-3">Category</dt>
                   <dd class="col-sm-9">{{ $trade->trade_category_id}}</dd>
 
-                  <dt class="col-sm-3">Trade Condition Type ID</dt>
+                  <dt class="col-sm-3">Condition Type</dt>
                   <dd class="col-sm-9">{{ $trade->trade_condition_type_id }}</dd>
 
-                  <dt class="col-sm-3">Trade Status ID</dt>
+                  <dt class="col-sm-3">Status</dt>
                   <dd class="col-sm-9">{{ $trade->trade_status_id }}</dd>
 
                   <dt class="col-sm-3">Post Date</dt>
-                  <dd class="col-sm-9">{{ $trade->post_date }}</dd>
+                  <dd class="col-sm-9">{{ $trade->created_at }}</dd>
 
                   <dt class="col-sm-3">Update Date</dt>
-                  <dd class="col-sm-9">{{ $trade->updated_at}}</dd>
+                  <dd class="col-sm-9">{{ $trade->updated_at }}</dd>
 
               </div>
 
