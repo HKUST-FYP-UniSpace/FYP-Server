@@ -44,6 +44,7 @@ Route::post('/users/preference/{id}/edit', 'API\UserController@edit_preference')
 Route::post('/users/check/username', 'API\UserController@check_username');
 Route::post('users/verify/{id}/email', 'API\UserController@send_verification_code');
 Route::post('users/verify/{id}', 'API\UserController@verify_code');
+Route::get('users/calendar/{id}/{year}/{month}', 'API\UserController@calendar');
 
 // Upload
 Route::post('image/upload', 'API\UploadController@image_upload');

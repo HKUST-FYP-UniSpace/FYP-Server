@@ -13,6 +13,7 @@ use App\ProfileDetail;
 use App\Preference;
 use App\PreferenceItem;
 use App\PreferenceItemCategory;
+use App\Calendar;
 use App\Mail\UserVerification;
 
 use Validator;
@@ -43,7 +44,7 @@ class UserController extends Controller
         return response($content)->cookie('token', $token, 60);
     }
 
-    // user registration/register
+    // POST: user registration/register
     public function register(Request $request) {
         // dd($request);
         // prepare for errors
@@ -266,7 +267,7 @@ class UserController extends Controller
         return response($profile)->cookie('token', $new_user->token, 1440);
     }
 
-    // send verification email/verify
+    // POST: send verification email/verify
     public function send_verification_code($id, Request $request) {
         $user = User::where('id', $id)->first();
         $email = $user->email;
@@ -284,7 +285,7 @@ class UserController extends Controller
         return $result;
     }
 
-    // verify
+    // POST: verify
     public function verify_code($id, Request $request) {
         $user = User::where('id', $id)->first();
         $code_db = $user->verification_code;
@@ -307,7 +308,7 @@ class UserController extends Controller
         return $result;
     }
 
-    // user login
+    // POST: user login
     public function login(Request $request) {
         // prepare for errors
         $errors = array();
@@ -412,7 +413,7 @@ class UserController extends Controller
 
     }
 
-    // display user profile
+    // GET: display user profile
     public function show_profile($id) {
         // prepare for errors
         $errors = array();
@@ -504,7 +505,7 @@ class UserController extends Controller
         return $profile;
     }
 
-    // edit user profile
+    // POST: edit user profile
     public function edit_profile($id, Request $request) {
         // profiles: [id], gender, contact, self_intro, icon_url, [user_id]
         $input = $request->input();
@@ -551,7 +552,7 @@ class UserController extends Controller
         return $profile;
     }
 
-    // edit user preference model
+    // POST: edit user preference model
     public function edit_preference($id, Request $request) {
         // profile_details: [id], profile_id, item_id <--> preference_items: id
         $input = $request->input();
@@ -646,7 +647,7 @@ class UserController extends Controller
         return $result;
     }
 
-    // check existence of username
+    // POST: check existence of username
     public function check_username(Request $request) {
         $result = array();
 
@@ -658,6 +659,45 @@ class UserController extends Controller
         }
 
         $result['isExists'] = $is_exists;
+
+        return $result;
+    }
+
+    // GET: Calendar
+    public function calendar($id, $year, $month) {
+        $result = array();
+
+        $year = (int) $year;
+        $month = (int) $month;
+        $user = User::where('id', $id)->first();
+        $events = $user->calendar()->where('year', $year)->where('month', $month)->orderBy('date')->orderBy('start_time')->get();
+        $first_day = (int) $events[0]->day;
+
+        if(empty($events)) {
+            $result = null;
+        }
+        else {
+            for($i = $first_day; $i <= 31; $i++) {
+                $day_events = $user->calendar()->where('year', $year)->where('month', $month)->where('day', $i)->orderBy('date')->orderBy('start_time')->get();
+                if(!($day_events->isEmpty())) {
+                    $temp_date = array();
+                    $temp_date['date'] = $i;
+                    $temp_date['data'] = array();
+
+                    foreach($day_events as $day_event) {
+                        $temp_event = array();
+                        $temp_event['startTime'] = $day_event->start_time;
+                        $temp_event['endTime'] = $day_event->end_time;
+                        $temp_event['appointment'] = $day_event->event;
+                        array_push($temp_date['data'], $temp_event);
+                    }
+
+                    array_push($result, $temp_date);
+                }   
+                
+            }
+        }
+        
 
         return $result;
     }
