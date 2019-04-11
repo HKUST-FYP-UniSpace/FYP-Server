@@ -52,7 +52,7 @@ class Export implements FromArray, ShouldAutoSize, WithColumnFormatting, WithEve
                   ->count();
 
       if($this->tenants == 0) {
-        $this->females_percent == 0;
+        $this->females_percent = 0;
       }
       else {
         $this->females_percent = number_format($this->females/$this->tenants  * 100, 1);
