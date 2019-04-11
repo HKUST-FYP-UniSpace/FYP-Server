@@ -32,9 +32,6 @@ Route::get('/test_cookie', 'API\UserController@test_cookie');
 Route::group(['middleware' => ['api','cors']], function () {
     Route::post('users/register', 'API\UserController@register');     // 注册
     Route::post('users/login', 'API\UserController@login');           // 登陆
-    Route::group(['middleware' => 'jwt.auth'], function () {
-        Route::post('users/get_user_details', 'API\UserController@get_user_details');  // 获取用户详情
-    });
 });
 
 
@@ -47,6 +44,7 @@ Route::post('/users/preference/{id}/edit', 'API\UserController@edit_preference')
 Route::post('/users/check/username', 'API\UserController@check_username');
 Route::post('users/verify/{id}/email', 'API\UserController@send_verification_code');
 Route::post('users/verify/{id}', 'API\UserController@verify_code');
+Route::get('users/calendar/{id}/{year}/{month}', 'API\UserController@calendar');
 
 // Upload
 Route::post('image/upload', 'API\UploadController@image_upload');

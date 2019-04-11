@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnToUsersTable extends Migration
+class AddColumnToCalendarsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddColumnToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('verification_code', 6)->after('is_verified');
+        Schema::table('calendars', function (Blueprint $table) {
+            $table->date('date', 6)->after('event');
         });
     }
 
@@ -25,7 +25,7 @@ class AddColumnToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('calendars', function (Blueprint $table) {
             //
         });
     }
