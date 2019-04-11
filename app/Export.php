@@ -16,7 +16,7 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use App\User;
 use App\Owner;
 use App\Tenant;
-use App\profile;
+use App\Profile;
 use App\House;
 use App\Trade;
 use App\Blog;
