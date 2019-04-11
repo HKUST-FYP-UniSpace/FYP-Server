@@ -46,7 +46,7 @@
                             <th>{{ $trade->price }}</th>
                             <th>{{ $trade->description }}</th>
                             <th>{{ $trade->quantity }}</th>
-                            <th>{{ $trade->post_date }}</th>
+                            <th>{{ $trade->created_at }}</th>
                             <td><a href="{{ route('trade-view', $trade->id) }}">details</a></td>
                         </tbody>
                      @endforeach

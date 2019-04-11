@@ -32,18 +32,22 @@ class UserController extends Controller
 
     public function show_user() {
         $users = User::paginate(5);
-        $tenants = Tenant::get();
-        $owners = Owner::get();
 
         return view('user.list-user', compact('users','tenants', 'owners'));
     }
 
-    // public function show_tenant($id) {
-    //     $tenants = Tenant::paginate(2);
-    //     $users = User::where('id', $id)->first();
-    //
-    //     return view('user.list-tenant', compact('users'));
-    // }
+    public function show_tenant() {
+        $tenants = Profile::join('tenants','profiles.user_id','=','tenants.user_id')->paginate(5);
+        $users = $tenants;
+
+        return view('user.list-tenant', compact('tenants','users'));
+    }
+
+    public function show_owner() {
+        $owners = Profile::join('owners','profiles.user_id','=','owners.user_id')->paginate(5);
+
+        return view('user.list-owner', compact('owners'));
+    }
 
     public function search(Request $request){
     if ( $request->has('search') ){

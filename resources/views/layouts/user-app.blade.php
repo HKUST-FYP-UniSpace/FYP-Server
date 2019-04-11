@@ -4,15 +4,22 @@
 
 <div class ="container" >
     <nav>
-        <!-- House Owners -->
-        <ul class="nav navbar-nav navbar-right">
-               <li><a href="{{ url('/user') }}">Apartment Owners</a></li>
-        </ul>
 
         <!-- Tenants -->
         <ul class="nav navbar-nav navbar-right">
-                 <li><a href="{{ url('/user') }}">Tenants</a></li>
+                 <li><a href="{{ url('/tenant') }}">Tenants</a></li>
         </ul>
+
+        <!-- House Owners -->
+        <ul class="nav navbar-nav navbar-right">
+               <li><a href="{{ url('/owner') }}">Apartment Owners</a></li>
+        </ul>
+
+        <!-- all users -->
+        <ul class="nav navbar-nav navbar-right">
+               <li><a href="{{ url('/user') }}">All Users</a></li>
+        </ul>
+
     </nav>
 </div>
 @endsection

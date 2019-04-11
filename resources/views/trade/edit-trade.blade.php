@@ -35,6 +35,7 @@
                         </dd>
                     </div>
 
+                    <!-- Price -->
                     <div class="form-group row">
                         <dt for="edit-trade-price" class="col-sm-9" style="padding-left:30px"> Price </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
@@ -42,6 +43,7 @@
                         </dd>
                     </div>
 
+                    <!-- Quantity -->
                     <div class="form-group row">
                         <dt for="edit-trade-quantity" class="col-sm-9" style="padding-left:30px"> Quantity </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
@@ -49,48 +51,48 @@
                         </dd>
                     </div>
 
-                    <!-- <div class="form-group row">
-                        <dt for="edit-trade-trade_transaction_id" class="col-sm-9" style="padding-left:30px"> Trade Transaction ID </dt>
-                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                            <input type="text" class="form-control" id="edit-trade-trade_transaction_id" name="edit-trade-trade_transaction_id" value="{{ isset($trade) ? old('edit-trade-trade_transaction_id', $trade->trade_transaction_id) : old('edit-trade-trade_transaction_id') }}">
-                        </dd>
-                    </div> -->
-
+                    <!-- Trade Category ID  -->
                     <div class="form-group row">
-                        <dt for="edit-trade-trade_category_id" class="col-sm-9" style="padding-left:30px"> Trade Category ID </dt>
+                        <dt for="edit-trade-trade_category_id" class="col-sm-9" style="padding-left:30px">  Category </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                            <select class="form-control" id="edit-trade-trade_category_id" name="edit-trade-trade_category_id" value="{{ isset($trade) ? old('edit-trade-trade_category_id', $trade->trade_category_id) : old('edit-trade-trade_category_id') }}">
-                                <option>1</option>
-                                <option>2</option>
+                            <select class="form-control" id="edit-trade-trade_category_id" name="edit-trade-trade_category_id" value="{{  isset($trade) ? old('edit-trade-trade_category_id', $trade->trade_category_id) : old('edit-trade-trade_category_id')}}">
+                                <option value="" selected disabled hidden> Please Select </option>
+                                @foreach($trade_categories as $trade_category)
+                                    <option value="{{ $trade_category->id }}">{{ $trade_category->category }}</option>
+                                @endforeach
                             </select>
                         </dd>
-
                     </div>
 
+                    <!-- Trade Condition Type -->
                     <div class="form-group row">
-                        <dt for="edit-trade-trade_condition_type_id" class="col-sm-9" style="padding-left:30px"> Trade Condition Type ID </dt>
+                        <dt for="edit-trade-trade_condition_type_id" class="col-sm-9" style="padding-left:30px"> Condition Type </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
                             <select class="form-control" id="edit-trade-trade_condition_type_id" name="edit-trade-trade_condition_type_id" value="{{ isset($trade) ? old('edit-trade-trade_condition_type_id', $trade->trade_condition_type_id) : old('edit-trade-trade_condition_type_id') }}">
-                                <option>1</option>
-                                <option>2</option>
+                              <option value="" selected disabled hidden> Please Select </option>
+                              @foreach($trade_conditions as $trade_condition)
+                                  <option value="{{ $trade_condition->id }}">{{ $trade_condition->type }}</option>
+                              @endforeach
                             </select>
                         </dd>
                     </div>
-                    
+
+                    <!-- Status -->
                     <div class="form-group row">
                         <dt for="edit-trade-trade_status_id" class="col-sm-9" style="padding-left:30px"> Status </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
                           <select class="form-control" id="edit-trade-trade_status_id" name="edit-trade-trade_status_id" value="{{ old('edit-trade-trade_status_id')}}">
                               <option value="" selected disabled hidden> Please Select </option>
                               @foreach($trade_statuses as $trade_status)
-                                  <option value="{{ $trade_status ->id }}">{{ $trade_status->status }}</option>
+                                  <option value="{{ $trade_status->id }}">{{ $trade_status->status }}</option>
                               @endforeach
                           </select>
                         </dd>
                     </div>
 
+                    <!-- Description  -->
                     <div class="form-group row">
-                        <dt for="edit-trade-description" class="col-sm-9" style="padding-left:30px">trade Description </dt>
+                        <dt for="edit-trade-description" class="col-sm-9" style="padding-left:30px"> Description </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
                             <textarea class="form-control" id="edit-trade-description" name="edit-trade-description" placeholder="Write something.." style="height:200px" value="{{ isset($trade) ? old('edit-trade-description', $trade->description) : old('edit-trade-description') }}">{{$trade->description}}</textarea>
                         </dd>

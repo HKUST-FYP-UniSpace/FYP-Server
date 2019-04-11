@@ -76,8 +76,10 @@ class HouseController extends Controller
 
     public function edit_house_form($id) { // $id is user id
         $house = House::where('id', $id)->first();
+        $house_districts = District::get();
+        $house_statuses = HouseStatus::get();
 
-        return view('house.edit-house', compact('house'));
+        return view('house.edit-house', compact('house','house_districts','house_statuses'));
     }
 
     public function add_house_form() { // $id is user id
@@ -95,10 +97,11 @@ class HouseController extends Controller
             'edit-house-address' => 'required|max:255',
             'edit-house-title' => 'required|max:255',
             'edit-house-subtitle' => 'required|max:255',
+            'edit-house-district_id'=> 'required',
             'edit-house-size' => 'required|max:255',
             'edit-house-type' => 'required|max:255',
             'edit-house-price' => 'required|max:255',
-            'edit-house-status' => 'required|max:255',
+            'edit-house-status' => 'required',
             'edit-house-owner_id' => 'required|max:255',
             'edit-house-max_ppl'  => 'required|max:255',
             'edit-house-description' => 'nullable|max:255'
@@ -108,10 +111,11 @@ class HouseController extends Controller
             'edit-house-address' => 'Input Address',
             'edit-house-title' => 'Input Title',
             'edit-house-subtitle' => 'Input Subtitle',
+            'edit-house-district_id.required' => 'Select District ID', //select from database
             'edit-house-size' => 'Input Apartment Size',
             'edit-house-type' => 'Select Apartment Type',
             'edit-house-price' => 'Input Price',
-            'edit-house-status' => 'Input Status',
+            'edit-house-status.required' => 'Select Apartment Status', //select from database
             'edit-house-owner_id' => 'Input Owner ID',
             'edit-house-max_ppl'  => 'Input Maximum No. People',
             'edit-house-description' => 'Input Description'
@@ -122,17 +126,19 @@ class HouseController extends Controller
 
 
         $house->address = $request->input('edit-house-address');
-        $house->title = $request->input('edit-house-title ');
-        $house->subtitle  = $request->input('edit-house-subtitle ');
+        $house->title = $request->input('edit-house-title');
+        $house->subtitle  = $request->input('edit-house-subtitle');
         $house->size = $request->input('edit-house-size');
-        $house->type = $request->input('edit-house-type');
+        $house->type = (intval($request->input('edit-house-type')));
+        $house->district_id = intval($request->input('edit-house-district_id'));
         $house->price = $request->input('edit-house-price');
-        $house->status = $request->input('edit-house-status');
+        $house->status = intval($request->input('add-house-status'));
         $house->owner_id = $request->input('edit-house-owner_id');
         $house->max_ppl= $request->input('edit-house-max_ppl');
         $house->description = $request->input('edit-house-description');
 
         $house->save();
+
         // redirect to edit success page
         return view('house.edit-house-success', ['id'=> $id]);
     }
@@ -154,7 +160,7 @@ class HouseController extends Controller
                 'add-house-owner_id' => 'required|max:255',
                 'add-house-type' => 'required',
                 'add-house-district_id' => 'required',
-                'add-house-status' => 'required',
+                'add-house-status' => 'required'
             ],
             [
 
@@ -185,14 +191,14 @@ class HouseController extends Controller
 
                 'add-house-district_id.required' => 'Select District ID', //select from database
 
-                'add-house-status.required' => 'Select Apartment Status', //select from database
+                'add-house-status.required' => 'Select Apartment Status' //select from database
 
                 // 'add-house-house_category_id' => 'Select house Category'
             ]
         );
 
         // form information filled by users
-        $house= new house();
+        $house= new House();
 
 
         $house->is_deleted = "1";

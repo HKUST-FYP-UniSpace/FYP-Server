@@ -13,10 +13,10 @@
                     <h4 class="title text-muted">Add New Apartment</h4>
                 </div>
                 <div class="panel-body text-center">
-                    <div class="row"  style="padding-top: 5px; padding-left: 40%;">
+                    <div class="row"  style="padding-top: 5px;">
                         <h5>Add Success!</h5>
-                    </div>                 
-                    <div class="row" style="padding:15px;">
+                    </div>
+                    <div class="row">
                         <a href="{{ route('house-view', ['id'=>$id])}}"class="btn  form-btn">Back to View Apartment Details</a>
                     </div>
                 </div>

@@ -11,24 +11,6 @@ use App\TenantRating;
 
 class ProfileController extends Controller
 {
-    //
-    // public function profile() {
-    //   $profiles = array();
-    //   $stacks = Profile::get();
-    //   foreach($stacks as $stack) {
-    //     $profile = array();
-    //     $profile['id'] = $stack->id;
-    //     $profile['gender'] = $stack->gender;
-    //     $profile['name'] = $stack->name;
-    //     $profile['contact'] = $stack->contact;
-    //     $profile['self_intro'] = $stack->self_intro;
-    //     $profile['icon_url'] = $stack->icon_url;
-    //     $profile['user_id'] = $stack->user_id;
-    //     $profile['created_at'] = $stack->created_at;
-    //   }
-    //   return $profiles;
-    // }
-
     public function view_user_profile($id) {
          // get targeted data
         $user = User::where('id', $id)->first();

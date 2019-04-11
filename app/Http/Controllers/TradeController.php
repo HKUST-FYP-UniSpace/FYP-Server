@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 
 use App\Trade;
 use App\TradeStatus;
+use App\TradeCategory;
+use App\TradeConditionType;
 
 
 class TradeController extends Controller
@@ -52,14 +54,19 @@ class TradeController extends Controller
     public function edit_trade_form($id) { // $id is user id
         $trade = Trade::where('id', $id)->first();
         $trade_statuses = TradeStatus::get();
+        $trade_categories = TradeCategory::get();
+        $trade_conditions = TradeConditionType::get();
 
-        return view('trade.edit-trade', compact('trade','trade_statuses'));
+        return view('trade.edit-trade', compact('trade','trade_statuses','trade_categories','trade_conditions'));
 
     }
 
     public function add_trade_form() { // $id is user id
         $trade_statuses = TradeStatus::get();
-        return view('trade.add-trade',compact('trade_statuses'));
+        $trade_categories = TradeCategory::get();
+        $trade_conditions = TradeConditionType::get();
+
+        return view('trade.add-trade',compact('trade_statuses','trade_categories','trade_conditions'));
     }
 
 
@@ -69,7 +76,6 @@ class TradeController extends Controller
             'edit-trade-title' => 'required|max:255',
             'edit-trade-price' => 'required|max:255',
             'edit-trade-quantity' => 'required|max:255',
-            // 'edit-trade-trade_transaction_id' => 'required|max:255',
             'edit-trade-trade_category_id' => 'required|max:255',
             'edit-trade-trade_condition_type_id' => 'required|max:255',
             'edit-trade-trade_status_id'  => 'required|max:255',
@@ -80,7 +86,6 @@ class TradeController extends Controller
             'edit-trade-title' => 'Input Title',
             'edit-trade-price' => 'Input Price',
             'edit-trade-quantity' => 'Input Quantity',
-            // 'edit-trade-trade_transaction_id' => 'Input Trade Transaction ID',
             'edit-trade-trade_category_id' => 'Select Trade Category ID',
             'edit-trade-trade_condition_type_id' => 'Select Trade Condition Type ID',
             'edit-trade-trade_status_id'  => 'Select Trade Status ID',
@@ -95,7 +100,6 @@ class TradeController extends Controller
         $trade->title = $request->input('edit-trade-title');
         $trade->price = $request->input('edit-trade-price');
         $trade->quantity = $request->input('edit-trade-quantity');
-        // $trade->trade_transaction_id = $request->input('edit-trade-trade_transaction_id');
         $trade->trade_category_id = $request->input('edit-trade-trade_category_id');
         $trade->trade_condition_type_id = $request->input('edit-trade-trade_condition_type_id');
         $trade->trade_status_id= $request->input('edit-trade-trade_status_id');
@@ -117,9 +121,9 @@ class TradeController extends Controller
                 'add-trade-price' => 'required|max:255',
                 'add-trade-quantity' => 'required|integer',
                 'add-trade-description' => 'required|max:255',
-                // 'add-trade-post_date' => 'required',
-                'add-trade-status' => 'required'
-                // 'add-trade-trade_category_id' => 'required'
+                'add-trade-status' => 'required',
+                'add-trade-trade_category_id' => 'required',
+                'add-trade-trade_condition_type_id' => 'required'
             ],
             [
 
@@ -134,11 +138,9 @@ class TradeController extends Controller
                 'add-trade-description.required' => 'Input description',
                 'add-trade-description.max' => 'Description cannot be too long',
 
-                // 'add-trade-post_date.required' => 'Input Post Date in YYYY-MM-DD',
-
-                'add-trade-status.required' => 'Select Status' //select from database
-
-                // 'add-trade-trade_category_id' => 'Select Trade Category'
+                'add-trade-status.required' => 'Select Status', //select from database
+                'add-trade-trade_category_id.required' => 'Select Trade Category', //select from database
+                'add-trade-trade_condition_type_id.required' => 'Select Status' //select from database
             ]
         );
 
@@ -153,18 +155,18 @@ class TradeController extends Controller
 
         // title
         $trade->title = $request->input('add-trade-title');
-        // trade_category_id
-        // $trade->trade_category_id = intval($request->input('add-trade-trade_category_id'));
         // description
         $trade->description = $request->input('add-trade-description');
         // quantity
         $trade->quantity = $request->input('add-trade-quantity');
         // price
         $trade->price = $request->input('add-trade-price');
-        // // quantity
-        // $trade->post_date = $request->input('add-trade-post_date');
         // status
         $trade->trade_status_id = intval($request->input('add-trade-status'));
+        // trade_category_id
+        $trade->trade_category_id= intval($request->input('add-trade-trade_category_id'));
+        // trade_condition_type_id
+        $trade->trade_condition_type_id= intval($request->input('add-trade-trade_condition_type_id'));
 
         // save in database
         $trade->save();

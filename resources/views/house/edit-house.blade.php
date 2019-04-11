@@ -27,14 +27,6 @@
                        </div>
                     @endif
 
-                    <!-- Address  -->
-                    <div class="form-group row">
-                        <dt for="edit-house-address" class="col-sm-9" style="padding-left:30px"> Address </dt>
-                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                            <input type="text" class="form-control" id="edit-house-address" name="edit-house-address" value="{{ isset($house) ? old('edit-house-address', $house->address) : old('edit-house-address') }}">
-                        </dd>
-                    </div>
-
                     <!-- Title -->
                     <div class="form-group row">
                         <dt for="edit-house-title" class="col-sm-9" style="padding-left:30px"> Title </dt>
@@ -51,6 +43,42 @@
                         </dd>
                     </div>
 
+                    <!-- Address  -->
+                    <div class="form-group row">
+                        <dt for="edit-house-address" class="col-sm-9" style="padding-left:30px"> Address </dt>
+                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
+                            <input type="text" class="form-control" id="edit-house-address" name="edit-house-address" value="{{ isset($house) ? old('edit-house-address', $house->address) : old('edit-house-address') }}">
+                        </dd>
+                    </div>
+
+                    <!-- House Type: need to select -->
+                    <div class="form-group row">
+                        <dt for="edit-house-type" class="col-sm-9" style="padding-left:30px"> Apartment Type </dt>
+                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
+                          <select class="form-control" id="edit-house-type" name="edit-house-type" value="{{ isset($house) ? old('edit-house-type', $house->type) :  old('edit-house-type')}}">
+                              <option value= "" selected disabled hidden> Please Select </option>
+                              <option value = "0"> Flat </option>
+                              <option value = "1"> Cottage </option>
+                              <option value = "2"> Detached </option>
+                              <option value = "3"> Sub-divided </option>
+                          </select>
+                        </dd>
+                    </div>
+
+                    <!-- House District ID: need to select -->
+                    <div class="form-group row">
+                        <dt for="edit-house-district_id" class="col-sm-9" style="padding-left:30px"> Apartment District </dt>
+                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
+                          <select class="form-control" id="edit-house-district_id" name="edit-house-district_id" value="{{  isset($house) ? old('edit-house-district_id', $house->district_id) : old('edit-house-district_id')}}">
+                              <option value="" selected disabled hidden> Please Select </option>
+                              @foreach($house_districts as $house_district)
+                                  <option value="{{ $house_district ->id }}">{{ $house_district->name }}</option>
+                              @endforeach
+                          </select>
+                        </dd>
+                    </div>
+
+                    <!-- Size -->
                     <div class="form-group row">
                         <dt for="edit-house-size" class="col-sm-9" style="padding-left:30px"> Apartment Size </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
@@ -58,16 +86,8 @@
                         </dd>
                     </div>
 
-                    <div class="form-group row">
-                        <dt for="edit-house-type" class="col-sm-9" style="padding-left:30px"> Apartment Type </dt>
-                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                            <select class="form-control" id="edit-house-type" name="edit-house-type" value="{{ isset($house) ? old('edit-house-type', $house->type) : old('edit-house-type') }}">
-                                <option>Public Housing</option>
-                                <option>Flat</option>
-                            </select>
-                        </dd>
-                    </div>
 
+                    <!-- Price -->
                     <div class="form-group row">
                         <dt for="edit-house-price" class="col-sm-9" style="padding-left:30px"> Price </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
@@ -75,6 +95,7 @@
                         </dd>
                     </div>
 
+                    <!-- Max_ppl -->
                     <div class="form-group row">
                         <dt for="edit-house-max_ppl" class="col-sm-9" style="padding-left:30px"> Maximum No. People </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
@@ -82,6 +103,28 @@
                         </dd>
                     </div>
 
+                    <!-- Description -->
+                    <div class="form-group row">
+                        <dt for="edit-house-description" class="col-sm-9" style="padding-left:30px">House Description </dt>
+                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
+                            <textarea class="form-control" id="edit-house-description" name="edit-house-description" placeholder="Write something.." style="height:200px" value="{{ isset($house) ? old('edit-house-description', $house->description) : old('edit-house-description') }}">{{$house->description}}</textarea>
+                        </dd>
+                    </div>
+
+                    <!-- House Status: need to select -->
+                    <div class="form-group row">
+                        <dt for="edit-house-status" class="col-sm-9" style="padding-left:30px"> Status </dt>
+                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
+                          <select class="form-control" id="edit-house-status" name="edit-house-status" value="{{   isset($house) ? old('edit-house-status', $house->status) :  old('edit-house-status')}}">
+                              <option value="" selected disabled hidden> Please Select </option>
+                              @foreach($house_statuses as $house_status)
+                                  <option value="{{ $house_status->id }}">{{ $house_status->status }}</option>
+                              @endforeach
+                          </select>
+                        </dd>
+                    </div>
+
+                    <!-- Owner ID -->
                     <div class="form-group row">
                         <dt for="edit-house-owner_id" class="col-sm-9" style="padding-left:30px"> Owner ID </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
@@ -89,19 +132,6 @@
                         </dd>
                     </div>
 
-                    <div class="form-group row">
-                        <dt for="edit-house-status" class="col-sm-9" style="padding-left:30px"> Status </dt>
-                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                            <input type="text" class="form-control" id="edit-house-status" name="edit-house-status" value="{{ isset($house) ? old('edit-house-status', $house->status) : old('edit-house-status') }}">
-                        </dd>
-                    </div>
-
-                    <div class="form-group row">
-                        <dt for="edit-house-description" class="col-sm-9" style="padding-left:30px">House Description </dt>
-                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                            <textarea class="form-control" id="edit-house-description" name="edit-house-description" placeholder="Write something.." style="height:200px" value="{{ isset($house) ? old('edit-house-description', $house->description) : old('edit-house-description') }}">{{$house->description}}</textarea>
-                        </dd>
-                    </div>
 
                     <!-- edit button -->
                     <div class="row text-center">
