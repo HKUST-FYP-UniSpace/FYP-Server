@@ -38,7 +38,12 @@ class Export implements FromArray, ShouldAutoSize, WithColumnFormatting, WithEve
                   ->get()
                   ->count();
 
-      $this->males_percent = number_format($this->males/$this->tenants  * 100, 1);
+      if($this->tenants == 0) {
+        $this->males_percent = 0;
+      } 
+      else {
+        $this->males_percent = number_format($this->males/$this->tenants  * 100, 1);
+      }
 
       $this->females = Profile::select('gender')
                   ->join('tenants','profiles.user_id','=','tenants.user_id')
@@ -46,7 +51,12 @@ class Export implements FromArray, ShouldAutoSize, WithColumnFormatting, WithEve
                   ->get()
                   ->count();
 
-      $this->females_percent = number_format($this->females/$this->tenants  * 100, 1);
+      if($this->tenants == 0) {
+        $this->females_percent == 0;
+      }
+      else {
+        $this->females_percent = number_format($this->females/$this->tenants  * 100, 1);
+      }
     }
 
 
