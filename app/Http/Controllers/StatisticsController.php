@@ -33,7 +33,12 @@ class StatisticsController extends Controller
                   ->get()
                   ->count();
 
-      $males_percent = number_format($males/$tenants * 100, 1);
+      if($tenants == 0) {
+        $males_percent = 0;
+      }
+      else {
+        $males_percent = number_format($males/$tenants * 100, 1);
+      }
 
       $females = Profile::select('gender')
                   ->join('tenants','profiles.user_id','=','tenants.user_id')
@@ -41,7 +46,12 @@ class StatisticsController extends Controller
                   ->get()
                   ->count();
 
-      $females_percent = number_format($females/$tenants * 100, 1);
+      if($tenants == 0) {
+        $females_percent = 0;
+      }
+      else {
+        $females_percent = number_format($females/$tenants * 100, 1);
+      }
 
     	return view('statistics.view-statistics',compact('users','owners','tenants','males_percent','females_percent','houses','trades','blogs'));
     }
