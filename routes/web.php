@@ -30,12 +30,18 @@ Route::prefix('admin')->group(function() {
     Route::name('admin.login.submit')->post('/login', 'Auth\AdminLoginController@login');
     // index page after logged in
     Route::name('admin-list')->get('/', 'AdminController@index');
+    Route::name('admin-add')->get('/new', 'AdminController@add_admin_form');
+    Route::name('addadmin-form')->post('/new/add','AdminController@add_admin');// submit add
+    Route::name('admin-delete')->post('/{id}/delete', 'AdminController@delete');
+
+
 });
 
 //Trade
 Route::prefix('trade')->group(function(){
   Route::name('search')->get('/search','TradeController@search');
 	Route::name('trade-list')->get('/', 'TradeController@show_trade');
+  Route::name('trade-delete')->post('/{id}/delete', 'TradeController@delete');
 	Route::name('trade-view')->get('/{id}/view-trade','TradeController@show_trade_details');
 	Route::name('trade-edit')->get('/{id}/edit-trade', 'TradeController@edit_trade_form'); //click edit
 	Route::name('trade-edit-form')->post('/{id}/edit-trade/update', 'TradeController@update_trade');//do
@@ -49,6 +55,7 @@ Route::prefix('trade')->group(function(){
 Route::prefix('house')->group(function(){
   Route::name('search')->get('/search','HouseController@search');
 	Route::name('house-list')->get('/', 'HouseController@show_house');
+  Route::name('house-delete')->post('/{id}/delete', 'HouseController@delete');
 	Route::name('house-view')->get('/{id}/view-house','HouseController@show_house_details');
   Route::name('house-group')->get('/{id}/group-house','HouseController@show_group_details'); //check group details
 	Route::name('house-edit')->get('/{id}/edit-house', 'HouseController@edit_house_form'); //click edit
@@ -75,6 +82,7 @@ Route::prefix('message')->group(function(){
 Route::prefix('blog')->group(function(){
   Route::name('search')->get('/search','BlogController@search');
 	Route::name('blog-list')->get('/', 'BlogController@show_blog');
+  Route::name('blog-delete')->post('/{id}/delete', 'BlogController@delete');
 	Route::name('blog-view')->get('/{id}/view-blog','BlogController@show_blog_details');
 	Route::name('blog-edit')->get('/{id}/edit-blog', 'BlogController@edit_blog_form'); //click edit
 	Route::name('blog-edit-form')->post('/{id}/edit-blog/update', 'BlogController@update_blog');//do edit
@@ -90,7 +98,7 @@ Route::prefix('blog')->group(function(){
 Route::prefix('user')->group(function(){
   Route::name('search')->get('/search','UserController@search');
 	Route::name('tenant-list')->get('/tenant', 'UserController@show_tenant');//tenants
-  Route::name('owner-list')->get('/owner', 'UserController@show_owner');//tenants
+  Route::name('owner-list')->get('/owner', 'UserController@show_owner');//owners
   Route::name('user-list')->get('/', 'UserController@show_user');//all
 	Route::name('user-view')->get('/{id}/view-user','ProfileController@view_user_profile');
 	Route::name('user-edit')->get('/{id}/edit-user', 'ProfileController@edit_user_form'); //click edit
@@ -102,6 +110,30 @@ Route::prefix('statistics')->group(function(){
 	Route::name('statistics-view')->get('/','StatisticsController@show_popularity');
   Route::name('statistics-excel')->get('/excel','StatisticsController@export_excel');
 });
+
+//select
+Route::prefix('select')->group(function(){
+	Route::name('select')->get('/','SelectController@select');
+  Route::name('district')->get('/district','SelectController@show_district'); //add
+  Route::name('district-add')->post('/district/add','SelectController@add_district');// submit add
+
+  Route::name('trade_category')->get('/trade_category','SelectController@show_trade_category');
+  Route::name('trade_category-add')->post('/trade_category/add','SelectController@add_trade_category');// submit add
+
+  Route::name('trade_condition')->get('/trade_condition','SelectController@show_trade_condition'); //add
+  Route::name('trade_condition-add')->post('/trade_condition/add','SelectController@add_trade_condition');// submit add
+
+  Route::name('preference_item')->get('/preference_item','SelectController@show_preference_item'); //add
+  Route::name('preference_item-add')->post('/preference_item/add','SelectController@add_preference_item');// submit add
+
+  Route::name('preference_item_category')->get('/preference_item_category','SelectController@show_preference_item_category'); //add
+  Route::name('preference_item_category-add')->post('/preference_item_category/add','SelectController@add_preference_item_category');// submit add
+});
+
+
+
+
+
 
 // put all the routes inside at last
 // only for those who have logged in can access these pages

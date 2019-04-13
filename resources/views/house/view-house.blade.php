@@ -44,10 +44,10 @@
 
 
 
-        <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">  <!--size of form box -->
+        <div class="panel panel-default col-md-12" style="border-color: transparent; padding-left:10%; padding-right:10%;">  <!--size of form box -->
 
 
-            <div class="panel panel-default"> <!-- border+background -->
+            <div class="panel panel-default" style="height: 400px;"> <!-- border+background -->
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Apartment</h4>
                 </div>
@@ -114,6 +114,6 @@
 @endsection
 
 <!-- javascript (name corresponds to app.blade.php) -->
-@push('add-script')
+<!-- @push('add-script')
     <script src="{{ asset('/js/select.js') }}"></script>
-@endpush
+@endpush -->

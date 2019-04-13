@@ -42,6 +42,7 @@
                             <th>Status</th>
                             <th>View Detail</th>
                             <th>Blog Comments</th>
+                            <th>Delete Post</th>
 
                         </tr>
                     </thead>
@@ -56,6 +57,14 @@
                             <th>{{ $blog->status }}</th>
                             <td><a href="{{ route('blog-view', $blog->id) }}">details</a></td>
                             <td><a href="{{ route('blog-comment', $blog->id) }}">show comments</a></td>
+                            @if($blog->is_deleted == 0)
+                            <td>
+                                <form method="POST" action="{{ route('blog-delete', $blog->id) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <a><button type="submit" class="btn-danger submit-delete" onclick="return confirm('Are you sure to delete the post?')"> Delete </button></a>
+                                </form>
+                            </td>
+                            @endif
                         </tbody>
                      @endforeach
                 </table>

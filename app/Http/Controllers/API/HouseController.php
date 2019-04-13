@@ -148,7 +148,7 @@ class HouseController extends Controller
       $house_id = $house->id;
       //$house_img = HouseImage::where('house_id', $house_id);
       $house_imgList = HouseImage::where('house_id', $house_id);
-      $house_imgArray = array(); 
+      $house_imgArray = array();
       if($house_imgList->count()>0){
         $house_imgs = $house_imgList->get();
         foreach($house_imgs as $house_img){
@@ -156,7 +156,7 @@ class HouseController extends Controller
         }
       }
 
-      
+
 
       $result_house = [
         'id' => $house->id,
@@ -354,7 +354,7 @@ class HouseController extends Controller
 
           //$house_img = HouseImage::where('house_id', $house_id)->first();
           $house_imgList = HouseImage::where('house_id', $house_id);
-          $house_imgArray = array(); 
+          $house_imgArray = array();
           if($house_imgList->count()>0){
             $house_imgs = $house_imgList->get();
             foreach($house_imgs as $house_img){
@@ -384,10 +384,10 @@ class HouseController extends Controller
       foreach($joint_groups as $joint_group){
         $house_id = Group::where('id', $joint_group->group_id)->first()->house_id;
         $house = House::where('id', $house_id)->first();
-        
+
         //$house_img = HouseImage::where('house_id', $house_id)->first();
         $house_imgList = HouseImage::where('house_id', $house_id);
-        $house_imgArray = array(); 
+        $house_imgArray = array();
         if($house_imgList->count()>0){
           $house_imgs = $house_imgList->get();
           foreach($house_imgs as $house_img){

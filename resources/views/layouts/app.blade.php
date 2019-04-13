@@ -27,6 +27,14 @@
         ]); ?>
 
     </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 
 
 </head>
@@ -36,7 +44,7 @@
         <div class="container">
             <nav class="nav navbar-light bg-light">
               <a class="navbar-brand" href="{{ url('/admin') }}">
-                <img src="{{ asset('/images/AppLogo.png')}}" style="height: 100px; width:100px;"/>
+                <img src="{{ asset('/images/AppLogo.png')}}" style="height: 80px; width:80px;"/>
               </a>
               <span class ="CMSName">UniSpace CMS</span>
             </nav>
@@ -46,6 +54,15 @@
             <!-- Logout -->
               <ul class="nav navbar-nav navbar-right">
                      <li><a href="{{ url('/') }}"><i class="fas fa-sign-out-alt" style=" padding-right: 5px;"></i>Logout</a></li>
+              </ul>
+
+              <!-- App Statistics -->
+              <ul class="nav navbar-nav navbar-right">
+                  @if( \Request::is('message/*') )
+                       <li class="active"><a href="{{ url('/select') }}"><i class="fas fa-plus" style=" padding-right: 5px;"></i>Selections</a></li>
+                  @else
+                       <li ><a href="{{ url('/select') }}"><i class="fas fa-plus" style=" padding-right: 5px;"></i>Selections</a></li>
+                  @endif
               </ul>
 
               <!-- App Statistics -->
@@ -127,6 +144,7 @@
 
 
         @yield('userTypes')
+        @yield('selectionTypes')
         @yield('content')
 
          <div class ="container" id="mainDiv">
