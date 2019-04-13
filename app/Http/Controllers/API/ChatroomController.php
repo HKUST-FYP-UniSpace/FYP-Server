@@ -37,7 +37,7 @@ class ChatroomController extends Controller
 
 	    	// chatroom icon
 	    	if($chatroom_summary->chatroom_type_id == 2) {	// team chatroom
-	    		$temp['photoURL'] = Group::find($chatroom_summary->group_id)->first()->image_url;
+	    		$temp['photoURL'] = Group::where('id', $chatroom_summary->group_id)->first()->image_url;
 	    	}
 	    	else {	// tenant vs owner, trade, request to join team
 	    		$receiver_user_id = '';
