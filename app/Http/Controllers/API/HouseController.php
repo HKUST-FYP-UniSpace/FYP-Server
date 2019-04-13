@@ -578,11 +578,25 @@ class HouseController extends Controller
     // First delete all preference connected to the group (if exist)
     // Then re-insert new preference data
     public function update_preference($teamId, Request $request){
-      $preferenceModel = $request->input('preferenceModel');
-      if($preferenceModel == null){
-        $response = ['isSuccess' => false];
-        return $response;
-      }
+      // $preferenceModel = $request->input('preferenceModel');
+      // if(!isset($preferenceModel)){
+      //   $response = ['isSuccess' => false];
+      //   return $response;
+      // }
+      //
+      // $gender = $request->input('gender');
+      // $petFree = $request->input('petFree');
+      // $timeInHouse = $request->input('timeInHouse');
+      // $personalities = $request->input('personalities');
+      // $interests = $request->input('interests');
+
+      $preferenceModel=[
+        'gender'=>$request->input('gender'),
+        'petFree'=>$request->input('petFree'),
+        'timeInHouse'=>$request->input('timeInHouse'),
+        'personalities'=>$request->input('personalities'),
+        'interests'=>$request->input('interests')
+      ];
 
       // $old_preferences = Preference::where('group_id', $teamId);
       // if($old_preferences->count() > 0){
@@ -641,6 +655,48 @@ class HouseController extends Controller
       }else{
         $response = ['isSuccess' => false];
       }
+
+      return $response;
+    }
+
+
+    //Add Review
+    public function review_house($houseId, Request $request){
+      //better send userId instead in the request, otherwise the following should be implemented
+      // $user = User::where('username', $request->input('username'))->first();
+      // if($user == null){
+      //   return null;
+      // }
+      // $user_id = $user->id;
+
+      $review = new Review();
+
+      $review->house_id = $houseId;
+      //$review->tenant_id = $user_id; //better send userId instead in the request
+      $review->tenant_id = $request->input('userId');
+      //$review->tenant_id = $request->input('title'); //obsoleted
+      //$review->tenant_id = $request->input('date'); // should just use creation date by default
+      $review->details = $request->input('detail');
+      //$review->tenant_id = $request->input('starRating'); // should be divided into the following
+      $review->value = $request->input('value');
+      $review->cleaniness = $request->input('cleanliness'); //typo in migration
+      $review->accuracy = $request->input('accuracy');
+      $review->communication = $request->input('communication');
+
+      $review->save();
+
+      $response=[
+        'isSuccess'=>true,
+        'id'=>$review->id,
+        'detail'=>$review->details,
+        'username'=>$review->tenant_id,
+        'value'=>$review->value,
+        'cleanliness'=>$review->cleaniness,
+        'accuracy'=>$review->accuracy,
+        'communication'=>$review->communication,
+        'house_id'=>$review->house_id,
+        'date'=>$review->created_at
+      ];
 
       return $response;
     }
