@@ -578,11 +578,25 @@ class HouseController extends Controller
     // First delete all preference connected to the group (if exist)
     // Then re-insert new preference data
     public function update_preference($teamId, Request $request){
-      $preferenceModel = $request->input('preferenceModel');
-      if(!isset($preferenceModel)){
-        $response = ['isSuccess' => false];
-        return $response;
-      }
+      // $preferenceModel = $request->input('preferenceModel');
+      // if(!isset($preferenceModel)){
+      //   $response = ['isSuccess' => false];
+      //   return $response;
+      // }
+      //
+      // $gender = $request->input('gender');
+      // $petFree = $request->input('petFree');
+      // $timeInHouse = $request->input('timeInHouse');
+      // $personalities = $request->input('personalities');
+      // $interests = $request->input('interests');
+
+      $preferenceModel=[
+        'gender'=>$request->input('gender'),
+        'petFree'=>$request->input('petFree'),
+        'timeInHouse'=>$request->input('timeInHouse'),
+        'personalities'=>$request->input('personalities'),
+        'interests'=>$request->input('interests')
+      ];
 
       // $old_preferences = Preference::where('group_id', $teamId);
       // if($old_preferences->count() > 0){
