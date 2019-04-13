@@ -37,16 +37,17 @@ class UserController extends Controller
     }
 
     public function show_tenant() {
-        $tenants = Profile::join('tenants','profiles.user_id','=','tenants.user_id')->paginate(5);
+        $tenants = User::join('tenants','users.id','=','tenants.user_id')->paginate(5);
         $users = $tenants;
 
-        return view('user.list-tenant', compact('tenants','users'));
+      return view('user.list-user', compact('users','tenants'));
     }
 
     public function show_owner() {
-        $owners = Profile::join('owners','profiles.user_id','=','owners.user_id')->paginate(5);
+        $owners = User::join('owners','users.id','=','owners.user_id')->paginate(5);
+        $users = $owners;
 
-        return view('user.list-owner', compact('owners'));
+      return view('user.list-user', compact('users','owners'));
     }
 
     public function search(Request $request){

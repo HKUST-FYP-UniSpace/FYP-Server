@@ -7,7 +7,7 @@
 
 @section('content')
 <div class="container before-nav">
-    <form id="edit-blog-form" method="POST" action="{{ route('blog-edit-form', $blog->id) }}">
+    <form id="edit-blog-form"  enctype="multipart/form-data"  method="POST" action="{{ route('blog-edit-form', $blog->id) }}">
         {{ csrf_field() }}
 
 
@@ -58,12 +58,12 @@
                         </dd>
                     </div>
 
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                         <dt for="edit-blog-image_url" class="col-sm-9" style="padding-left:30px"> Image URL </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
                             <input type="text" class="form-control" id="edit-blog-image_url" name="edit-blog-image_url" value="{{ isset($blog) ? old('edit-blog-image_url', $blog->image_url) : old('edit-blog-image_url') }}">
                         </dd>
-                    </div>
+                    </div> -->
 
 
                     <div class="form-group row">
@@ -71,6 +71,75 @@
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
                             <textarea class="form-control" id="edit-blog-detail" name="edit-blog-detail" placeholder="Write something.." style="height:200px" value="{{ isset($blog) ? old('edit-blog-detail', $blog->detail) : old('edit-blog-detail') }}">{{$blog->detail}}</textarea>
                         </dd>
+                    </div>
+
+                    <!-- Image  -->
+                    <div class="form-group row">
+                        <label for="edit-file" class="col-sm-2">Blog image</label>
+                        <div class="col-sm-12 {{ $errors->has('edit-file') ? 'has-error' : '' }}">
+                            <!-- original image-->
+                            <div class="form-group row col-sm-12" id="edit-original-file">
+                                <img src="{{ $blog->image_url }}" class="img-responsive center-block">
+                            </div>
+                            <!-- choose new pic use -->
+                            <div class="form-group row">
+                                <div class="col-sm-4 text-center">
+                                  <label class="form-control btn btn-primary view-btn" id="upload-btn">
+                                    <input type="file" class="form-control form-control-file" id="edit-file" name="edit-file"><i class="far fa-image"></i> Choose New File </label>
+                                </div>
+
+                                <div class="col-sm-6 text-center display_none" id="edit-use-original-area">
+                                    <label class="form-control btn btn-primary view-btn" id="edit-use-original"><i class="far fa-image"></i> Use Original Image </label>
+                                </div>
+                            </div>
+                            <!-- preview area -->
+                            <div class="form-group row">
+                                <div class="col-sm-12" id="preview-area">
+                                    <div class="text-center">
+                                        <label> Preview </label>
+                                        <br>
+                                        <img class="img-responsive center-block" id="preview" src="#">
+                                          <script>
+                                            $(document).ready(function() {
+                                                $("#edit-file").on("change", function() {
+                                                  readURL(this);
+                                                  $("#edit-original-file").hide(200);
+                                                  $("#edit-use-original-area").show(200);
+                                                });
+
+                                                $("#edit-use-original").on("click", function() {
+
+                                                  $("#preview-area").hide(200);
+                                                  $("#edit-original-file").show(200);
+                                                  $("#hidden-flag").val("original");
+                                                  $("#edit-use-original-area").hide(200);
+                                                });
+
+                                                function readURL(input) {
+                                                  console.log(input.files[0]);
+                                                  if (input.files && input.files[0]) {
+                                                  var reader = new FileReader();
+                                                  reader.onload = function(e) {
+                                                    $("#preview")
+                                                      .attr("src", e.target.result)
+                                                  };
+                                                  reader.readAsDataURL(input.files[0]);
+                                                  $("#preview-area").show(200);
+                                                  $("#hidden-flag").val("new");
+                                                }
+                                                }
+                                            });
+                                          </script>
+                                    </div>
+                                </div>
+                            </div>
+                            @if($errors->has('edit-file'))
+                                <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('edit-file') }}</span>
+                            @endif
+                        </div>
+                    </div>
+                    <div>
+                        <input type="hidden" id="hidden-flag" name="hidden-flag" value="original">
                     </div>
 
                     <!-- edit button -->

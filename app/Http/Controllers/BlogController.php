@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Blog;
 use App\BlogComment;
+use Illuminate\Http\UploadedFile;
+use Validator;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class BlogController extends Controller
 {
@@ -54,23 +59,23 @@ class BlogController extends Controller
     }
 
 
- public function edit_blog_form($id) { // $id is user id
+    public function edit_blog_form($id) { // $id is user id
         $blog = Blog::where('id', $id)->first();
 
         return view('blog.edit-blog', compact('blog'));
-
     }
 
 
     public function update_blog($id, Request $request) {
 
+        // dd($request);
         $this->validate($request, [
             'edit-blog-title' => 'required|max:255',
             'edit-blog-subtitle' => 'required|max:255',
             'edit-blog-status' => 'required|max:255',
             'edit-blog-admin_id' => 'required|max:255',
-            'edit-blog-image_url' => 'required|max:255',
-            'edit-blog-detail' => 'nullable|max:255'
+            'edit-blog-detail' => 'nullable|max:255',
+            'edit-file' => 'image|mimes:jpeg,png,jpg|max:2048'
             ],
 
            [
@@ -78,8 +83,10 @@ class BlogController extends Controller
             'edit-blog-subtitle' => 'Input subtitle',
             'edit-blog-status' => 'Input status',
             'edit-blog-admin_id' => 'Input Price',
-            'edit-blog-image_url' => 'Input Status',
-            'edit-blog-detail' => 'Input detail'
+            'edit-blog-detail' => 'Input detail',
+            'edit-file.image' => 'Choose image',
+            'edit-file.mimes' => 'Image format .jpeg/.png/.jpg',
+            'edit-file.max' => 'Image should not exceed 2MB '
             ]);
 
 
@@ -91,19 +98,30 @@ class BlogController extends Controller
         $blog->subtitle = $request->input('edit-blog-subtitle');
         $blog->status = $request->input('edit-blog-status');
         $blog->admin_id = $request->input('edit-blog-admin_id');
-        $blog->image_url= $request->input('edit-blog-image_url');
         $blog->detail = $request->input('edit-blog-detail');
 
+        if($request->input('hidden-flag') == 'new') {
+          $blog->image_url ="www.google.com";
+          $blog->save();
+          // handle image upload
+          $image = $request->file('edit-file');
+          $extension = $image->getClientOriginalExtension();
 
+          $now = strtotime(Carbon::now());
+          $url = $blog->id. '_' . $now . '_' . $extension;
+          Storage::disk('public')->put($url,  File::get($image));
+
+          $blog->image_url = url('uploads/'.$url);
+        }
+        // save in database
         $blog->save();
-
-
         // redirect to edit success page
         return view('blog.edit-blog-success', ['id'=> $id]);
     }
 
     // process POST request
     public function add_blog(Request $request) {
+          // dd($request);
         // validation
         // dd($request);
         $this->validate($request, [
@@ -133,7 +151,7 @@ class BlogController extends Controller
 
         // form information filled by users
         $blog= new Blog();
-
+        $blog->is_deleted = 0;
         // title
         $blog->title = $request->input('add-blog-title');
         // subtitle
@@ -144,31 +162,49 @@ class BlogController extends Controller
         $blog->detail = $request->input('add-blog-detail');
         // owner_id
         $blog->admin_id = $request->input('add-blog-admin_id');
-        //image: need to handle image upload later
-        // $blog->image_url = $request->file('add-file');
-        $blog->image_url = "1";
+        $blog->image_url ="www.google.com";
+        $blog->save();
+        // image
+        // handle image upload
+        $image = $request->file('add-file');
+        $extension = $image->getClientOriginalExtension();
 
+        $now = strtotime(Carbon::now());
+        $url = $blog->id. '_' . $now . '_' . $extension;
+        Storage::disk('public')->put($url,  File::get($image));
+
+        $blog->image_url = url('uploads/'.$url);
         // save in database
         $blog->save();
+
 
         // redirect to add success page
         return view('blog.add-blog-success', ['id'=> $blog->id]);
     }
 
     public function search(Request $request){
-    if ( $request->has('search') ){
-        // get profiles
-        $blogs = Blog::where('title', "LIKE", "%".$request->search."%")
-                            ->orWhere('subtitle', "LIKE", "%".$request->search."%")
-                            ->orWhere('detail', "LIKE", "%".$request->search."%")
-                            ->orWhere('status', "LIKE", "%".$request->search."%")
-                            ->orWhere('admin_id', "LIKE", "%".$request->search."%")
-                            ->orWhere('id', "LIKE", "%".$request->search."%");
-    }else{
-      $blogs = Blog::get();
+      if ( $request->has('search') ){
+          // get profiles
+          $blogs = Blog::where('title', "LIKE", "%".$request->search."%")
+                              ->orWhere('subtitle', "LIKE", "%".$request->search."%")
+                              ->orWhere('detail', "LIKE", "%".$request->search."%")
+                              ->orWhere('status', "LIKE", "%".$request->search."%")
+                              ->orWhere('admin_id', "LIKE", "%".$request->search."%")
+                              ->orWhere('id', "LIKE", "%".$request->search."%");
+      }else{
+        $blogs = Blog::get();
+      }
+      $searchPhrase = $request->search;
+      return view('blog.list-blog', compact('blogs','searchPhrase'));
     }
-    $searchPhrase = $request->search;
-    return view('blog.list-blog', compact('blogs','searchPhrase'));
-}
+
+    public function delete($delete_id, Request $request) {
+      //dd($request);
+      $blog= Blog::where('id', $delete_id)->first();
+      $blog->is_deleted = 1;
+      $blog->save();
+
+      return back();
+    }
 
 }

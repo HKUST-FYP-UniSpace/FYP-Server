@@ -11,14 +11,14 @@
 </div>
 
 <div class="container before-nav">
-    <form id="add-trade-form" method="POST" action="{{ route('addtrade-form')}}">
+    <form id="add-trade-form" method="POST" enctype="multipart/form-data" action="{{ route('addtrade-form')}}">
         {{ csrf_field() }}
         <div class="col-md-8 col-md-offset-2">  <!--size of form box -->
             <div class="panel panel-default"> <!-- border+background -->
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Add New Trade Item</h4>
                 </div>
-                <div class="panel-body-edit"  style="padding-left:30px; padding-right:30px">
+                <div class="panel-body-edit">
 
                     <!-- Title -->
                     <div class="form-group row {{ $errors->has('add-trade-title') ? 'has-error' : '' }}">
@@ -33,8 +33,8 @@
 
                     <!-- Price -->
                     <div class="form-group row {{ $errors->has('add-trade-price') ? 'has-error' : '' }}">
-                        <label for="add-trade-price" class="col-sm-2 col-form-label"> Price </label>
-                        <div class="col-sm-12">
+                        <label for="add-trade-price" class="col-sm-3 col-form-label"> Price </label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="add-trade-price" name="add-trade-price" value="{{ old('add-trade-price') }}">
                             @if($errors->has('add-trade-price'))
                                 <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-trade-price') }}</span>
@@ -44,8 +44,8 @@
 
                     <!-- Quantity-->
                     <div class="form-group row {{ $errors->has('add-trade-quantity') ? 'has-error' : '' }}">
-                        <label for="add-trade-quantity" class="col-sm-2 col-form-label">Quantity</label>
-                            <div class="col-sm-4">
+                        <label for="add-trade-quantity" class="col-sm-3 col-form-label">Quantity</label>
+                            <div class="col-sm-9">
                                 <input type="number" class="form-control" id="add-trade-quantity" name="add-trade-quantity" step=1 value="{{ old('add-trade-quantity') }}">
                                 @if($errors->has('add-trade-quantity'))
                                     <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-trade-quantity') }}</span>
@@ -56,7 +56,7 @@
                     <!-- Trade Category ID  -->
                      <div class="form-group row {{ $errors->has('add-trade-trade_category_id') ? 'has-error' : '' }}">
                         <label for="add-trade-trade_category_id" class="col-sm-3 col-form-label"> Category </label>
-                        <div class="col-sm-4">
+                        <div class="col-sm-9">
                             <select class="form-control" id="add-trade-trade_category_id" name="add-trade-trade_category_id" value="{{ old('add-trade-trade_category_id')}}">
                                 <option value="" selected disabled hidden> Please Select </option>
                                 @foreach($trade_categories as $trade_category)
@@ -72,7 +72,7 @@
                     <!-- Trade Condition Type -->
                     <div class="form-group row {{ $errors->has('add-trade-trade_condition_type_id') ? 'has-error' : '' }}">
                        <label for="add-trade-trade_condition_type_id" class="col-sm-3 col-form-label"> Condition Type </label>
-                       <div class="col-sm-4">
+                       <div class="col-sm-9">
                            <select class="form-control" id="add-trade-trade_condition_type_id" name="add-trade-trade_condition_type_id" value="{{ old('add-trade-trade_condition_type_id')}}">
                                <option value="" selected disabled hidden> Please Select </option>
                                @foreach($trade_conditions as $trade_condition)
@@ -88,7 +88,7 @@
                     <!-- Status: need to select -->
                      <div class="form-group row {{ $errors->has('add-trade-status') ? 'has-error' : '' }}">
                         <label for="add-trade-status" class="col-sm-3 col-form-label"> Status </label>
-                        <div class="col-sm-4">
+                        <div class="col-sm-9">
                             <select class="form-control" id="add-trade-status" name="add-trade-status" value="{{ old('add-trade-status')}}">
                                 <option value="" selected disabled hidden> Please Select </option>
                                 @foreach($trade_statuses as $trade_status)

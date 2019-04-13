@@ -8,6 +8,11 @@
 
 @section('content')
 <div class="container before-nav">
+  <div class="row">
+      <a href="{{ route('admin-add') }}">
+      <button class="btn btn-default" style="float: right">Add New Admin</button></a>
+  </div>
+
     <div class="row">
         <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">
             <div class="panel-body">
@@ -19,6 +24,7 @@
                             <th>Admin ID</th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Delete Admin</th>
 
                         </tr>
                     </thead>
@@ -27,6 +33,14 @@
                             <th>{{ $admin->id }}</th>
                             <th>{{ $admin->name}}</th>
                             <th>{{ $admin->email}}</th>
+                            @if($admin->is_deleted == 0)
+                            <td>
+                                <form method="POST" action="{{ route('admin-delete', $admin->id) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <a><button type="submit" class="btn-danger submit-delete" onclick="return confirm('Are you sure to delete this admin?')"> Delete </button></a>
+                                </form>
+                            </td>
+                            @endif
 
                         </tbody>
                      @endforeach

@@ -7,7 +7,7 @@
 
 @section('content')
 <div class="container before-nav">
-    <form id="edit-trade-form" method="POST" action="{{ route('trade-edit-form', $trade->id) }}">
+    <form id="edit-trade-form" enctype="multipart/form-data" method="POST" action="{{ route('trade-edit-form', $trade->id) }}">
         {{ csrf_field() }}
 
 

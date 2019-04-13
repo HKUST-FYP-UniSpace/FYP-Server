@@ -7,7 +7,7 @@
 
 @section('content')
 <div class="container before-nav">
-    <form id="edit-house-form" method="POST" action="{{ route('house-edit-form', $house->id) }}">
+    <form id="edit-house-form" enctype="multipart/form-data" method="POST" action="{{ route('house-edit-form', $house->id) }}">
         {{ csrf_field() }}
 
 
@@ -51,6 +51,14 @@
                         </dd>
                     </div>
 
+                    <!-- Owner ID -->
+                    <div class="form-group row">
+                        <dt for="edit-house-owner_id" class="col-sm-9" style="padding-left:30px"> Owner ID </dt>
+                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
+                            <input type="text" class="form-control" id="edit-house-owner_id" name="edit-house-owner_id" value="{{ isset($house) ? old('edit-house-owner_id', $house->owner_id) : old('edit-house-owner_id') }}">
+                        </dd>
+                    </div>
+
                     <!-- House Type: need to select -->
                     <div class="form-group row">
                         <dt for="edit-house-type" class="col-sm-9" style="padding-left:30px"> Apartment Type </dt>
@@ -73,6 +81,19 @@
                               <option value="" selected disabled hidden> Please Select </option>
                               @foreach($house_districts as $house_district)
                                   <option value="{{ $house_district ->id }}">{{ $house_district->name }}</option>
+                              @endforeach
+                          </select>
+                        </dd>
+                    </div>
+
+                    <!-- House Status: need to select -->
+                    <div class="form-group row">
+                        <dt for="edit-house-status" class="col-sm-9" style="padding-left:30px"> Status </dt>
+                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
+                          <select class="form-control" id="edit-house-status" name="edit-house-status" value="{{   isset($house) ? old('edit-house-status', $house->status) :  old('edit-house-status')}}">
+                              <option value="" selected disabled hidden> Please Select </option>
+                              @foreach($house_statuses as $house_status)
+                                  <option value="{{ $house_status->id }}">{{ $house_status->status }}</option>
                               @endforeach
                           </select>
                         </dd>
@@ -111,26 +132,9 @@
                         </dd>
                     </div>
 
-                    <!-- House Status: need to select -->
-                    <div class="form-group row">
-                        <dt for="edit-house-status" class="col-sm-9" style="padding-left:30px"> Status </dt>
-                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                          <select class="form-control" id="edit-house-status" name="edit-house-status" value="{{   isset($house) ? old('edit-house-status', $house->status) :  old('edit-house-status')}}">
-                              <option value="" selected disabled hidden> Please Select </option>
-                              @foreach($house_statuses as $house_status)
-                                  <option value="{{ $house_status->id }}">{{ $house_status->status }}</option>
-                              @endforeach
-                          </select>
-                        </dd>
-                    </div>
 
-                    <!-- Owner ID -->
-                    <div class="form-group row">
-                        <dt for="edit-house-owner_id" class="col-sm-9" style="padding-left:30px"> Owner ID </dt>
-                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                            <input type="text" class="form-control" id="edit-house-owner_id" name="edit-house-owner_id" value="{{ isset($house) ? old('edit-house-owner_id', $house->owner_id) : old('edit-house-owner_id') }}">
-                        </dd>
-                    </div>
+
+
 
 
                     <!-- edit button -->

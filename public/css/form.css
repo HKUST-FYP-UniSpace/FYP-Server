@@ -1,0 +1,95 @@
+.panel-body-edit {
+  margin-left: 4%;
+  margin-right: 4%;
+  padding: 4%;
+}
+
+label {
+  margin-top: 5px;
+}
+
+.label-error {
+  color: red;
+}
+
+.edit-form {
+  padding: 5px;
+}
+
+.label-remainder {
+  color: #afafaf;
+}
+
+textarea {
+  resize: none;
+}
+
+.well {
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+a.orange-color-link {
+  color: orange;
+}
+
+.preview {
+  height: 30px;
+  width: 30px;
+}
+
+.view {
+  height: 100%;
+  width: 100%;
+}
+
+.view-btn {
+  background-color: white;
+  color: orange;
+}
+
+.view-btn:hover {
+  background-color: orange;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.display_none {
+  display: none;
+}
+
+.display_block {
+  display: block;
+}
+
+.opacity_half {
+  opacity: 0.5;
+}
+
+#no-applied-taker {
+  padding-left: 0px;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+#preview-area {
+  display: block;
+}
+
+#upload-btn {
+  margin-left: 0px;
+}
+
+#add-file,
+#edit-file {
+  display: none;
+}
+
+.highlight {
+  text-decoration: underline;
+  font-weight: bold;
+}
