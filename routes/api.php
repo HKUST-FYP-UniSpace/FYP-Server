@@ -51,6 +51,12 @@ Route::post('users/verify/{id}', 'API\UserController@verify_code');
 // Upload
 Route::post('image/upload', 'API\UploadController@image_upload');
 
+// Owner
+Route::get('/owner/{userId}/houseSummary', 'API\OwnerController@get_houseSummary'); // Get Owner House Summary //Tested
+Route::get('/owner/{userId}/teamSummary', 'API\OwnerController@get_teamSummary'); // Get Owner Team Summary // Tested
+Route::get('/owner/houseData', 'API\OwnerController@get_houseData'); // Get House Data //
+Route::post('/owner/{reviewId}/reply', 'API\OwnerController@store_reviewReply'); // Reply Review // Tested
+
 // House
 // Route::get('/house/create', 'API\HouseController@create_house');
 // Route::get('/house/{id}/edit', 'API\HouseController@edit_house');
@@ -62,6 +68,7 @@ Route::get('/house/{userId}/history', 'API\HouseController@index_houseHistory');
 Route::get('/house/{userId}/suggestion', 'API\HouseController@index_houseSuggestion'); // Get House Suggestion //
 Route::post('/house', 'API\HouseController@store_house'); //
 Route::post('/house/{id}/delete', 'API\HouseController@delete_house'); //
+Route::post('/house/{houseId}/review', 'API\HouseController@review_house'); // Add review
 Route::put('/house/{id}', 'API\HouseController@update_house'); //
 Route::put('/house/{id}/archive', 'API\HouseController@archive_house'); //
 Route::put('/house/{id}/hide', 'API\HouseController@hide_house'); //
@@ -92,14 +99,14 @@ Route::post('/houseBookmark/{id}/delete', 'API\HouseBookmarkController@delete_ho
 // Route::get('/trade/create', 'API\TradeController@create_trade');
 // Route::get('/trade/{id}/edit', 'API\TradeController@edit_trade');
 Route::get('/trade/{userId}/detail/{id}', 'API\TradeController@show_trade'); // Get Trade Detail //Tested
-Route::get('/trade/{userId}/index', 'API\TradeController@index_trade'); // Get Trade List // filter to be added
+Route::get('/trade/{userId}/index', 'API\TradeController@index_trade'); // Get Trade List // Tested with filter
 Route::get('/trade/{userId}/selling', 'API\TradeController@show_sellingTrade'); // Get Trade Selling Items // Tested
 Route::get('/trade/{userId}/bookmarked', 'API\TradeController@index_bookmarkedTrade'); // Get Trade Saved // Tested
 Route::get('/trade/{userId}/history', 'API\TradeController@index_tradeHistory'); // Get Past Trade // Tested
 Route::post('/trade', 'API\TradeController@store_trade'); // Create Trade Item //Tested
 Route::post('/trade/{id}/delete', 'API\TradeController@delete_trade'); //
 Route::post('/trade/image/upload', 'API\TradeController@upload_tradeItemPhoto'); // Create Trade Item:[Image]
-Route::put('/trade/{id}', 'API\TradeController@update_trade'); // Edit Trade Item //PhotoURL handling to be added
+Route::put('/trade/{userId}/update/{tradeId}', 'API\TradeController@update_trade'); // Edit Trade Item //PhotoURL handling to be added
 Route::put('/trade/{id}/archive', 'API\TradeController@archive_trade'); //
 Route::put('/trade/{id}/hide', 'API\TradeController@hide_trade'); //
 Route::put('/trade/{id}/reveal', 'API\TradeController@reveal_trade'); //

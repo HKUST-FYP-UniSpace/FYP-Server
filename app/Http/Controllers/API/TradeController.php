@@ -200,7 +200,16 @@ class TradeController extends Controller
       // $result = array();
       //$result['errors'] = array();
 
-      $trade_img = TradeImage::where('trade_id', $id)->get();
+      //$trade_img = TradeImage::where('trade_id', $id)->get();
+      $trade_imgList = TradeImage::where('trade_id', $id);
+      $trade_imgArray = array();
+      if($trade_imgList->count()>0){
+        $trade_imgs = $trade_imgList->get();
+        foreach($trade_imgs as $trade_img){
+          array_push($trade_imgArray, $trade_img->img_url);
+        }
+      }
+
       $result_trade = [
         'id' => $id,
         'title' => $trade->title,
@@ -208,7 +217,7 @@ class TradeController extends Controller
         'status' => self::convertTradeConditionIdtoStr($trade->trade_condition_type_id),
         'description' => $trade->description,
         'isBookmarked' => (TradeBookmark::where('trade_id', $id)->where('user_id', $userId)->count()>0)?true:false,
-        'photoURL' => ($trade_img->count()!=0)?$trade_img->image_url:null,
+        'photoURLs' => $trade_imgArray,
 
         // Bonuse Information that may be needed
         'quantity' => $trade->quantity,
@@ -244,14 +253,22 @@ class TradeController extends Controller
       foreach($trades as $trade){
         $trade_id = $trade->id;
         // $trade_img = (TradeImage::where('trade_id', $trade_id)->count()>0)?TradeImage::where('trade_id', $trade_id)->get():null;
-        $trade_img = TradeImage::where('trade_id', $trade_id)->get();
+        //$trade_img = TradeImage::where('trade_id', $trade_id)->get();
+        $trade_imgList = TradeImage::where('trade_id', $trade_id);
+        $trade_imgArray = array();
+        if($trade_imgList->count()>0){
+          $trade_imgs = $trade_imgList->get();
+          foreach($trade_imgs as $trade_img){
+            array_push($trade_imgArray, $trade_img->img_url);
+          }
+        }
 
         $result_trade=[
           'id'=>$trade_id,
           'title'=>$trade->title,
           'price'=>$trade->price,
           'views'=>TradeVisitor::where('trade_item_id', $trade_id)->count(), //visitor counter to be added
-          'photoURL'=>$trade_img
+          'photoURLs'=>$trade_imgArray
         ];
         array_push($result_trades, $result_trade);
       }
@@ -261,7 +278,8 @@ class TradeController extends Controller
     // Get Trade List
     // Handling on search criteria is pending to be added
     // $userId is needed to check if items bookmarked
-    public function index_trade($userId){
+    // public function index_trade($userId, $title=null, $seller=null, $category=null, $itemCondition=null, $minPrice=null, $maxPrice){
+    public function index_trade($userId, Request $request){
       // $result_all = array();
       // $result_all['status'] = 0;
       // $result = array();
@@ -269,6 +287,34 @@ class TradeController extends Controller
 
       $result_trades = array();
       $trades = Trade::get();
+
+      // filter
+      $title = $request->input('title');
+      $seller = $request->input('seller');
+      $category = $request->input('category');
+      $itemCondition = $request->input('itemCondition');
+      $minPrice = $request->input('minPrice');
+      $maxPrice = $request->input('maxPrice');
+
+      if(isset($title)){
+        $trades = $trades->where('price', $title);
+      }
+      if(isset($seller)){
+        $trades = $trades->where('user_id', $seller);
+      }
+      if(isset($category)){
+        $trades = $trades->whereIn('trade_category_id', $category);
+      }
+      if(isset($itemCondition)){
+        $trades = $trades->where('trade_condition_type', self::convertTradeConditionIdtoStr($itemCondition));
+      }
+      if(isset($minPrice)){
+        $trades = $trades->where('price', '>=', $minPrice);
+      }
+      if(isset($maxPrice)){
+        $trades = $trades->where('price', '<=', $maxPrice);
+      }
+
       foreach ($trades as $trade) {
         $trade_id = $trade->id;
         //$trade_img = TradeImage::where('trade_id', $trade_id)->get();
@@ -289,7 +335,7 @@ class TradeController extends Controller
           'status' => self::convertTradeConditionIdtoStr($trade->trade_condition_type_id),
           'description' => $trade->description,
           'isBookmarked' => (TradeBookmark::where('trade_id', $trade_id)->where('user_id', $userId)->count()>0)?true:false,
-          'photoURL' => $trade_imgArray,
+          'photoURLs' => $trade_imgArray,
         ];
         // $result_trade = array();
         // $result_trade['id'] = $trade->id;
@@ -330,6 +376,15 @@ class TradeController extends Controller
       foreach($pastTradeOuts as $pastTradeOut){
         $trade_id = $pastTradeOut->id;
 
+        $trade_imgList = TradeImage::where('trade_id', $trade_id);
+        $trade_imgArray = array();
+        if($trade_imgList->count()>0){
+          $trade_imgs = $trade_imgList->get();
+          foreach($trade_imgs as $trade_img){
+            array_push($trade_imgArray, $trade_img->img_url);
+          }
+        }
+
         $result_pastTrade = [
           'transactionType'=>'out',
           'id' => $trade_id,
@@ -338,7 +393,7 @@ class TradeController extends Controller
           'views' => TradeVisitor::where('trade_item_id', $trade_id)->count(), //extra
           'status'=> self::convertTradeConditionIdtoStr($pastTradeOut->trade_condition_type_id),
           'description'=> $pastTradeOut->description,
-          'photoURL' => TradeImage::where('trade_id', $trade_id)->get()
+          'photoURLs' => $trade_imgArray
         ];
 
         array_push($result_pastTrades, $result_pastTrade);
@@ -350,6 +405,15 @@ class TradeController extends Controller
         $pastTradeIn = Trade::where('id',$pastTransaction->trade_id)->first();
         $trade_id = $pastTradeIn->id;
 
+        $trade_imgList = TradeImage::where('trade_id', $trade_id);
+        $trade_imgArray = array();
+        if($trade_imgList->count()>0){
+          $trade_imgs = $trade_imgList->get();
+          foreach($trade_imgs as $trade_img){
+            array_push($trade_imgArray, $trade_img->img_url);
+          }
+        }
+
         $result_pastTrade = [
           'TransactionType'=>'in',
           'id' => $trade_id,
@@ -358,7 +422,7 @@ class TradeController extends Controller
           'views' => TradeVisitor::where('trade_item_id', $trade_id)->count(), //extra
           'status'=> self::convertTradeConditionIdtoStr($pastTradeIn->trade_condition_type_id),
           'description'=> $pastTradeIn->description,
-          'photoURL' => TradeImage::where('trade_id', $trade_id)->get()
+          'photoURLs' => $trade_imgArray
         ];
 
         array_push($result_pastTrades, $result_pastTrade);
@@ -379,13 +443,22 @@ class TradeController extends Controller
         $trade = Trade::where('id', $bookmarkedTrade->trade_id)->first();
         $trade_id = $trade->id;
 
+        $trade_imgList = TradeImage::where('trade_id', $trade_id);
+        $trade_imgArray = array();
+        if($trade_imgList->count()>0){
+          $trade_imgs = $trade_imgList->get();
+          foreach($trade_imgs as $trade_img){
+            array_push($trade_imgArray, $trade_img->img_url);
+          }
+        }
+
         $result_bookmarkedTrade = [
           'id' => $trade_id,
           'title' => $trade->title,
           'price' => $trade->price,
           'status' => self::convertTradeConditionIdtoStr($trade->trade_condition_type_id),
           'description' => $trade->description,
-          'photoURL' => TradeImage::where('trade_id', $trade_id)->get()
+          'photoURLs' => $trade_imgArray
         ];
 
         array_push($result_bookmarkedTrades, $result_bookmarkedTrade);
@@ -435,8 +508,8 @@ class TradeController extends Controller
 
 
     // Edit Trade Item
-    public function update_trade($id, Request $request){
-      $trade = Trade::where("id", $id)->first();
+    public function update_trade($userId, $tradeId, Request $request){
+      $trade = Trade::where("id", $tradeId)->where("user_id", $userId)->first();
 
       if($trade == null){
         return "Trade with respective ID number does not exist";
@@ -447,11 +520,9 @@ class TradeController extends Controller
       $trade->description = ($request->input('description')==null ? "" : $request->input('description'));
       $trade->quantity = (int)($request->input('quantity')==null ? "" : $request->input('quantity'));
       //$trade->post_date = ($request->input('post_date')==null ? "" : $request->input('post_date')); //obselete
-      //$trade->status = (int)($request->input('status')==null ? "" : $request->input('status')); //obselete
-      //$trade->trade_transaction_id = (int)($request->input('trade_transaction_id')==null ? "" : $request->input('trade_transaction_id'));
       $trade->trade_category_id = (int)($request->input('trade_category_id')==null ? "" : $request->input('trade_category_id'));
-      $trade->trade_condition_type_id = (int)($request->input('trade_condition_type_id')==null ? "" : $request->input('trade_condition_type_id'));
-      $trade->trade_status_id = (int)($request->input('status')==null ? "" : $request->input('status'));
+      $trade->trade_condition_type_id = (int)($request->input('status')==null ? "" : $request->input('status'));
+      //$trade->trade_status_id = (int)($request->input('status')==null ? "" : $request->input('status'));
       //$trade->is_deleted = (int)($request->input('is_deleted')==null ? "" : $request->input('is_deleted'));
 
       $trade->save();
@@ -459,12 +530,12 @@ class TradeController extends Controller
       // Update isBookmarked
       if($request->input('isBookmarked')!=null){
         $user_id = $request->input('userId');
-        $bookmarkNum = TradeBookmark::where('trade_id', $id)->where('user_id', $user_id)->count();
+        $bookmarkNum = TradeBookmark::where('trade_id', $tradeId)->where('user_id', $user_id)->count();
 
         if($request->input('isBookmarked') == true && $bookmarkNum==0){
           $newBookmark = new TradeBookmark();
 
-          $newBookmark->trade_id = $id;
+          $newBookmark->trade_id = $tradeId;
           $newBookmark->user_id = $user_id;
 
           $newBookmark->save();
@@ -474,10 +545,23 @@ class TradeController extends Controller
 
       }
 
-      // Update photoURL
-      // To be added
+      // Update photoURL (photo upload API should be calld separately)
+      $img_urls = $request->input('photoURLs');
+      if($img_urls != "NULL"){
+        TradeImage::where('trade_id', $tradeId)->delete();
 
-      // $success_msg = "Trade Updated Successfully (ID = {$id})";
+        if(!empty($img_urls)){
+          foreach($img_urls as $img_url){
+            $trade_img = new TradeImage();
+            $trade_img->image_url = $img_url;
+            $trade_img->trade_id =$tradeId;
+            $trade_img->save();
+          }
+        }
+
+      }
+
+      // $success_msg = "Trade Updated Successfully (ID = {$tradeId})";
       // return $success_msg;
       $response = ['isSuccess' => true];
       return $response;
@@ -591,4 +675,8 @@ class TradeController extends Controller
           break;
       }
     }
+
+
+
+
 }
