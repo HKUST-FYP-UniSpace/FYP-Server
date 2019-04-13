@@ -111,6 +111,30 @@ Route::prefix('statistics')->group(function(){
   Route::name('statistics-excel')->get('/excel','StatisticsController@export_excel');
 });
 
+//select
+Route::prefix('select')->group(function(){
+	Route::name('select')->get('/','SelectController@select');
+  Route::name('district')->get('/district','SelectController@show_district'); //add
+  Route::name('district-add')->post('/district/add','SelectController@add_district');// submit add
+
+  Route::name('trade_category')->get('/trade_category','SelectController@show_trade_category');
+  Route::name('trade_category-add')->post('/trade_category/add','SelectController@add_trade_category');// submit add
+
+  Route::name('trade_condition')->get('/trade_condition','SelectController@show_trade_condition'); //add
+  Route::name('trade_condition-add')->post('/trade_condition/add','SelectController@add_trade_condition');// submit add
+
+  Route::name('preference_item')->get('/preference_item','SelectController@show_preference_item'); //add
+  Route::name('preference_item-add')->post('/preference_item/add','SelectController@add_preference_item');// submit add
+
+  Route::name('preference_item_category')->get('/preference_item_category','SelectController@show_preference_item_category'); //add
+  Route::name('preference_item_category-add')->post('/preference_item_category/add','SelectController@add_preference_item_category');// submit add
+});
+
+
+
+
+
+
 // put all the routes inside at last
 // only for those who have logged in can access these pages
 Route::group(['middleware' => 'auth:admin'], function(){
