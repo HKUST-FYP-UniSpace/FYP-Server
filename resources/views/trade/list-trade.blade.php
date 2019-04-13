@@ -35,6 +35,7 @@
                             <th>Quantity</th>
                             <th>Post Date</th>
                             <th>View More</th>
+                            <th>Delete Item</th>
 
                         </tr>
                     </thead>
@@ -48,6 +49,14 @@
                             <th>{{ $trade->quantity }}</th>
                             <th>{{ $trade->created_at }}</th>
                             <td><a href="{{ route('trade-view', $trade->id) }}">details</a></td>
+                            @if($trade->is_deleted == 0)
+                            <td>
+                                <form method="POST" action="{{ route('trade-delete', $trade->id) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <a><button type="submit" class="btn-danger submit-delete" onclick="return confirm('Are you sure to delete this item?')"> Delete </button></a>
+                                </form>
+                            </td>
+                            @endif
                         </tbody>
                      @endforeach
                 </table>

@@ -2,7 +2,7 @@
 
 <!-- css style (name corresponds to app.blade.php) -->
 @push('add-style')
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/form.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -11,7 +11,7 @@
 </div>
 
 <div class="container before-nav">
-    <form id="add-house-form" method="POST" action="{{ route('house-add-form')}}">
+    <form id="add-house-form" enctype="multipart/form-data" method="POST" action="{{ route('house-add-form')}}">
         {{ csrf_field() }}
         <div class="col-md-8 col-md-offset-2">  <!--size of form box -->
             <div class="panel panel-default"> <!-- border+background -->
@@ -19,7 +19,7 @@
                     <h4 class="title text-muted">Add New Apartment</h4>
                 </div>
                 <div class="panel-body-edit">
-                <div class="col-sm-12" style="padding-left:30px; padding-right:30px">
+                <div class="col-sm-12">
                   <!-- Title -->
                   <div class="form-group row {{ $errors->has('add-house-address') ? 'has-error' : '' }}">
                       <label for="add-house-title" class="col-sm-2 col-form-label"> Title  </label>
@@ -33,7 +33,7 @@
 
                   <!--Subtitle -->
                   <div class="form-group row {{ $errors->has('add-house-subtitle') ? 'has-error' : '' }}">
-                      <label for="add-house-subtitle" class="col-sm-2 col-form-label"> Subtitle  </label>
+                      <label for="add-house-subtitle" class="col-sm-3 col-form-label"> Subtitle  </label>
                       <div class="col-sm-12">
                           <input type="text" class="form-control" id="add-house-subtitle" name="add-house-subtitle" value="{{ old('add-house-subtitle') }}">
                           @if($errors->has('add-house-subtitle'))
@@ -53,10 +53,21 @@
                         </div>
                     </div>
 
+                    <!-- Owner ID -->
+                    <div class="form-group row {{ $errors->has('add-house-owner_id') ? 'has-error' : '' }}">
+                        <label for="add-house-owner_id" class="col-sm-4 col-form-label"> Owner ID </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="add-house-owner_id" name="add-house-owner_id" value="{{ old('add-house-owner_id') }}">
+                            @if($errors->has('add-house-owner_id'))
+                                <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-house-owner_id') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
                     <!-- House Type: need to select -->
                      <div class="form-group row {{ $errors->has('add-house-type') ? 'has-error' : '' }}">
-                        <label for="add-house-type" class="col-sm-3 col-form-label"> Apartment Type </label>
-                        <div class="col-sm-4">
+                        <label for="add-house-type" class="col-sm-4 col-form-label"> Apartment Type </label>
+                        <div class="col-sm-8">
                             <select class="form-control" id="add-house-type" name="add-house-type" value="{{ old('add-house-type')}}">
                                 <option value= "" selected disabled hidden> Please Select </option>
                                 <option value = "0"> Flat </option>
@@ -72,8 +83,8 @@
 
                     <!-- House District ID: need to select -->
                      <div class="form-group row {{ $errors->has('add-house-district_id') ? 'has-error' : '' }}">
-                        <label for="add-house-district_id" class="col-sm-3 col-form-label"> Apartment District ID </label>
-                        <div class="col-sm-4">
+                        <label for="add-house-district_id" class="col-sm-4 col-form-label"> Apartment District ID </label>
+                        <div class="col-sm-8">
                             <select class="form-control" id="add-house-district_id" name="add-house-district_id" value="{{ old('add-house-district_id')}}">
                                 <option value="" selected disabled hidden> Please Select </option>
                                 @foreach($house_districts as $house_district)
@@ -86,10 +97,26 @@
                         </div>
                     </div>
 
+                    <!-- House Status: need to select -->
+                    <div class="form-group row {{ $errors->has('add-house-status') ? 'has-error' : '' }}">
+                        <label for="add-house-status" class="col-sm-4 col-form-label"> Apartment Status </label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="add-house-status" name="add-house-status" value="{{ old('add-house-status')}}">
+                                <option value="" selected disabled hidden> Please Select </option>
+                                @foreach($house_statuses as $house_status)
+                                    <option value="{{ $house_status->id }}">{{ $house_status->status }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('add-house-status'))
+                                <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-house-status') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
                     <!-- Size -->
                     <div class="form-group row {{ $errors->has('add-house-size') ? 'has-error' : '' }}">
-                        <label for="add-house-size" class="col-sm-2 col-form-label"> Size </label>
-                        <div class="col-sm-12">
+                        <label for="add-house-size" class="col-sm-4 col-form-label"> Size </label>
+                        <div class="col-sm-8">
                             <input type="text" class="form-control" id="add-house-size" name="add-house-size" value="{{ old('add-house-size') }}">
                             @if($errors->has('add-house-size'))
                                 <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-house-size') }}</span>
@@ -99,8 +126,8 @@
 
                     <!-- Price -->
                     <div class="form-group row {{ $errors->has('add-house-price') ? 'has-error' : '' }}">
-                        <label for="add-house-price" class="col-sm-2 col-form-label"> Price </label>
-                        <div class="col-sm-12">
+                        <label for="add-house-price" class="col-sm-4 col-form-label"> Price </label>
+                        <div class="col-sm-8">
                             <input type="text" class="form-control" id="add-house-price" name="add-house-price" value="{{ old('add-house-price') }}">
                             @if($errors->has('add-house-price'))
                                 <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-house-price') }}</span>
@@ -111,7 +138,7 @@
                     <!-- Max_ppl -->
                     <div class="form-group row {{ $errors->has('add-house-max_ppl') ? 'has-error' : '' }}">
                         <label for="add-house-max_ppl" class="col-sm-4 col-form-label"> Maximum No. People </label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-8">
                                 <input type="number" class="form-control" id="add-house-max_ppl" name="add-house-max_ppl" step=1 value="{{ old('add-house-max_ppl') }}">
                                 @if($errors->has('add-house-max_ppl'))
                                     <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-house-max_ppl') }}</span>
@@ -130,32 +157,65 @@
                         </div>
                     </div>
 
-                    <!-- House Status: need to select -->
-                    <div class="form-group row {{ $errors->has('add-house-status') ? 'has-error' : '' }}">
-                        <label for="add-house-status" class="col-sm-3 col-form-label"> Apartment Status </label>
-                        <div class="col-sm-4">
-                            <select class="form-control" id="add-house-status" name="add-house-status" value="{{ old('add-house-status')}}">
-                                <option value="" selected disabled hidden> Please Select </option>
-                                @foreach($house_statuses as $house_status)
-                                    <option value="{{ $house_status->id }}">{{ $house_status->status }}</option>
-                                @endforeach
-                            </select>
-                            @if($errors->has('add-house-status'))
-                                <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-house-status') }}</span>
-                            @endif
+                    <!-- Image -->
+                    <!-- <div class="form-group row">
+                      <label for="add-file" class="col-sm-2"> Image </label>
+                      <div class="col-sm-12 text-right">
+                        <div class="input-group control-group increment">
+                          <input type="file" name="add-file" id="add-file" class="form-control form-control-file" multiple/>
+                          <div class="input-group-btn">
+                            <button class="btn btn-success" type="button"><i class="far fa-image"></i>Add</button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-sm-12" id="preview-area">
+                            <div class="text-center">
+                                <label> Preview </label>
+                                <br>
+                                <img class="img-responsive center-block" id="preview" src="#">
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                      $(".btn-success").click(function(){
+                                          var html = $(".clone").html();
+                                          $(".increment").after(html);
+                                      });
+
+                                      $("body").on("click",".btn-danger",function(){
+                                          $(this).parents(".control-group").remove();
+                                      });
+
+                                      $("#add-file").on("change", function() {
+
+                                        $('#preview').html("");
+                                        var total_file=document.getElementById("add-file").files.length;
+                                        for(var i=0;i<total_file;i++)
+                                        {
+                                         $('#preview').append("<img src='"+URL.createObjectURL(event.target.files[i])+"'>");
+                                        }
+                                      });
+                                    });
+                                </script>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Owner ID -->
-                    <div class="form-group row {{ $errors->has('add-house-owner_id') ? 'has-error' : '' }}">
-                        <label for="add-house-owner_id" class="col-sm-2 col-form-label"> Owner ID </label>
-                        <div class="col-sm-12">
-                            <input type="text" class="form-control" id="add-house-owner_id" name="add-house-owner_id" value="{{ old('add-house-owner_id') }}">
-                            @if($errors->has('add-house-owner_id'))
-                                <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-house-owner_id') }}</span>
-                            @endif
+                      <div class="clone hide">
+                        <div class="control-group input-group" style="margin-top:10px">
+                          <input type="file" name="add-file" class="form-control">
+                          <div class="input-group-btn">
+                            <button class="btn btn-danger" type="button"><i class="far fa-image"></i> Remove</button>
+                          </div>
                         </div>
-                    </div>
+                      </div>
+                    </div> -->
+
+                  </div>
+
+
+
+
 
 
                     </div>

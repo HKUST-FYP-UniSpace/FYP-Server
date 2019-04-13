@@ -7,12 +7,12 @@
 
         <!-- Tenants -->
         <ul class="nav navbar-nav navbar-right">
-                 <li><a href="{{ url('/tenant') }}">Tenants</a></li>
+                 <li><a href="{{ url('user/tenant') }}">Tenants</a></li>
         </ul>
 
         <!-- House Owners -->
         <ul class="nav navbar-nav navbar-right">
-               <li><a href="{{ url('/owner') }}">Apartment Owners</a></li>
+               <li><a href="{{ url('user/owner') }}">Apartment Owners</a></li>
         </ul>
 
         <!-- all users -->

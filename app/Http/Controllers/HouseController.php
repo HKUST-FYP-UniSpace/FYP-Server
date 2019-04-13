@@ -201,7 +201,7 @@ class HouseController extends Controller
         $house= new House();
 
 
-        $house->is_deleted = "1";
+        $house->is_deleted = "0";
 
 
         // address
@@ -234,6 +234,15 @@ class HouseController extends Controller
         $house->save();
         // redirect to add success page
         return view('house.add-house-success', ['id'=> $house->id]);
+    }
+
+    public function delete($delete_id, Request $request) {
+      //dd($request);
+      $house= House::where('id', $delete_id)->first();
+      $house->is_deleted = 1;
+      $house->save();
+
+      return back();
     }
 
 }

@@ -147,9 +147,7 @@ class TradeController extends Controller
         // form information filled by users
         $trade= new Trade();
 
-        $trade->trade_category_id = "1";
-        $trade->trade_condition_type_id = "1";
-        $trade->is_deleted = "1";
+        $trade->is_deleted = "0";
         $trade->user_id = "1";
 
 
@@ -173,6 +171,15 @@ class TradeController extends Controller
 
         // redirect to add success page
         return view('trade.add-trade-success', ['id'=> $trade->id]);
+    }
+
+    public function delete($delete_id, Request $request) {
+      //dd($request);
+      $trade= Trade::where('id', $delete_id)->first();
+      $trade->is_deleted = 1;
+      $trade->save();
+
+      return back();
     }
 
 
