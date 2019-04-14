@@ -17,6 +17,7 @@ use Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 
 class TradeController extends Controller
 {
@@ -306,7 +307,7 @@ class TradeController extends Controller
         $trades = $trades->whereIn('trade_category_id', $category);
       }
       if(isset($itemCondition)){
-        $trades = $trades->where('trade_condition_type', self::convertTradeConditionIdtoStr($itemCondition));
+        $trades = $trades->whereIn('trade_condition_type', self::convertTradeConditionIdtoStr($itemCondition));
       }
       if(isset($minPrice)){
         $trades = $trades->where('price', '>=', $minPrice);
@@ -430,6 +431,69 @@ class TradeController extends Controller
 
 
       return $result_pastTrades;
+    }
+
+
+    public function index_tradeFeatured($userId){
+      $required_num = 4;// default as 4
+      $popularity_score = array();
+      // get all common house_id in tradeBookmark table
+      // then distribute score by the number of records they have (Default 10 points per each record)
+      $popular_trade_byBookmarkCount = TradeBookmark::select('trade_id')->groupBy('trade_id')->get();
+      foreach ($popular_trade_byBookmarkCount as $popular_tradeId) {
+        $temp_tradeId = $popular_tradeId->trade_id;
+        if(Arr::exists($popularity_score, $temp_tradeId)){
+          $popularity_score[$temp_tradeId] += TradeBookmark::where('trade_id', $temp_tradeId)->count() * 10;
+        }else{
+          $popularity_score[$temp_tradeId] = TradeBookmark::where('trade_id', $temp_tradeId)->count() * 10;
+        }
+      }
+
+      // get all trade_item_id in TradeVisitor table
+      // then distribute score by the number of records they have (Default 2 points per each record)
+      $popular_trade_byVisitCount = TradeVisitor::select('trade_item_id')->groupBy('trade_item_id')->get();
+      foreach ($popular_trade_byVisitCount as $popular_tradeId) {
+        $temp_tradeId = $popular_tradeId->trade_item_id;
+        if(Arr::exists($popularity_score, $temp_tradeId)){
+          $popularity_score[$temp_tradeId] += TradeVisitor::where('trade_item_id', $temp_tradeId)->count() * 2;
+        }else{
+          $popularity_score[$temp_tradeId] = TradeVisitor::where('trade_item_id', $temp_tradeId)->count() * 2;
+        }
+      }
+
+      // return $popularity_score;
+      arsort($popularity_score);
+      // dd($popularity_score);
+      $result = array_slice($popularity_score, 0, $required_num, $preserve_keys = TRUE);
+
+      $trades = Trade::whereIn('id', array_keys($result))->get();
+      $result_trade = array();
+      foreach($trades as $trade){
+        $trade_id = $trade->id;
+
+        $trade_imgList = TradeImage::where('trade_id', $trade_id);
+        $trade_imgArray = array();
+        if($trade_imgList->count()>0){
+          $trade_imgs = $trade_imgList->get();
+          foreach($trade_imgs as $trade_img){
+            array_push($trade_imgArray, $trade_img->img_url);
+          }
+        }
+
+        $result_pastTrade = [
+          'id' => $trade_id,
+          'title'=> $trade->title,
+          'price' => $trade->price,
+          //'views' => TradeVisitor::where('trade_item_id', $trade_id)->count(), //extra
+          'status'=> self::convertTradeConditionIdtoStr($trade->trade_condition_type_id),
+          'description'=> $trade->description,
+          'isBookmarked'=> (TradeBookmark::where('trade_id', $trade_id)->where('user_id', $userId)->count()>0)?true:false,
+          'photoURLs' => $trade_imgArray
+        ];
+
+        array_push($result_trade, $result_pastTrade);
+      }
+      return $result_trade;
     }
 
 
