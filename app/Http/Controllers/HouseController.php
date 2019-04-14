@@ -12,6 +12,12 @@ use App\HouseComment;
 use App\Group;
 use App\Preference;
 use App\GroupDetail;
+use App\HouseImage;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Http\UploadedFile;
+use Validator;
 
 
 class HouseController extends Controller
@@ -49,8 +55,8 @@ class HouseController extends Controller
     }
 
 	public function show_house_details($id) {
-        $house = House::where('id', $id)->first();
         $groups = Group::where('house_id', $id)->latest()->get();
+        $house = HouseImage::join('houses','house_images.house_id','=','houses.id')->where('houses.id', $id)->first();
 
 		return view('house.view-house',compact('house','groups'));
 	}
@@ -160,7 +166,9 @@ class HouseController extends Controller
                 'add-house-owner_id' => 'required|max:255',
                 'add-house-type' => 'required',
                 'add-house-district_id' => 'required',
-                'add-house-status' => 'required'
+                'add-house-status' => 'required',
+                'filename' => 'required',
+                'filename.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             ],
             [
 
@@ -229,9 +237,25 @@ class HouseController extends Controller
         //house status
         $house->status = intval($request->input('add-house-status'));
 
-
-        // save in database
         $house->save();
+
+        if($request->hasfile('filename')){
+            foreach($request->file('filename') as $image){
+              $name = $image->getClientOriginalName();
+              $extension = $image->getClientOriginalExtension();
+              $now = strtotime(Carbon::now());
+              $url = 'uploads/'.$house->id. '_' . $now . '_' . $extension;
+              Storage::disk('public')->put($url,  File::get($image));
+              $data[] = $name;
+              $image_urls[] = url($url);
+            }
+          }
+         $house_image= new HouseImage();
+         $house_image->img_url=json_encode($image_urls, JSON_UNESCAPED_SLASHES);
+         $house_image->house_id = $house->id;
+        // save in database
+        $house_image->save();
+
         // redirect to add success page
         return view('house.add-house-success', ['id'=> $house->id]);
     }

@@ -22,8 +22,23 @@
                               <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-preference_item') }}</span>
                           @endif
                       </div>
+                  </div>
+
+                      <!--  Category ID  -->
+                      <div class="form-group row {{ $errors->has('add-preference_item_category') ? 'has-error' : '' }}">
+                        <label for="add-preference_item" class="col-sm-3"> Preference Category </label>
+                          <div class="col-sm-5">
+                              <select class="form-control" id="add-preference_item_category" name="add-preference_item_category" value="{{  old('add-preference_item_category')}}">
+                                <option value="" selected disabled hidden> Select </option>
+                                @foreach($preference_item_categorys as $preference_item_category)
+                                    <option value="{{ $preference_item_category->id }}">{{ $preference_item_category->category }}</option>
+                                @endforeach
+                              </select>
+                          </div>
+                            <button type="submit" class="btn  form-btn" id="add-blog-submit" class="row text-center"> Add and Refesh List </button>
+                      </div>
                       <!-- submit button -->
-                      <button type="submit" class="btn  form-btn" id="add-blog-submit" class="row text-center"> Add and Refesh List </button>
+
                   </div>
                 </form>
               </div>
@@ -37,7 +52,7 @@
           </div>
 
           <div class="col-md-10 col-md-offset-1"  id="select-preference_item">
-              <div class="panel" style="padding-left:10%; padding-right:10%;">
+              <div class="panel">
                   <div class="panel-body">
                       <table class="table">
                           <thead>
@@ -45,6 +60,8 @@
                                   <th>ID</th>
                                   <th> Preference </th>
                                   <th> Preference Category </th>
+                                  <th> Edit Category </th>
+                                  <th> Change and Refresh </th>
                               </tr>
                           </thead>
                           @foreach ($preference_items as $preference_item)
@@ -52,7 +69,29 @@
                                   <th>{{ $preference_item->id }}</th>
                                   <th>{{ $preference_item->name }}</th>
                                   <th>{{ $preference_item->category }}</th>
+                                  <!-- Trade Category ID  -->
+                                  <form id="edit-preference_item-form" method="POST" enctype="multipart/form-data" action="{{ route('edit-preference_item', $preference_item->id) }}">
+                                      {{ csrf_field() }}
+                                  <th><div class="form-group row">
+                                      <div class="col-sm-12">
+                                          <select class="form-control" id="edit-preference_item" name="edit-preference_item" value="{{ old('edit-preference_item')}}">
+                                              <option value="" selected disabled hidden> Select </option>
+                                              @foreach($preference_item_categorys as $preference_item_category)
+                                                  <option value="{{ $preference_item_category->id }}">{{ $preference_item_category->category }}</option>
+                                              @endforeach
+                                          </select>
+                                      </div>
+                                  </div>
+                                </th>
+                                  <!-- edit button -->
+                                  <th><button type="submit" class="btn form-btn" id="edit-trade-submit">Change and Refresh</button></th>
+                                </form>
+
+
+
+
                            @endforeach
+
 
                       </table>
                   </div>

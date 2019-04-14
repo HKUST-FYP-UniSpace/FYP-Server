@@ -125,6 +125,8 @@ Route::prefix('select')->group(function(){
 
   Route::name('preference_item')->get('/preference_item','SelectController@show_preference_item'); //add
   Route::name('preference_item-add')->post('/preference_item/add','SelectController@add_preference_item');// submit add
+  // Route::name('edit-edit-preference_item')->post('/preference_item/edit','SelectController@edit_preference_item');// submit add
+  Route::name('edit-preference_item')->post('/preference_item/{id}/edit', 'SelectController@edit_preference_item');//do
 
   Route::name('preference_item_category')->get('/preference_item_category','SelectController@show_preference_item_category'); //add
   Route::name('preference_item_category-add')->post('/preference_item_category/add','SelectController@add_preference_item_category');// submit add

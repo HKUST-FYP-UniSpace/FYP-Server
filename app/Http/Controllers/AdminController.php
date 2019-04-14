@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Admin;
+use Auth;
 use Hash;
 use Validator;
 
@@ -23,6 +24,7 @@ class AdminController extends Controller
     	}
     	return $admins;
     }
+
     public function index() {
       $admins = Admin::get();
     	return view('admin.list-admin', compact('admins'));
