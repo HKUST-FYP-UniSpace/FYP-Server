@@ -74,25 +74,26 @@ class OwnerController extends Controller
 
 
   // Get Owner Team Summary
-  public function get_teamSummary($userId){
+  public function get_teamSummary($userId, $houseId){
     // $user_id = $request->input('userId');
 
-    $houses = House::where('owner_id', $userId)->get();
+    $house = House::where('id', $houseId)->where('owner_id', $userId)->get();
     $reviews = array();
     $teams = array();
-    foreach($houses as $house){
-      $house_id = $house->id;
 
-      $groups = Group::where('house_id', $house_id)->get();
-      foreach($groups as $group){
-        $group_id = $group->id;
-        $team = app('App\Http\Controllers\API\HouseController')->get_teamView($group_id);
-        array_push($teams, $team);
-      }
+    // foreach($houses as $house){
+    // $house_id = $house->id;
 
-      $review =  app('App\Http\Controllers\API\HouseController')->get_reviews($house_id);
-      array_push($reviews, $review);
+    $groups = Group::where('house_id', $houseId)->get();
+    foreach($groups as $group){
+      $group_id = $group->id;
+      $team = app('App\Http\Controllers\API\HouseController')->get_teamView($group_id);
+      array_push($teams, $team);
     }
+
+    $reviews =  app('App\Http\Controllers\API\HouseController')->get_reviews($houseId);
+    //array_push($reviews, $review);
+    // }
 
 
     $team_summary = [

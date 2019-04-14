@@ -1117,9 +1117,22 @@ class HouseController extends Controller
       }
 
       arsort($matched_group);
+      // dd($matched_group);
       $result = array_slice($matched_group, 0, $required_num, $preserve_keys = TRUE);
 
-      return Group::whereIn('id', array_keys($result));
+      return Group::whereIn('id', array_keys($result))->get();
+    }
+
+    // Only for inserting test data
+    public function add_profileDetail($id, $itemId){
+      $profileDetail = new ProfileDetail();
+
+      $profileDetail->profile_id = $id;
+      $profileDetail->item_id = $itemId;
+
+      $profileDetail->save();
+
+      return "saved";
     }
 
 
@@ -1176,8 +1189,7 @@ class HouseController extends Controller
       // return $result;
       // return array_keys($result);
 
-      //return House::whereIn('id', array_keys($result))->get(); // for testing
-      return House::whereIn('id', array_keys($result));
+      return House::whereIn('id', array_keys($result))->get();
       // return $houses;
     }
 

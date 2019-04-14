@@ -94,25 +94,49 @@ class SelectController extends Controller
 
   //handle preference_item
   public function show_preference_item(){
-    $preference_items  = PreferenceItemCategory::join('preference_items','preference_item_categories.id','=','preference_items.category_id')->get();
+    $preference_item_categorys = PreferenceItemCategory::get();
+    $preference_items  = PreferenceItemCategory::join('preference_items','preference_item_categories.id','=','preference_items.category_id')->orderBy('preference_items.id', 'asc')->get();
 
-    return view('select.add-preference_item', compact('preference_items'));
+
+    return view('select.add-preference_item', compact('preference_items','preference_item_categorys'));
 
   }
   public function add_preference_item(Request $request) {
+    $preference_item_categorys  = PreferenceItemCategory::get();
+
     // validation
     // dd($request);
     $this->validate($request, [
-            'add-preference_item' => 'required|max:255'
+            'add-preference_item' => 'required|max:255',
+            'add-preference_item_category' => 'required|max:255'
+
         ],
         [
             'add-preference_item.required' => 'Input new preference',
-            'add-preference_item.max' => 'Preference cannot be too long'
+            'add-preference_item.max' => 'Preference cannot be too long',
+            'add-preference_item_category' => 'Select PreferenceCategory'
         ]
     );
     $preference_item = new PreferenceItem();
     $preference_item->name = $request->input('add-preference_item');
-    $preference_item->category_id = PreferenceItem::latest()->first()->category_id + 1;
+    $preference_item->category_id = intval($request->input('add-preference_item_category'));
+    $preference_item->save();
+
+    return redirect()->route('preference_item',compact('$preference_item_categorys'));
+  }
+
+  public function edit_preference_item($id, Request $request) {
+
+    $this->validate($request, [
+            'edit-preference_item' => 'required|max:255'
+        ],
+        [
+            'edit-preference_item' => 'Select Trade Category ID'
+        ]
+    );
+
+    $preference_item = PreferenceItem::where('id',$id)->first();
+    $preference_item->category_id = intval($request->input('edit-preference_item'));
     $preference_item->save();
 
     return redirect()->route('preference_item');
@@ -137,6 +161,7 @@ class SelectController extends Controller
     );
     $preference_item_category = new PreferenceItemCategory();
     $preference_item_category->category = $request->input('add-preference_item_category');
+
     $preference_item_category->save();
 
     return redirect()->route('preference_item_category');

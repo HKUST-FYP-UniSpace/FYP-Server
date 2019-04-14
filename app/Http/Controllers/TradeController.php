@@ -9,7 +9,12 @@ use App\Trade;
 use App\TradeStatus;
 use App\TradeCategory;
 use App\TradeConditionType;
-
+use App\TradeImage;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Http\UploadedFile;
+use Validator;
 
 class TradeController extends Controller
 {
@@ -46,7 +51,9 @@ class TradeController extends Controller
     }
 
 	public function show_trade_details($id) {
-        $trade = Trade::where('id', $id)->first();
+        // $trade = Trade::where('id', $id)->first();
+        $trade = TradeImage::join('trades','trade_images.trade_id','=','trades.id')->where('trades.id', $id)->first();
+        // dd($trade);
 
 		return view('trade.view-trade',compact('trade'));
 	}
@@ -123,7 +130,9 @@ class TradeController extends Controller
                 'add-trade-description' => 'required|max:255',
                 'add-trade-status' => 'required',
                 'add-trade-trade_category_id' => 'required',
-                'add-trade-trade_condition_type_id' => 'required'
+                'add-trade-trade_condition_type_id' => 'required',
+                'filename' => 'required',
+                'filename.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             ],
             [
 
@@ -166,8 +175,34 @@ class TradeController extends Controller
         // trade_condition_type_id
         $trade->trade_condition_type_id= intval($request->input('add-trade-trade_condition_type_id'));
 
-        // save in database
         $trade->save();
+
+        if($request->hasfile('filename')){
+        //   foreach($request->file('filename') as $image){
+        //     $i = 0;
+        //     $extension = $image->getClientOriginalExtension();
+        //
+        //     $now = strtotime(Carbon::now());
+        //     $url = 'trade_' . $trade->id . '_' . $now . '_' .$i . $extension;
+        //     Storage::disk('public')->put($url,  File::get($image));
+        //     $i++;
+        //   }
+        // }
+            foreach($request->file('filename') as $image){
+              $name = $image->getClientOriginalName();
+              $extension = $image->getClientOriginalExtension();
+              $now = strtotime(Carbon::now());
+              $url = 'uploads/'.$trade->id. '_' . $now . '_' . $extension;
+              Storage::disk('public')->put($url,  File::get($image));
+              $data[] = $name;
+              $image_urls[] = url($url);
+            }
+          }
+         $trade_image= new TradeImage();
+         $trade_image->image_url=json_encode($image_urls, JSON_UNESCAPED_SLASHES);
+         $trade_image->trade_id = $trade->id;
+        // save in database
+        $trade_image->save();
 
         // redirect to add success page
         return view('trade.add-trade-success', ['id'=> $trade->id]);

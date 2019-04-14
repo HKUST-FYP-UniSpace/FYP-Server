@@ -22,8 +22,14 @@
             <div class="panel-body">
                 <h3>Message List</h3>
                 <hr>
+                <div class="panel-body">
+                  <ul class="nav nav-tabs">
+                      <ul class="nav nav-tabs" style=" font-size: 17px;">
+                        <li class="nav-item"><a  class="nav-link" href="{{ url('message/toadmin')}}"> Message To Admin </a></li>
+                      </ul>
+                </div>
 
-                <table class="table" >
+                <!-- <table class="table" >
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -48,7 +54,7 @@
                         </tbody>
                      @endforeach
 
-                </table>
+                </table> -->
                 <div>
                     {{ $messages->links() }}
                 </div>

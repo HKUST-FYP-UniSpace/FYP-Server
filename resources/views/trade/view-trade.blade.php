@@ -10,7 +10,7 @@
         {{ csrf_field() }}
 
         <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">  <!--size of form box -->
-            <div class="panel panel-default" style="height: 300px;"> <!-- border+background -->
+            <div class="panel panel-default" style="height: 340px;"> <!-- border+background -->
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Trade Item</h4>
                 </div>
@@ -40,6 +40,9 @@
 
                   <dt class="col-sm-3">Condition Type</dt>
                   <dd class="col-sm-9">{{ $trade->trade_condition_type_id }}</dd>
+
+                  <dt class="col-sm-3">Image URLs</dt>
+                  <dd class="col-sm-9">{{ $trade->image_url }}</dd>
 
                   <dt class="col-sm-3">Status</dt>
                   <dd class="col-sm-9">{{ $trade->trade_status_id }}</dd>

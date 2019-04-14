@@ -157,67 +157,26 @@
                         </div>
                     </div>
 
-                    <!-- Image -->
-                    <!-- <div class="form-group row">
-                      <label for="add-file" class="col-sm-2"> Image </label>
-                      <div class="col-sm-12 text-right">
-                        <div class="input-group control-group increment">
-                          <input type="file" name="add-file" id="add-file" class="form-control form-control-file" multiple/>
+                    <!-- multiple images -->
+                    <div class="form-group row {{ $errors->has('add-house-images') ? 'has-error' : '' }}">
+                        <label for="add-house-images" class="col-sm-2 col-form-label"> Images </label><hr>
+                        <div class="input-group control-group increment" >
+                          <input type="file" name="filename[]" class="form-control">
                           <div class="input-group-btn">
-                            <button class="btn btn-success" type="button"><i class="far fa-image"></i>Add</button>
+                            <button class="btn" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
+                          </div>
+                        </div>
+                        <div class="clone hide">
+                        <div class="control-group input-group" style="margin-top:10px">
+                          <input type="file" name="filename[]" class="form-control">
+                          <div class="input-group-btn">
+                            <button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i> Remove </button>
                           </div>
                         </div>
                       </div>
-
-                      <div class="form-group row">
-                        <div class="col-sm-12" id="preview-area">
-                            <div class="text-center">
-                                <label> Preview </label>
-                                <br>
-                                <img class="img-responsive center-block" id="preview" src="#">
-                                <script type="text/javascript">
-                                    $(document).ready(function() {
-                                      $(".btn-success").click(function(){
-                                          var html = $(".clone").html();
-                                          $(".increment").after(html);
-                                      });
-
-                                      $("body").on("click",".btn-danger",function(){
-                                          $(this).parents(".control-group").remove();
-                                      });
-
-                                      $("#add-file").on("change", function() {
-
-                                        $('#preview').html("");
-                                        var total_file=document.getElementById("add-file").files.length;
-                                        for(var i=0;i<total_file;i++)
-                                        {
-                                         $('#preview').append("<img src='"+URL.createObjectURL(event.target.files[i])+"'>");
-                                        }
-                                      });
-                                    });
-                                </script>
-                            </div>
-                        </div>
                     </div>
 
-                      <div class="clone hide">
-                        <div class="control-group input-group" style="margin-top:10px">
-                          <input type="file" name="add-file" class="form-control">
-                          <div class="input-group-btn">
-                            <button class="btn btn-danger" type="button"><i class="far fa-image"></i> Remove</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div> -->
-
                   </div>
-
-
-
-
-
-
                     </div>
 
                     <!-- submit button -->
@@ -235,5 +194,20 @@
 
 <!-- javascript (name corresponds to app.blade.php) -->
 @push('add-script')
-    <script src="{{ asset('/js/house/add.js') }}"></script>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+      $(".btn").click(function(){
+          var html = $(".clone").html();
+          $(".increment").after(html);
+      });
+
+      $("body").on("click",".btn-danger",function(){
+          $(this).parents(".control-group").remove();
+      });
+
+    });
+
+</script>
 @endpush

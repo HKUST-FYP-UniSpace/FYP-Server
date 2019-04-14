@@ -112,6 +112,25 @@
                         </div>
                     </div>
 
+                    <!-- multiple images -->
+                    <div class="form-group row {{ $errors->has('add-trade-images') ? 'has-error' : '' }}">
+                        <label for="add-trade-images" class="col-sm-2 col-form-label"> Images </label><hr>
+                        <div class="input-group control-group increment" >
+                          <input type="file" name="filename[]" class="form-control">
+                          <div class="input-group-btn">
+                            <button class="btn" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
+                          </div>
+                        </div>
+                        <div class="clone hide">
+                        <div class="control-group input-group" style="margin-top:10px">
+                          <input type="file" name="filename[]" class="form-control">
+                          <div class="input-group-btn">
+                            <button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i> Remove </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     <!-- submit button -->
                     <div class="row text-center">
                         <button type="submit" class="btn form-btn" id="add-trade-submit">Submit</button>
@@ -126,5 +145,20 @@
 
 <!-- javascript (name corresponds to app.blade.php) -->
 @push('add-script')
-    <!-- <script src="{{ asset('/js/trade/add.js') }}"></script> -->
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+      $(".btn").click(function(){ 
+          var html = $(".clone").html();
+          $(".increment").after(html);
+      });
+
+      $("body").on("click",".btn-danger",function(){
+          $(this).parents(".control-group").remove();
+      });
+
+    });
+
+</script>
 @endpush
