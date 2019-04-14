@@ -78,6 +78,9 @@
                   <dt class="col-sm-3">Price</dt>
                   <dd class="col-sm-9">{{ $house->price }}</dd>
 
+                  <dt class="col-sm-3">Image URLs</dt>
+                  <dd class="col-sm-9">{{ $house->img_url }}</dd>
+
                   <dt class="col-sm-3">Status</dt>
                   <dd class="col-sm-9">{{ $house->status }}</dd>
 
