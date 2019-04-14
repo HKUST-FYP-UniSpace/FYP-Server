@@ -1023,12 +1023,16 @@ class HouseController extends Controller
       $past_groupDetail_history = GroupDetail::where('member_user_id', $userId)->get();
       foreach ($past_groupDetail_history as $temp_history) {
         $past_group = Group::where('id', $temp_history->group_id)->first();
-        $past_house = House::where('id', $past_group->house_id)->first();
 
-        // cumulate price, size data
-        $avereage_price += $past_house->price;
-        $average_size += $past_house->size;
-        $house_count += 1;
+        if($past_group != null){
+          $past_house = House::where('id', $past_group->house_id)->first();
+
+          // cumulate price, size data
+          $avereage_price += $past_house->price;
+          $average_size += $past_house->size;
+          $house_count += 1;
+        }
+        
       }
 
       if($house_count == 0){
