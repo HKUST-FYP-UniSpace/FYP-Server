@@ -41,8 +41,10 @@
                   <dt class="col-sm-3">Condition Type</dt>
                   <dd class="col-sm-9">{{ $trade->trade_condition_type_id }}</dd>
 
+                  @foreach ($trade_urls as $trade_url)
                   <dt class="col-sm-3">Image URLs</dt>
-                  <dd class="col-sm-9">{{ $trade->image_url }}</dd>
+                  <dd class="col-sm-9">{{ $trade_url->image_url }}</dd>
+                  @endforeach
 
                   <dt class="col-sm-3">Status</dt>
                   <dd class="col-sm-9">{{ $trade->trade_status_id }}</dd>
