@@ -57,8 +57,9 @@ class HouseController extends Controller
 	public function show_house_details($id) {
         $groups = Group::where('house_id', $id)->latest()->get();
         $house = HouseImage::join('houses','house_images.house_id','=','houses.id')->where('houses.id', $id)->first();
+        $house_urls = $house->where('house_id', $id)->get();
 
-		return view('house.view-house',compact('house','groups'));
+		return view('house.view-house',compact('house','groups','house_urls'));
 	}
 
   public function show_group_details($id) {
@@ -85,7 +86,16 @@ class HouseController extends Controller
         $house_districts = District::get();
         $house_statuses = HouseStatus::get();
 
-        return view('house.edit-house', compact('house','house_districts','house_statuses'));
+        $house_imgList = HouseImage::where('house_id', $id)->get();
+        $house_imgArrays = array();
+        if($house_imgList->count()>0){
+          $house_imgs = $house_imgList;
+          foreach($house_imgs as $house_img){
+            array_push($house_imgArrays, $house_img->img_url);
+          }
+        }
+
+        return view('house.edit-house', compact('house','house_districts','house_statuses','house_imgArrays'));
     }
 
     public function add_house_form() { // $id is user id
@@ -144,6 +154,31 @@ class HouseController extends Controller
         $house->description = $request->input('edit-house-description');
 
         $house->save();
+
+        $house->save();
+
+        $images = $request->file('filename');
+        $size = sizeof($images);
+        $last_image = HouseImage::where('house_id',$id)->get()->count();
+
+
+
+        if(!empty($images)) {
+          // foreach($images as $image) {
+           $j = $last_image;
+          for($i = 0; $i < $size; $i++) {
+            $extension = $images[$i]->getClientOriginalExtension();
+            $now = strtotime(Carbon::now());
+            $url = 'house_' . $house->id . '_' . $now . '_' .$j .'.' . $extension;
+            Storage::disk('public')->put($url,  File::get($images[$i]));
+            $j++;
+            //store
+            $house_image= new HouseImage();
+            $house_image->house_id = $house->id;
+            $house_image->img_url = $url;
+            $house_image->save();
+          }
+        }
 
         // redirect to edit success page
         return view('house.edit-house-success', ['id'=> $id]);
@@ -239,22 +274,23 @@ class HouseController extends Controller
 
         $house->save();
 
-        if($request->hasfile('filename')){
-            foreach($request->file('filename') as $image){
-              $name = $image->getClientOriginalName();
-              $extension = $image->getClientOriginalExtension();
-              $now = strtotime(Carbon::now());
-              $url = 'uploads/'.$house->id. '_' . $now . '_' . $extension;
-              Storage::disk('public')->put($url,  File::get($image));
-              $data[] = $name;
-              $image_urls[] = url($url);
-            }
+        $images = $request->file('filename');
+        $size = sizeof($images);
+
+        if(!empty($images)) {
+          // foreach($images as $image) {
+          for($i = 0; $i < $size; $i++) {
+            $extension = $images[$i]->getClientOriginalExtension();
+            $now = strtotime(Carbon::now());
+            $url = 'house_' . $house->id . '_' . $now . '_' .$i .'.' . $extension;
+            Storage::disk('public')->put($url,  File::get($images[$i]));
+            //store
+            $house_image= new HouseImage();
+            $house_image->house_id = $house->id;
+            $house_image->img_url = $url;
+            $house_image->save();
           }
-         $house_image= new HouseImage();
-         $house_image->img_url=json_encode($image_urls, JSON_UNESCAPED_SLASHES);
-         $house_image->house_id = $house->id;
-        // save in database
-        $house_image->save();
+        }
 
         // redirect to add success page
         return view('house.add-house-success', ['id'=> $house->id]);
@@ -265,6 +301,13 @@ class HouseController extends Controller
       $house= House::where('id', $delete_id)->first();
       $house->is_deleted = 1;
       $house->save();
+
+      return back();
+    }
+
+    public function delete_image($house_imgArray) {
+
+      $house_image = HouseImage::where('img_url',$house_imgArray)->first()->delete();
 
       return back();
     }

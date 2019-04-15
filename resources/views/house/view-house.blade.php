@@ -47,7 +47,7 @@
         <div class="panel panel-default col-md-12" style="border-color: transparent; padding-left:10%; padding-right:10%;">  <!--size of form box -->
 
 
-            <div class="panel panel-default" style="height: 400px;"> <!-- border+background -->
+            <div class="panel panel-default" style="height: 430px;"> <!-- border+background -->
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Apartment</h4>
                 </div>
@@ -78,8 +78,11 @@
                   <dt class="col-sm-3">Price</dt>
                   <dd class="col-sm-9">{{ $house->price }}</dd>
 
-                  <dt class="col-sm-3">Image URLs</dt>
-                  <dd class="col-sm-9">{{ $house->img_url }}</dd>
+
+                  @foreach ($house_urls as $house_url)
+                  <dt class="col-sm-3">Image URLs </dt>
+                  <dd class="col-sm-9">{{ $house_url->img_url }}</dd>
+                  @endforeach
 
                   <dt class="col-sm-3">Status</dt>
                   <dd class="col-sm-9">{{ $house->status }}</dd>

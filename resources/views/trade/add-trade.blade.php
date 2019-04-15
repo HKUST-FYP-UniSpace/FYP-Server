@@ -118,7 +118,7 @@
                         <div class="input-group control-group increment" >
                           <input type="file" name="filename[]" class="form-control">
                           <div class="input-group-btn">
-                            <button class="btn" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
+                            <button class="btn add" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
                           </div>
                         </div>
                         <div class="clone hide">
@@ -131,10 +131,12 @@
                       </div>
                     </div>
 
-                    <!-- submit button -->
-                    <div class="row text-center">
-                        <button type="submit" class="btn form-btn" id="add-trade-submit">Submit</button>
-                    </div>
+
+
+                </div>
+                <!-- submit button -->
+                <div class="row text-center">
+                    <button type="submit" class="btn form-btn" id="add-trade-submit">Submit</button>
                 </div>
             </div>
         </div>
@@ -149,7 +151,7 @@
 
     $(document).ready(function() {
 
-      $(".btn").click(function(){ 
+      $(".add").click(function(){
           var html = $(".clone").html();
           $(".increment").after(html);
       });

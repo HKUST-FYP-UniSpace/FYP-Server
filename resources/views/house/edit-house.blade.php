@@ -132,10 +132,40 @@
                         </dd>
                     </div>
 
+                    <!-- Images -->
+                    <div class="form-group row">
+                        <label for="edit-file" class="col-sm-12">House images</label>
+                          @foreach($house_imgArrays as $house_imgArray)
+                          <div class="col-sm-5" style="padding-left:30px; padding-bottom: 20px;font-size:15px;">{{ $house_imgArray }}</div>
+                          <div class="row" style="padding-left:90%;  font-size:15px;">
+                            <form method="POST" action="{{ route('image-delete', $house_imgArray) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <a><button type="submit" class="btn-danger" onclick="return confirm('Are you sure to delete {{ $house_imgArray }}?')"> Delete </button></a>
+                            </form>
+                          </div>
 
+                          @endforeach
 
-
-
+                      <div class="col-sm-12" style="padding-bottom: 15px; left: 2%;">
+                        <i class="fas fa-plus" style=" padding-right: 5px;"></i><input id="myButton" type="button" class="btn btn-default" value="Add New Images"/>
+                          <div id="myDiv" style="display:none; padding-top:30px;">
+                            <div class="input-group control-group increment" >
+                              <input type="file" name="filename[]" class="form-control">
+                              <div class="input-group-btn">
+                                <button class="btn add" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
+                              </div>
+                            </div>
+                            <div class="clone hide">
+                            <div class="control-group input-group" style="margin-top:10px">
+                              <input type="file" name="filename[]" class="form-control">
+                              <div class="input-group-btn">
+                                <button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i> Remove </button>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                        </div>
+                    </div>
 
                     <!-- edit button -->
                     <div class="row text-center">
@@ -153,5 +183,20 @@
 
 <!-- javascript (name corresponds to app.blade.php) -->
 @push('add-script')
-    <script src="{{ asset('/js/select.js') }}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#myButton').click(function() {
+    $('#myDiv').toggle('fast', function() {
+    });
+  });
+$(".add").click(function(){
+    var html = $(".clone").html();
+    $(".increment").after(html);
+});
+
+$("body").on("click",".btn-danger",function(){
+    $(this).parents(".control-group").remove();
+});
+});
+</script>
 @endpush

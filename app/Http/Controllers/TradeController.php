@@ -53,9 +53,9 @@ class TradeController extends Controller
 	public function show_trade_details($id) {
         // $trade = Trade::where('id', $id)->first();
         $trade = TradeImage::join('trades','trade_images.trade_id','=','trades.id')->where('trades.id', $id)->first();
-        // dd($trade);
+        $trade_urls = $trade->where('trade_id', $id)->get();
 
-		return view('trade.view-trade',compact('trade'));
+		return view('trade.view-trade',compact('trade','trade_urls'));
 	}
 
     public function edit_trade_form($id) { // $id is user id
@@ -64,7 +64,16 @@ class TradeController extends Controller
         $trade_categories = TradeCategory::get();
         $trade_conditions = TradeConditionType::get();
 
-        return view('trade.edit-trade', compact('trade','trade_statuses','trade_categories','trade_conditions'));
+        $trade_imgList = TradeImage::where('trade_id', $id)->get();
+        $trade_imgArrays = array();
+        if($trade_imgList->count()>0){
+          $trade_imgs = $trade_imgList;
+          foreach($trade_imgs as $trade_img){
+            array_push($trade_imgArrays, $trade_img->image_url);
+          }
+        }
+
+        return view('trade.edit-trade', compact('trade','trade_statuses','trade_categories','trade_conditions','trade_imgArrays'));
 
     }
 
@@ -113,6 +122,29 @@ class TradeController extends Controller
         $trade->description = $request->input('edit-trade-description');
 
         $trade->save();
+
+        $images = $request->file('filename');
+        $size = sizeof($images);
+        $last_image = TradeImage::where('trade_id',$id)->get()->count();
+
+
+
+        if(!empty($images)) {
+          // foreach($images as $image) {
+           $j = $last_image;
+          for($i = 0; $i < $size; $i++) {
+            $extension = $images[$i]->getClientOriginalExtension();
+            $now = strtotime(Carbon::now());
+            $url = 'trade_' . $trade->id . '_' . $now . '_' .$j .'.' . $extension;
+            Storage::disk('public')->put($url,  File::get($images[$i]));
+            $j++;
+            //store
+            $trade_image= new TradeImage();
+            $trade_image->trade_id = $trade->id;
+            $trade_image->image_url = $url;
+            $trade_image->save();
+          }
+        }
 
 
         // redirect to edit success page
@@ -177,33 +209,23 @@ class TradeController extends Controller
 
         $trade->save();
 
-        if($request->hasfile('filename')){
-        //   foreach($request->file('filename') as $image){
-        //     $i = 0;
-        //     $extension = $image->getClientOriginalExtension();
-        //
-        //     $now = strtotime(Carbon::now());
-        //     $url = 'trade_' . $trade->id . '_' . $now . '_' .$i . $extension;
-        //     Storage::disk('public')->put($url,  File::get($image));
-        //     $i++;
-        //   }
-        // }
-            foreach($request->file('filename') as $image){
-              $name = $image->getClientOriginalName();
-              $extension = $image->getClientOriginalExtension();
-              $now = strtotime(Carbon::now());
-              $url = 'uploads/'.$trade->id. '_' . $now . '_' . $extension;
-              Storage::disk('public')->put($url,  File::get($image));
-              $data[] = $name;
-              $image_urls[] = url($url);
-            }
-          }
-         $trade_image= new TradeImage();
-         $trade_image->image_url=json_encode($image_urls, JSON_UNESCAPED_SLASHES);
-         $trade_image->trade_id = $trade->id;
-        // save in database
-        $trade_image->save();
+        $images = $request->file('filename');
+        $size = sizeof($images);
 
+        if(!empty($images)) {
+          // foreach($images as $image) {
+          for($i = 0; $i < $size; $i++) {
+            $extension = $images[$i]->getClientOriginalExtension();
+            $now = strtotime(Carbon::now());
+            $url = 'trade_' . $trade->id . '_' . $now . '_' .$i .'.' . $extension;
+            Storage::disk('public')->put($url,  File::get($images[$i]));
+            //store
+            $trade_image= new TradeImage();
+            $trade_image->trade_id = $trade->id;
+            $trade_image->image_url = $url;
+            $trade_image->save();
+          }
+        }
         // redirect to add success page
         return view('trade.add-trade-success', ['id'=> $trade->id]);
     }
@@ -217,6 +239,10 @@ class TradeController extends Controller
       return back();
     }
 
+    public function delete_image($trade_imgArray) {
 
+      $trade_image = TradeImage::where('image_url',$trade_imgArray)->first()->delete();
 
+      return back();
+    }
 }
