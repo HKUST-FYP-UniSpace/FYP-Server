@@ -10,7 +10,7 @@
         {{ csrf_field() }}
 
         <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">  <!--size of form box -->
-            <div class="panel panel-default" style="height: 340px;"> <!-- border+background -->
+            <div class="panel panel-default" style="height: 400px;"> <!-- border+background -->
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Trade Item</h4>
                 </div>
@@ -36,10 +36,10 @@
                   <dd class="col-sm-9">{{ $trade->description }}</dd>
 
                   <dt class="col-sm-3">Category</dt>
-                  <dd class="col-sm-9">{{ $trade->trade_category_id}}</dd>
+                  <dd class="col-sm-9">{{ $category->category}}</dd>
 
                   <dt class="col-sm-3">Condition Type</dt>
-                  <dd class="col-sm-9">{{ $trade->trade_condition_type_id }}</dd>
+                  <dd class="col-sm-9">{{ $condition_type->type }}</dd>
 
                   @foreach ($trade_urls as $trade_url)
                   <dt class="col-sm-3">Image URLs</dt>
@@ -47,7 +47,7 @@
                   @endforeach
 
                   <dt class="col-sm-3">Status</dt>
-                  <dd class="col-sm-9">{{ $trade->trade_status_id }}</dd>
+                  <dd class="col-sm-9">{{ $status->status}}</dd>
 
                   <dt class="col-sm-3">Post Date</dt>
                   <dd class="col-sm-9">{{ $trade->created_at }}</dd>
@@ -73,8 +73,3 @@
     </div>
 </div>
 @endsection
-
-<!-- javascript (name corresponds to app.blade.php) -->
-@push('add-script')
-    <script src="{{ asset('/js/select.js') }}"></script>
-@endpush

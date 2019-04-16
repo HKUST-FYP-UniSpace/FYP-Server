@@ -46,14 +46,8 @@
                 <a href="{{ url('/blog') }}">
                 <button type="button" class="btn" style="width: 120px; background-color: orange;">Back</button></a>
             </div>
-            
+
         </div>
     </div>
 </div>
 @endsection
-
-
-<!-- javascript (name corresponds to app.blade.php) -->
-@push('add-script')
-    <script src="{{ asset('/js/blog/add.js') }}"></script>
-@endpush

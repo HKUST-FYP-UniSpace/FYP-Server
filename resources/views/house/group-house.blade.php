@@ -59,10 +59,3 @@
     </div>
 </div>
 @endsection
-
-
-
-<!-- javascript (name corresponds to app.blade.php) -->
-@push('add-script')
-    <script src="{{ asset('/js/select.js') }}"></script>
-@endpush
