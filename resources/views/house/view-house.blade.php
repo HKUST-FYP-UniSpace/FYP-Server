@@ -24,6 +24,7 @@
                                 <th>Duration</th>
                                 <th>Rent</th>
                                 <th>Image</th>
+
                             </tr>
                         </thead>
                         @foreach ($groups as $group)
@@ -47,7 +48,7 @@
         <div class="panel panel-default col-md-12" style="border-color: transparent; padding-left:10%; padding-right:10%;">  <!--size of form box -->
 
 
-            <div class="panel panel-default" style="height: 430px;"> <!-- border+background -->
+            <div class="panel panel-default" style="height: 500px;"> <!-- border+background -->
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Apartment</h4>
                 </div>
@@ -72,7 +73,7 @@
                   <dt class="col-sm-3">Apartment Size</dt>
                   <dd class="col-sm-9">{{ $house->size }}</dd>
 
-                  <dt class="col-sm-3">Maximum No. People</dt>
+                  <dt class="col-sm-3">Max. No. People</dt>
                   <dd class="col-sm-9">{{ $house->max_ppl }}</dd>
 
                   <dt class="col-sm-3">Price</dt>
@@ -90,6 +91,9 @@
                   <dt class="col-sm-3">Owner ID</dt>
                   <dd class="col-sm-9">{{ $house->owner_id }}</dd>
 
+                  <dt class="col-sm-3">Visitors Count</dt>
+                  <dd class="col-sm-9">{{ $house_visitors }}</dd>
+
                   <dt class="col-sm-3">Description</dt>
                   <dd class="col-sm-9">{{ $house->description }}</dd>
 
@@ -98,6 +102,7 @@
 
                   <dt class="col-sm-3">Update Date</dt>
                   <dd class="col-sm-9">{{ $house->updated_at}}</dd>
+
 
             </div>
 
@@ -118,8 +123,3 @@
     </div>
 </div>
 @endsection
-
-<!-- javascript (name corresponds to app.blade.php) -->
-<!-- @push('add-script')
-    <script src="{{ asset('/js/select.js') }}"></script>
-@endpush -->

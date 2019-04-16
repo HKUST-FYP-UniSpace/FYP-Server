@@ -52,9 +52,3 @@
 </div>
 </div>
 @endsection
-
-
-<!-- javascript (name corresponds to app.blade.php) -->
-@push('add-script')
-    <script src="{{ asset('/js/house/add.js') }}"></script>
-@endpush

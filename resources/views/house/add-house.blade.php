@@ -66,8 +66,8 @@
 
                     <!-- House Type: need to select -->
                      <div class="form-group row {{ $errors->has('add-house-type') ? 'has-error' : '' }}">
-                        <label for="add-house-type" class="col-sm-4 col-form-label"> Apartment Type </label>
-                        <div class="col-sm-8">
+                        <label for="add-house-type" class="col-sm-5 col-form-label"> Apartment Type </label>
+                        <div class="col-sm-7">
                             <select class="form-control" id="add-house-type" name="add-house-type" value="{{ old('add-house-type')}}">
                                 <option value= "" selected disabled hidden> Please Select </option>
                                 <option value = "0"> Flat </option>
@@ -83,8 +83,8 @@
 
                     <!-- House District ID: need to select -->
                      <div class="form-group row {{ $errors->has('add-house-district_id') ? 'has-error' : '' }}">
-                        <label for="add-house-district_id" class="col-sm-4 col-form-label"> Apartment District ID </label>
-                        <div class="col-sm-8">
+                        <label for="add-house-district_id" class="col-sm-5 col-form-label"> Apartment District ID </label>
+                        <div class="col-sm-7">
                             <select class="form-control" id="add-house-district_id" name="add-house-district_id" value="{{ old('add-house-district_id')}}">
                                 <option value="" selected disabled hidden> Please Select </option>
                                 @foreach($house_districts as $house_district)
@@ -99,8 +99,8 @@
 
                     <!-- House Status: need to select -->
                     <div class="form-group row {{ $errors->has('add-house-status') ? 'has-error' : '' }}">
-                        <label for="add-house-status" class="col-sm-4 col-form-label"> Apartment Status </label>
-                        <div class="col-sm-8">
+                        <label for="add-house-status" class="col-sm-5 col-form-label"> Apartment Status </label>
+                        <div class="col-sm-7">
                             <select class="form-control" id="add-house-status" name="add-house-status" value="{{ old('add-house-status')}}">
                                 <option value="" selected disabled hidden> Please Select </option>
                                 @foreach($house_statuses as $house_status)
@@ -115,8 +115,8 @@
 
                     <!-- Size -->
                     <div class="form-group row {{ $errors->has('add-house-size') ? 'has-error' : '' }}">
-                        <label for="add-house-size" class="col-sm-4 col-form-label"> Size </label>
-                        <div class="col-sm-8">
+                        <label for="add-house-size" class="col-sm-5 col-form-label"> Size </label>
+                        <div class="col-sm-7">
                             <input type="text" class="form-control" id="add-house-size" name="add-house-size" value="{{ old('add-house-size') }}">
                             @if($errors->has('add-house-size'))
                                 <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-house-size') }}</span>
@@ -126,8 +126,8 @@
 
                     <!-- Price -->
                     <div class="form-group row {{ $errors->has('add-house-price') ? 'has-error' : '' }}">
-                        <label for="add-house-price" class="col-sm-4 col-form-label"> Price </label>
-                        <div class="col-sm-8">
+                        <label for="add-house-price" class="col-sm-5 col-form-label"> Price </label>
+                        <div class="col-sm-7">
                             <input type="text" class="form-control" id="add-house-price" name="add-house-price" value="{{ old('add-house-price') }}">
                             @if($errors->has('add-house-price'))
                                 <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-house-price') }}</span>
@@ -137,8 +137,8 @@
 
                     <!-- Max_ppl -->
                     <div class="form-group row {{ $errors->has('add-house-max_ppl') ? 'has-error' : '' }}">
-                        <label for="add-house-max_ppl" class="col-sm-4 col-form-label"> Maximum No. People </label>
-                            <div class="col-sm-8">
+                        <label for="add-house-max_ppl" class="col-sm-5 col-form-label"> Maximum No. People </label>
+                            <div class="col-sm-7">
                                 <input type="number" class="form-control" id="add-house-max_ppl" name="add-house-max_ppl" step=1 value="{{ old('add-house-max_ppl') }}">
                                 @if($errors->has('add-house-max_ppl'))
                                     <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-house-max_ppl') }}</span>

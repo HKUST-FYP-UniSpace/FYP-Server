@@ -49,6 +49,7 @@
              <h3 class="text-center">Apartment Posts</h3>
              <h1 class="text-center">{{ $houses }}</h1>
           </div>
+          <div>Total Apartment Visitors: {{ $house_visitors }}</div>
         </div>
         <!-- Number of Trades -->
         <div class="col-sm-4">
@@ -56,6 +57,7 @@
             <h3 class="text-center">Trade Posts</h3>
             <h1 class="text-center">{{ $trades }}</h1>
          </div>
+         <div>Total Trade Visitors: {{ $trade_visitors }}</div>
        </div>
        <!-- Number of Blogs -->
        <div class="col-sm-4">
