@@ -60,8 +60,8 @@
 
                       <!-- Admin ID -->
                       <div class="form-group row {{ $errors->has('add-blog-admin_id') ? 'has-error' : '' }}">
-                          <label for="add-blog-admin_id" class="col-sm-2 col-form-label"> Admin ID </label>
-                          <div class="col-sm-10">
+                          <label for="add-blog-admin_id" class="col-sm-4 col-form-label"> Admin ID </label>
+                          <div class="col-sm-8">
                               <input type="text" class="form-control" id="add-blog-admin_id" name="add-blog-admin_id" value="{{ old('add-blog-admin_id') }}">
                               @if($errors->has('add-blog-admin_id'))
                                   <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-blog-admin_id') }}</span>
@@ -82,7 +82,8 @@
 
                       <!-- Image  -->
                       <div class="form-group row" {{ $errors->has('add-file') ? 'has-error' : '' }}>
-                        <label for="add-file" class="col-sm-4">Blog Image </label>
+                        <label for="add-file" class="col-sm-12">Blog Image </label>
+
                           <input type="file" name="add-file" id="img">
                             <img src="" id="img-tag" style=" width: 600px;"/>
                               <script type="text/javascript">
@@ -100,6 +101,7 @@
                                   });
                               </script>
                       </div>
+
                     </div>
 
                     <!-- submit button -->
@@ -113,9 +115,3 @@
     </form>
 </div>
 @endsection
-
-
-<!-- javascript (name corresponds to app.blade.php) -->
-@push('add-script')
-    <!-- <script src="{{ asset('/js/blog/add.js') }}"></script> -->
-@endpush

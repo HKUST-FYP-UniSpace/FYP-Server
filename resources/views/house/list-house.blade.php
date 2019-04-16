@@ -35,9 +35,9 @@
                             <th>Type</th>
                             <th>Size</th>
                             <th>Price</th>
-                            <th>Maximum People</th>
                             <th>Status</th>
                             <th>Owner</th>
+                            <th>Maximum People</th>
                             <th>View Details</th>
                             <th>Apartment Comments</th>
                             <th>Delete Apartment </th>
@@ -54,9 +54,9 @@
                             <th>{{ $house->type }}</th>
                             <th>{{ $house->size }}</th>
                             <th>{{ $house->price }}</th>
-                            <th>{{ $house->max_ppl }}</th>
                             <th>{{ $house->status }}</th>
                             <th>{{ $house->owner_id }}</th>
+                            <th>{{ $house->max_ppl }}</th>
                             <td><a href="{{ route('house-view', $house->id) }}">details</a></td>
                             <td><a href="{{ route('house-comment', $house->id) }}">show comments</a></td>
                             @if($house->is_deleted == 0)
@@ -79,8 +79,3 @@
     </div>
 </div>
 @endsection
-
-<!-- javascript (name corresponds to app.blade.php) -->
-@push('add-script')
-    <script src="{{ asset('/js/select.js') }}"></script>
-@endpush

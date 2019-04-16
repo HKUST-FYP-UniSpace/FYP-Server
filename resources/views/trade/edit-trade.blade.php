@@ -94,7 +94,7 @@
                     <div class="form-group row">
                         <dt for="edit-trade-description" class="col-sm-9" style="padding-left:30px"> Description </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                            <textarea class="form-control" id="edit-trade-description" name="edit-trade-description" placeholder="Write something.." style="height:200px" value="{{ isset($trade) ? old('edit-trade-description', $trade->description) : old('edit-trade-description') }}">{{$trade->description}}</textarea>
+                            <textarea class="form-control" id="edit-trade-description" name="edit-trade-description" placeholder="Write something.." style="height:100px" value="{{ isset($trade) ? old('edit-trade-description', $trade->description) : old('edit-trade-description') }}">{{$trade->description}}</textarea>
                         </dd>
                     </div>
 

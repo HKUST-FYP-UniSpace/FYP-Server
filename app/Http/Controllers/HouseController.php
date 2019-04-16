@@ -13,6 +13,7 @@ use App\Group;
 use App\Preference;
 use App\GroupDetail;
 use App\HouseImage;
+use App\HouseVisitor;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
@@ -58,8 +59,9 @@ class HouseController extends Controller
         $groups = Group::where('house_id', $id)->latest()->get();
         $house = HouseImage::join('houses','house_images.house_id','=','houses.id')->where('houses.id', $id)->first();
         $house_urls = $house->where('house_id', $id)->get();
+        $house_visitors = HouseVisitor::join('houses','house_visitors.house_id','=','houses.id')->where('houses.id', $id)->get()->count();
 
-		return view('house.view-house',compact('house','groups','house_urls'));
+		return view('house.view-house',compact('house','groups','house_urls','house_visitors'));
 	}
 
   public function show_group_details($id) {

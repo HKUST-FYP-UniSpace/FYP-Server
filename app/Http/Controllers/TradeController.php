@@ -54,8 +54,12 @@ class TradeController extends Controller
         // $trade = Trade::where('id', $id)->first();
         $trade = TradeImage::join('trades','trade_images.trade_id','=','trades.id')->where('trades.id', $id)->first();
         $trade_urls = $trade->where('trade_id', $id)->get();
+        $category = TradeCategory::join('trades','trade_categories.id','=','trades.trade_category_id')->where('trades.id', $id)->first();
+        $condition_type = TradeConditionType::join('trades','trade_condition_types.id','=','trades.trade_condition_type_id')->where('trades.id', $id)->first();
+        $status = TradeStatus::join('trades','trade_statuses.id','=','trades.trade_status_id')->where('trades.id', $id)->first();
 
-		return view('trade.view-trade',compact('trade','trade_urls'));
+
+		return view('trade.view-trade',compact('trade','trade_urls','category','condition_type','status'));
 	}
 
     public function edit_trade_form($id) { // $id is user id

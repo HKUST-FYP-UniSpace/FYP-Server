@@ -69,13 +69,13 @@
                     <div class="form-group row">
                         <dt for="edit-blog-detail" class="col-sm-9" style="padding-left:30px">Blog Detail</dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                            <textarea class="form-control" id="edit-blog-detail" name="edit-blog-detail" placeholder="Write something.." style="height:200px" value="{{ isset($blog) ? old('edit-blog-detail', $blog->detail) : old('edit-blog-detail') }}">{{$blog->detail}}</textarea>
+                            <textarea class="form-control" id="edit-blog-detail" name="edit-blog-detail" placeholder="Write something.." style="height:100px" value="{{ isset($blog) ? old('edit-blog-detail', $blog->detail) : old('edit-blog-detail') }}">{{$blog->detail}}</textarea>
                         </dd>
                     </div>
 
                     <!-- Image  -->
                     <div class="form-group row">
-                        <label for="edit-file" class="col-sm-2">Blog image</label>
+                        <label for="edit-file" class="col-sm-4">Blog image</label>
                         <div class="col-sm-12 {{ $errors->has('edit-file') ? 'has-error' : '' }}">
                             <!-- original image-->
                             <div class="form-group row col-sm-12" id="edit-original-file">
@@ -83,7 +83,7 @@
                             </div>
                             <!-- choose new pic use -->
                             <div class="form-group row">
-                                <div class="col-sm-4 text-center">
+                                <div class="col-sm-5 text-center">
                                   <label class="form-control btn btn-primary view-btn" id="upload-btn">
                                     <input type="file" class="form-control form-control-file" id="edit-file" name="edit-file"><i class="far fa-image"></i> Choose New File </label>
                                 </div>
@@ -154,9 +154,3 @@
     </form>
 </div>
 @endsection
-
-
-<!-- javascript (name corresponds to app.blade.php) -->
-@push('add-script')
-    <script src="{{ asset('/js/select.js') }}"></script>
-@endpush
