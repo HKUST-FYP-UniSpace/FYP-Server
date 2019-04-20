@@ -548,6 +548,7 @@ class TradeController extends Controller
       $trade->trade_status_id = 1; //'Reveal' when first create
       $trade->is_deleted = 0; //not 'Deleted' by default
       $trade->user_id = $request->input('userId');
+      $trade->district_id = $request->input('district_id'); // updated in server
 
       $trade->save();
 
