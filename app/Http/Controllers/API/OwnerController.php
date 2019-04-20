@@ -145,14 +145,14 @@ class OwnerController extends Controller
 
     $img_urls = $request->input('photoURLs');
     if($img_urls != "NULL"){
-      HouseImage::where('trade_id', $tradeId)->delete();
+      HouseImage::where('house_id', $house_id)->delete();
 
       if(!empty($img_urls)){
         foreach($img_urls as $img_url){
-          $trade_img = new HouseImage();
-          $trade_img->image_url = $img_url;
-          $trade_img->trade_id =$tradeId;
-          $trade_img->save();
+          $house_img = new HouseImage();
+          $house_img->img_url = $img_url;
+          $house_img->house_id =$house_id;
+          $house_img->save();
         }
       }
 
