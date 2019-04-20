@@ -268,25 +268,25 @@ class HouseController extends Controller
         $occupiedCount = GroupDetail::where('group_id', $group_id)->count();
         $preference_model = self::create_preferenceModelByPreference($group_id);
 
-        $house_imgList = HouseImage::where('house_id', $house_id);
-        $house_imgArray = array();
-        if($house_imgList->count()>0){
-          $house_imgs = $house_imgList->get();
-          foreach($house_imgs as $house_img){
-            array_push($house_imgArray, $house_img->img_url);
-          }
-        }
-
+        // $house_imgList = HouseImage::where('house_id', $house_id);
+        // $house_imgArray = array();
+        // if($house_imgList->count()>0){
+        //   $house_imgs = $house_imgList->get();
+        //   foreach($house_imgs as $house_img){
+        //     array_push($house_imgArray, $house_img->img_url);
+        //   }
+        // }
+        $house_img = HouseImage::where('house_id', $house_id)->first();
 
         $result_group = [
           'houseId'=>$house_id,
           'teamId'=>$group_id,
           'title'=>$group->title,
-          'preference'=>$occupiedCount,
+          'preference'=>$preference_model,
           'duration'=>$group->duration,
           'groupSize'=>$group->max_ppl,
           'occupiedCount'=>$occupiedCount,
-          'photoURLs'=>$house_imgArray
+          'photoURL'=>$house_img
         ];
 
         array_push($result, $result_group);
@@ -1032,7 +1032,7 @@ class HouseController extends Controller
           $average_size += $past_house->size;
           $house_count += 1;
         }
-        
+
       }
 
       if($house_count == 0){

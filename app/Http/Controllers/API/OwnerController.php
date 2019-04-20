@@ -24,6 +24,7 @@ use App\Preference;
 use App\PreferenceItem;
 use App\PreferenceItemCategory;
 use App\HouseVisitor;
+use App\HouseDetail;
 
 use Validator;
 use Illuminate\Support\Arr;
@@ -113,6 +114,97 @@ class OwnerController extends Controller
   // }
 
 
+  // Add House
+  public function store_house(Request $request){
+    $house = new House();
+
+    $house->title = $request->input('title');
+    $house->subtitle = $request->input('subtitle');
+    $house->type = $request->input('type'); //extra
+    $house->size = $request->input('size');
+    $house->address = $request->input('address');
+    $house->district_id = $request->input('district_id');//extra
+    $house->description = $request->input('description'); //extra
+    $house->max_ppl = $request->input('max_ppl'); //extra
+    $house->price = $request->input('price');
+    $house->status = 2; //extra //set to "reveal" by default
+    $house->owner_id = $request->input('ownerId'); //extra
+    $house->is_deleted = 0; //extra //set to not deleted by default
+
+    $house->save();
+    $house_id = $house->id;
+
+    $house_detail = new HouseDetail();
+
+    $house_detail->house_id = $house_id;
+    $house_detail->toilet = $request->input('toilets');
+    $house_detail->bed = $request->input('rooms');
+    $house_detail->room = $request->input('beds');
+
+    $house_detail->save();
+
+    return ['houseId' => $house_id];
+  }
+
+
+  // Add House [Image]
+  public function store_houseImage(Request $request){
+    $trade_id = $request->input('houseId');
+    $temp = 0;
+    $images = $request->file('photoURLs');
+    $size = sizeof($images);
+
+    if(!empty($images)) {
+      // foreach($images as $image) {
+      for($i = 0; $i < $size; $i++) {
+        $extension = $images[$i]->getClientOriginalExtension();
+
+        $now = strtotime(Carbon::now());
+        $url = 'trade_' . $trade_id . '_' . $now . '_' .$i .'.' . $extension;
+        Storage::disk('public')->put($url,  File::get($images[$i]));
+        $temp++;
+      }
+      $response = ['isSuccess' => true, 'counter' => $temp];
+
+    }
+    else{
+      $response = ['isSuccess' => false];
+    }
+
+    return $response;
+  }
+
+
+  // Change House Status
+  public function update_houseStatus($houseId, Request $request){
+    $house = House::where("id", $houseId)->first();
+
+    if($house == null){
+      return ['isSucces' => false];
+    }
+
+    $status = $request->input('status');
+    if($status != null){
+      $house->status = $status;
+    }else{
+      return ['isSucces' => false];
+    }
+
+    $house->save();
+    return ['isSucces' => true];
+  }
+
+
+  // public function update_house($houseId, Request $request){
+  //
+  // }
+  //
+  //
+  // public function update_houseImg(Request $request){
+  //
+  // }
+
+
   // Reply Review
   public function store_reviewReply($reviewId, Request $request){
     $owner_reply = new ReviewReply();
@@ -127,5 +219,9 @@ class OwnerController extends Controller
     $response=['isSuccess'=>true];
     return $response;
   }
+
+
+  //--------------------------------- helper functions ----------------------------------
+
 
 }
