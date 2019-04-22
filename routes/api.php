@@ -54,7 +54,7 @@ Route::post('image/upload', 'API\UploadController@image_upload');
 // Owner
 Route::get('/owner/{userId}/houseSummary', 'API\OwnerController@get_houseSummary'); // Get Owner House Summary //Tested
 Route::get('/owner/{userId}/teamSummary/{houseId}', 'API\OwnerController@get_teamSummary'); // Get Owner Team Summary // Tested
-Route::get('/owner/houseData/view', 'API\OwnerController@get_houseData'); // Get House Data //
+Route::get('/owner/{userId}/houseData/{houseId}/view/{chartFilterOptions}', 'API\OwnerController@get_houseData'); // Get House Data //
 Route::post('/owner/{reviewId}/reply', 'API\OwnerController@store_reviewReply'); // Reply Review // Tested
 Route::post('/owner/house/add', 'API\OwnerController@store_house'); // Add House // Tested[Local]
 Route::post('/owner/house/img', 'API\OwnerController@store_houseImage'); // Add House [Image] // Tested[Local]
