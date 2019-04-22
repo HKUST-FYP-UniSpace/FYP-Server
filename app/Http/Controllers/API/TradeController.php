@@ -219,7 +219,7 @@ class TradeController extends Controller
         'description' => $trade->description,
         'isBookmarked' => (TradeBookmark::where('trade_id', $id)->where('user_id', $userId)->count()>0)?true:false,
         'photoURLs' => $trade_imgArray,
-        'district_id' => app( App\Http\Controllers\API\HouseController)->convertDistrictIdToEnum($trade->district_id),
+        'district_id' => app('App\Http\Controllers\API\HouseController')->convertDistrictIdToEnum($trade->district_id),
 
         // Bonuse Information that may be needed
         'quantity' => $trade->quantity,
@@ -549,7 +549,7 @@ class TradeController extends Controller
       $trade->trade_status_id = 1; //'Reveal' when first create
       $trade->is_deleted = 0; //not 'Deleted' by default
       $trade->user_id = $request->input('userId');
-      $trade->district_id = app( App\Http\Controllers\API\HouseController)->convertDistrictEnumToId($request->input('district_id')); // updated in server
+      $trade->district_id = app('App\Http\Controllers\API\HouseController')->convertDistrictEnumToId($request->input('district_id')); // updated in server
 
       $trade->save();
 
