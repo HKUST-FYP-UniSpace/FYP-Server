@@ -24,6 +24,7 @@ use App\Preference;
 use App\PreferenceItem;
 use App\PreferenceItemCategory;
 use App\HouseVisitor;
+use App\District;
 
 use Validator;
 use Illuminate\Support\Arr;
@@ -286,7 +287,7 @@ class HouseController extends Controller
           'duration'=>$group->duration,
           'groupSize'=>$group->max_ppl,
           'occupiedCount'=>$occupiedCount,
-          'photoURL'=>$house_img
+          'photoURL'=>$house_img==null?null:$house_img->img_url
         ];
 
         array_push($result, $result_group);
@@ -1195,6 +1196,22 @@ class HouseController extends Controller
 
       return House::whereIn('id', array_keys($result))->get();
       // return $houses;
+    }
+
+
+    //This is a helper function that convert district_id to their enum name value
+    public function convertDistrictIdToEnum($id){
+      $enum = District::where('id', $id)->first();
+
+      return $enum->name;
+    }
+
+
+    //This is a helper function that convert district name to their enum id value
+    public function convertDistrictEnumToId($name){
+      $enum = District::where('name', $name)->first();
+
+      return $enum->id;
     }
 
     // This function is not used in the app but only kept here for testing data structure
