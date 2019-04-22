@@ -384,6 +384,83 @@ $viewFirst = $views->whereBetween('created_at', array($day_before->toDateString(
     return $response;
   }
 
+  // Edit House
+  public function update_house($houseId, Request $request){
+    $houseId = $request->input('houseId');
+    $house = House::where("id", $houseId)->first();
+
+    if($house == null){
+      return "House with respective ID number does not exist";
+    }
+    $house->title = ($request->input('title')==null ? "" : $request->input('title'));
+    $house->address = ($request->input('address')==null ? "" : $request->input('address'));
+    $house->subtitle = ($request->input('subtitle')==null ? "" : $request->input('subtitle'));
+    $house->price = (double)($request->input('price')==null ? "" : $request->input('price'));
+    $house->size = (double)($request->input('size')==null ? "" : $request->input('size'));
+
+    // fields that may be needed
+    // $house->type = ($request->input('type')==null ? "" : $request->input('type'));
+    // $house->district_id = (int)($request->input('district_id')==null ? "" : app( App\Http\Controllers\API\HouseController)->convertDistrictIdToEnum($request->input('district_id')));
+    // $house->description = ($request->input('description')==null ? "" : $request->input('description'));
+    // $house->max_ppl = (int)($request->input('max_ppl')==null ? "" : $request->input('max_ppl'));
+    // $house->status = (int)($request->input('status')==null ? "" : $request->input('status'));
+    // $house->owner_id = (int)($request->input('owner_id')==null ? "" : $request->input('owner_id'));
+    // $house->is_deleted = (int)($request->input('is_deleted')==null ? "" : $request->input('is_deleted'));
+
+    $house->save();
+
+    // $success_msg = "House Updated Successfully (ID = {$id})";
+    // return $success_msg;
+    HouseDetail::where('house_id', $houseId)->delete();
+
+    $house_detail = new HouseDetail();
+    $house_detail->house_id = $houseId;
+    $house_detail->room = (int)($request->input('rooms')==null ? "" : $request->input('rooms'));
+    $house_detail->toilet = (int)($request->input('toilets')==null ? "" : $request->input('toilets'));
+    $house_detail->bed = (int)($request->input('beds')==null ? "" : $request->input('beds'));
+    $house_detail->save();
+
+    $response = ['isSuccess' => true];
+    return $response;
+  }
+
+
+  //Edit House [Image]
+  public function update_houseImage(Request $request){
+    $house_id = $request->input('houseId');
+    $temp = 0;
+    $images = $request->file('photoURLs');
+    $size = sizeof($images);
+
+    HouseImage::where('house_id', $house_id)->delete(); // first delete old images
+
+    if(!empty($images)) {
+      // foreach($images as $image) {
+      for($i = 0; $i < $size; $i++) {
+        $extension = $images[$i]->getClientOriginalExtension();
+
+        $now = strtotime(Carbon::now());
+        $url = 'trade_' . $house_id . '_' . $now . '_' .$i .'.' . $extension;
+        Storage::disk('public')->put($url,  File::get($images[$i]));
+
+        // Save url in db
+        $house_image = new HouseImage();
+        $house_image->img_url = url('uploads/'.$url);
+        $house_image->house_id = $house_id;
+        $house_image->save();
+
+        $temp++;
+      }
+      $response = ['isSuccess' => true, 'counter' => $temp];
+
+    }
+    else{
+      $response = ['isSuccess' => false];
+    }
+
+    return $response;
+  }
+
 
   // Change House Status
   public function update_houseStatus($houseId, Request $request){
@@ -403,16 +480,6 @@ $viewFirst = $views->whereBetween('created_at', array($day_before->toDateString(
     $house->save();
     return ['isSucces' => true];
   }
-
-
-  // public function update_house($houseId, Request $request){
-  //
-  // }
-  //
-  //
-  // public function update_houseImg(Request $request){
-  //
-  // }
 
 
   // Reply Review

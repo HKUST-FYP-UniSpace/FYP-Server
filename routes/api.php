@@ -59,8 +59,8 @@ Route::post('/owner/{reviewId}/reply', 'API\OwnerController@store_reviewReply');
 Route::post('/owner/house/add', 'API\OwnerController@store_house'); // Add House // Tested[Local]
 Route::post('/owner/house/img', 'API\OwnerController@store_houseImage'); // Add House [Image] // Tested[Local]
 Route::put('/owner/{houseId}/houseStatus', 'API\OwnerController@update_houseStatus'); // Change House Status // Tested[Local]
-Route::put('/owner/{houseId}/house', 'API\OwnerController@update_house'); // Edit House
-Route::put('/owner/{houseId}/houseImg', 'API\OwnerController@update_houseImage');  // Edit House [Image]
+Route::put('/owner/house/update', 'API\OwnerController@update_house'); // Edit House
+Route::post('/owner/houseImg/update', 'API\OwnerController@update_houseImage');  // Edit House [Image]
 
 // House
 // Route::get('/house/create', 'API\HouseController@create_house');
