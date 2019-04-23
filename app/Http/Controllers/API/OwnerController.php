@@ -385,7 +385,7 @@ $viewFirst = $views->whereBetween('created_at', array($day_before->toDateString(
   }
 
   // Edit House
-  public function update_house($houseId, Request $request){
+  public function update_house(Request $request){
     $houseId = $request->input('houseId');
     $house = House::where("id", $houseId)->first();
 
