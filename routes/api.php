@@ -47,7 +47,7 @@ Route::post('/users/verify/{id}', 'API\UserController@verify_code');
 Route::get('/users/calendar/{id}/{year}/{month}', 'API\UserController@calendar');
 
 // Chatroom
-Route::get('/message/{id}', 'API\ChatroomController@get_message_summaries');
+Route::post('/message/{id}', 'API\ChatroomController@get_message_summaries');
 Route::get('/message/{id}/{message_id}', 'API\ChatroomController@get_message_detail');
 
 // Upload

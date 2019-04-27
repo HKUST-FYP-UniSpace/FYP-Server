@@ -16,8 +16,8 @@ use App\Profile;
 
 class ChatroomController extends Controller
 {
-    // GET: get mesage summaries
-    public function get_message_summaries($id) {
+    // POST: get mesage summaries
+    public function get_message_summaries($id, Request $request) {
     	$result = array();
 
     	$chatrooms = ChatroomParticipant::where('user_id', $id)->get();
@@ -35,6 +35,17 @@ class ChatroomController extends Controller
 	    	$temp['time'] = strtotime($chatroom_summary->created_at);
 	    	$temp['MessageGroupType'] = ( (int)$chatroom_summary->chatroom_type_id ) - 1;
 
+	    	$counter = 0;
+	    	$timestamp = date('Y-m-d H:i:s', $request[$chatroom_summary->id]);;
+	    	$messages = Message::where('chatroom_id', $chatroom_summary->id)->get();
+	    	foreach($messages as $message) {
+	    		$message_createtime = $message->created_at->toDateTimeString();
+	    		if($message_createtime > $timestamp) {
+	    			$counter++;
+	    		}
+	    	}
+	    	$temp['unreadMessageCount'] = $counter;
+
 	    	// chatroom icon
 	    	if($chatroom_summary->chatroom_type_id == 2) {	// team chatroom
 	    		$temp['photoURL'] = Group::where('id', $chatroom_summary->group_id)->first()->image_url;
@@ -48,6 +59,15 @@ class ChatroomController extends Controller
 	    			}
 	    		}
 	    		$temp['photoURL'] = Profile::where('user_id', $receiver_user_id)->first()->icon_url;
+	    	}
+	    	$temp['users'] = array();
+	    	$temp_user = array();
+	    	$participants = ChatroomParticipant::where('chatroom_id', $chatroom_summary->id)->get();
+	    	foreach($participants as $participant) {
+	    		$temp_user['id'] = $participant->user_id;
+	    		$temp_user['name'] = User::where('id', $participant->user_id)->first()->name;
+	    		$temp_user['username'] = User::where('id', $participant->user_id)->first()->username;
+	    		array_push($temp['users'], $temp_user);
 	    	}
 
 	    	array_push($result, $temp);
