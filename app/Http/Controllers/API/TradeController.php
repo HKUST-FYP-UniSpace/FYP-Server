@@ -16,6 +16,7 @@ use App\TradeVisitor;
 use Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
@@ -714,6 +715,163 @@ class TradeController extends Controller
 
       return $response;
     }
+
+
+    // Get Trade Data
+    public function get_tradeData($userId, $tradeId, $chartFilterOptions){
+      $targetViews = array();
+      $otherViews = array();
+      $targetBookmarks = array();
+      $otherBookmarks = array();
+
+      if($chartFilterOptions == "Week"){
+        for($i = 8, $order = 1; $i > 0; $i--){
+          $day_before = Carbon::now()->subDays($i)->toDateTimeString();;
+          $day_before_end = Carbon::now()->subDays($i-1)->toDateTimeString();
+
+          // $viewFirst = TradeVisitor::where('trade_id', $tradeId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end])->get();
+          // $viewCount = $viewFirst->count();
+          $viewCount = TradeVisitor::where('trade_item_id', $tradeId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end])->count();
+          $targetView = ['order' => $order,
+                          'time' => $day_before,
+                          'x' => $order,
+                          'y' => $viewCount
+                        ];
+          array_push($targetViews, $targetView);
+
+          $notViewAtDate = TradeVisitor::where('trade_item_id', '!=', $tradeId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end]);
+          $notViewCount = $notViewAtDate->count();
+          $viewTradeNum =  $notViewAtDate->select('trade_item_id')->groupBy('trade_item_id')->count();
+          $otherView = ['order' => $order,
+                          'time' => $day_before,
+                          'x' => $order,
+                          'y' => $viewTradeNum==0 ? 0 : $notViewCount/$viewTradeNum
+                        ];
+          array_push($otherViews, $otherView);
+
+          $bookmarkCount = TradeBookmark::where('trade_id', $tradeId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end])->count();
+          $targetBookmark = ['order' => $order,
+                              'time' => $day_before,
+                              'x' => $order,
+                              'y' => $bookmarkCount
+                            ];
+          array_push($targetBookmarks, $targetBookmark);
+
+          $notBookmarkAtDate = TradeBookmark::where('trade_id', '!=', $tradeId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end]);
+          $notBookmarkCount = $notBookmarkAtDate->count();
+          $bookmarkTradeNum =  $notBookmarkAtDate->select('trade_id')->groupBy('trade_id')->count();
+          $otherBookmark = ['order' => $order,
+                            'time' => $day_before,
+                            'x' => $order,
+                            'y' => $bookmarkTradeNum==0 ? 0 : $notBookmarkCount/$bookmarkTradeNum
+                            ];
+          array_push($otherBookmarks, $otherBookmark);
+
+          $order++;
+        }
+      }else if($chartFilterOptions == "Month"){
+        for($i = 31, $order = 1; $i > 0; $i--){
+          // $day_before = date( 'Y-m-d h:i:s', strtotime( $date . ' -'.$i. ' day' ) );
+          $day_before = Carbon::now()->subDays($i)->toDateTimeString();;
+          $day_before_end = Carbon::now()->subDays($i-1)->toDateTimeString();
+          // $day_before = date( 'Y-m-d', strtotime( $date . ' -'.$i. ' day' ) );
+  // $viewCount = $views->whereDate('created_at', '=', date('2019-04-04'))->count();
+  // dd($viewCount);
+          $viewCount = TradeVisitor::where('trade_item_id', $tradeId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end])->count();
+          $targetView = ['order' => $order,
+                          'time' => $day_before,
+                          'x' => $order,
+                          'y' => $viewCount
+                        ];
+          array_push($targetViews, $targetView);
+
+          $notViewAtDate = TradeVisitor::where('trade_item_id', '!=', $tradeId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end]);
+          $notViewCount = $notViewAtDate->count();
+          $viewTradeNum =  $notViewAtDate->select('trade_item_id')->groupBy('trade_item_id')->count();
+          $otherView = ['order' => $order,
+                          'time' => $day_before,
+                          'x' => $order,
+                          'y' => $viewTradeNum==0 ? 0 : $notViewCount/$viewTradeNum
+                        ];
+          array_push($otherViews, $otherView);
+
+          $bookmarkCount = TradeBookmark::where('trade_id', $tradeId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end])->count();
+          $targetBookmark = ['order' => $order,
+                              'time' => $day_before,
+                              'x' => $order,
+                              'y' => $bookmarkCount
+                            ];
+          array_push($targetBookmarks, $targetBookmark);
+
+          $notBookmarkAtDate = TradeBookmark::where('trade_id', '!=', $tradeId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end]);
+          $notBookmarkCount = $notBookmarkAtDate->count();
+          $bookmarkTradeNum =  $notBookmarkAtDate->select('trade_id')->groupBy('trade_id')->count();
+          $otherBookmark = ['order' => $order,
+                            'time' => $day_before,
+                            'x' => $order,
+                            'y' => $bookmarkTradeNum==0 ? 0 : $notBookmarkCount/$bookmarkTradeNum
+                            ];
+          array_push($otherBookmarks, $otherBookmark);
+
+          $order++;
+        }
+      }else if ($chartFilterOptions == "Year"){
+        for($i = 13, $order = 1; $i > 0; $i--){
+          // $month_before = date( 'Y-m-d h:i:s', strtotime( $date . ' -'.$i. ' month' ) );
+          // $month_before_end = date( 'Y-m-d h:i:s', strtotime( $month_before . ' +1 month' ) );
+          $month_before = Carbon::now()->subMonth($i)->toDateTimeString();;
+          $month_before_end = Carbon::now()->subMonth($i-1)->toDateTimeString();
+
+          $viewCount = TradeVisitor::where('trade_item_id', $tradeId)->whereBetween(DB::raw('date(created_at)'), [$month_before, $month_before_end])->count();
+          $targetView = ['order' => $order,
+                          'time' => $month_before,
+                          'x' => $order,
+                          'y' => $viewCount
+                        ];
+          array_push($targetViews, $targetView);
+
+          $notViewAtDate = TradeVisitor::where('trade_item_id', '!=', $tradeId)->whereBetween(DB::raw('date(created_at)'), [$month_before, $month_before_end]);
+          $notViewCount = $notViewAtDate->count();
+          $viewTradeNum =  $notViewAtDate->select('trade_item_id')->groupBy('trade_item_id')->count();
+          $otherView = ['order' => $order,
+                          'time' => $month_before,
+                          'x' => $order,
+                          'y' => $viewTradeNum==0 ? 0 : $notViewCount/$viewTradeNum
+                        ];
+          array_push($otherViews, $otherView);
+
+          $bookmarkCount = TradeBookmark::where('trade_id', $tradeId)->whereBetween(DB::raw('date(created_at)'), [$month_before, $month_before_end])->count();
+          $targetBookmark = ['order' => $order,
+                              'time' => $month_before,
+                              'x' => $order,
+                              'y' => $bookmarkCount
+                            ];
+          array_push($targetBookmarks, $targetBookmark);
+
+          $notBookmarkAtDate = TradeBookmark::where('trade_id', '!=', $tradeId)->whereBetween(DB::raw('date(created_at)'), [$month_before, $month_before_end]);
+          $notBookmarkCount = $notBookmarkAtDate->count();
+          $bookmarkTradeNum =  $notBookmarkAtDate->select('trade_id')->groupBy('trade_id')->count();
+          $otherBookmark = ['order' => $order,
+                            'time' => $month_before,
+                            'x' => $order,
+                            'y' => $bookmarkTradeNum==0 ? 0 : $notBookmarkCount/$bookmarkTradeNum
+                            ];
+          array_push($otherBookmarks, $otherBookmark);
+
+          $order++;
+        }
+      }
+
+      $response = [
+        'targetViews' => $targetViews,
+        'othersViews' => $otherViews,
+        'targetBookmark' => $targetBookmarks,
+        'othersBookmark' => $otherBookmarks
+      ];
+
+      return $response;
+    }
+//-----------------------------helper function --------------------------------
 
 
     // helper function
