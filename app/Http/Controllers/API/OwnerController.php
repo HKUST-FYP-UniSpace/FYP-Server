@@ -30,6 +30,7 @@ use Validator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use \Datetime;
 use \DateTimeZone;
@@ -117,11 +118,10 @@ class OwnerController extends Controller
     // date_default_timezone_set('Asia/Hong_Kong');
     // $date = date('Y-m-d H:i:s');
 
-    $views = HouseVisitor::where('house_id', $houseId);
-    // dd($views->whereDate('created_at' , '=', '2019-04-04 00:00:00')->get());
-    $notViews = HouseVisitor::where('house_id', '!=', $houseId);
-    $bookmarks = HousePostBookmark::where('house_id', $houseId);
-    $notBookmarks = HousePostBookmark::where('house_id', '!=', $houseId);
+    // $views = HouseVisitor::where('house_id', $houseId
+    // $notViews = HouseVisitor::where('house_id', '!=', $houseId);
+    // $bookmarks = HousePostBookmark::where('house_id', $houseId);
+    // $notBookmarks = HousePostBookmark::where('house_id', '!=', $houseId);
 
     $targetViews = array();
     $otherViews = array();
@@ -129,47 +129,21 @@ class OwnerController extends Controller
     $otherBookmarks = array();
 
     if($chartFilterOptions == "Week"){
-      for($i = 8, $order = 1; $i >= 0; $i--){
-        // $day_before = date( 'Y-m-d H:i:s', strtotime( $date . ' -'.$i. ' day' ) );
-        // $day_before_end = date( 'Y-m-d H:i:s', strtotime( $day_before . ' +1 day' ) );
+      for($i = 8, $order = 1; $i > 0; $i--){
+        $day_before = Carbon::now()->subDays($i)->toDateTimeString();;
+        $day_before_end = Carbon::now()->subDays($i-1)->toDateTimeString();
 
-        // $day_before = new DateTime( strtotime( $date . ' -'.$i. ' day' ) );
-        // $day_before_end = new DateTime( strtotime( $day_before . ' +1 day' ) );
-        // $day_before = new DateTime('-' . $i . ' day', new DateTimeZone('Asia/Hong_Kong'));
-        // $day_before->format('Y-m-d H:i:s');
-        // $day_before_end = new DateTime('-' . ($i-1) . ' day', new DateTimeZone('Asia/Hong_Kong'));
-        // if($i == 1){
-        //   dd($day_before_end->format('Y-m-d H:i:s'));
-        // }
-
-        $day_before = Carbon::today()->subDays($i);
-        $day_before_end = Carbon::today()->subDays($i-1);
-
-        // $viewCount = $views->where('created_at', '>=', $day_before)->where('created_at', '<', $day_before_end)->count();
-        $viewCount = $views;
-        $viewCount = $viewCount->where('created_at', '>=', $day_before)->count();
-        // $viewFirst = $views->where('created_at', '>=', $day_before)->where('created_at', '<', '2019-04-23 00:00:00')->first();
-        // $viewFirst = $views->where('created_at', '>=', $day_before->format('Y-m-d H:i:s'))->first();
-        // $viewFirst = $views->where('created_at', '<=', $day_before_end->format('Y-m-d H:i:s'))->first();
-$viewFirst = $views->whereBetween('created_at', array($day_before->toDateString(), $day_before_end->toDateString()))->first();
-        // $date = $day_before_end->format('Y-m-d H:i:s');
-        $date = $day_before_end->toDateTimeString();
-        // dd($date);
-        // dd('2019-04-15 00:00:00');
-        // $viewFirst = $views->where('created_at', '<=', $date)->first();
-        // if($viewFirst!=null){
-        //   dd($viewFirst);
-        // }
+        // $viewFirst = HouseVisitor::where('house_id', $houseId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end])->get();
+        // $viewCount = $viewFirst->count();
+        $viewCount = HouseVisitor::where('house_id', $houseId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end])->count();
         $targetView = ['order' => $order,
-                        'time' => $day_before->format('Y-m-d H:i:s'),
+                        'time' => $day_before,
                         'x' => $order,
-                        'y' => $viewCount,
-                        'end_time' => $date,
-                        'viewFirst' =>$viewFirst
+                        'y' => $viewCount
                       ];
         array_push($targetViews, $targetView);
 
-        $notViewAtDate = $notViews->where('created_at', '>=', $day_before)->where('created_at', '<', $day_before_end);
+        $notViewAtDate = HouseVisitor::where('house_id', '!=', $houseId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end]);
         $notViewCount = $notViewAtDate->count();
         $viewHouseNum =  $notViewAtDate->select('house_id')->groupBy('house_id')->count();
         $otherView = ['order' => $order,
@@ -179,7 +153,7 @@ $viewFirst = $views->whereBetween('created_at', array($day_before->toDateString(
                       ];
         array_push($otherViews, $otherView);
 
-        $bookmarkCount = $bookmarks->where('created_at', '>=', $day_before)->where('created_at', '<', $day_before_end)->count();
+        $bookmarkCount = HousePostBookmark::where('house_id', $houseId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end])->count();
         $targetBookmark = ['order' => $order,
                             'time' => $day_before,
                             'x' => $order,
@@ -187,7 +161,7 @@ $viewFirst = $views->whereBetween('created_at', array($day_before->toDateString(
                           ];
         array_push($targetBookmarks, $targetBookmark);
 
-        $notBookmarkAtDate = $notBookmarks->where('created_at', '>=', $day_before)->where('created_at', '<', $day_before_end);
+        $notBookmarkAtDate = HousePostBookmark::where('house_id', '!=', $houseId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end]);
         $notBookmarkCount = $notBookmarkAtDate->count();
         $bookmarkHouseNum =  $notBookmarkAtDate->select('house_id')->groupBy('house_id')->count();
         $otherBookmark = ['order' => $order,
@@ -200,12 +174,14 @@ $viewFirst = $views->whereBetween('created_at', array($day_before->toDateString(
         $order++;
       }
     }else if($chartFilterOptions == "Month"){
-      for($i = 30, $order = 1; $i >= 0; $i--){
-        $day_before = date( 'Y-m-d h:i:s', strtotime( $date . ' -'.$i. ' day' ) );
+      for($i = 31, $order = 1; $i > 0; $i--){
+        // $day_before = date( 'Y-m-d h:i:s', strtotime( $date . ' -'.$i. ' day' ) );
+        $day_before = Carbon::now()->subDays($i)->toDateTimeString();;
+        $day_before_end = Carbon::now()->subDays($i-1)->toDateTimeString();
         // $day_before = date( 'Y-m-d', strtotime( $date . ' -'.$i. ' day' ) );
 // $viewCount = $views->whereDate('created_at', '=', date('2019-04-04'))->count();
 // dd($viewCount);
-        $viewCount = $views->whereDate('created_at', '=', $day_before)->count();
+        $viewCount = HouseVisitor::where('house_id', $houseId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end])->count();
         $targetView = ['order' => $order,
                         'time' => $day_before,
                         'x' => $order,
@@ -213,7 +189,7 @@ $viewFirst = $views->whereBetween('created_at', array($day_before->toDateString(
                       ];
         array_push($targetViews, $targetView);
 
-        $notViewAtDate = $notViews->whereDate('created_at', '=', $day_before);
+        $notViewAtDate = HouseVisitor::where('house_id', '!=', $houseId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end]);
         $notViewCount = $notViewAtDate->count();
         $viewHouseNum =  $notViewAtDate->select('house_id')->groupBy('house_id')->count();
         $otherView = ['order' => $order,
@@ -223,7 +199,7 @@ $viewFirst = $views->whereBetween('created_at', array($day_before->toDateString(
                       ];
         array_push($otherViews, $otherView);
 
-        $bookmarkCount = $bookmarks->whereDate('created_at', '=', $day_before)->count();
+        $bookmarkCount = HousePostBookmark::where('house_id', $houseId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end])->count();
         $targetBookmark = ['order' => $order,
                             'time' => $day_before,
                             'x' => $order,
@@ -231,7 +207,7 @@ $viewFirst = $views->whereBetween('created_at', array($day_before->toDateString(
                           ];
         array_push($targetBookmarks, $targetBookmark);
 
-        $notBookmarkAtDate = $notBookmarks->whereDate('created_at', '=', $day_before);
+        $notBookmarkAtDate = HousePostBookmark::where('house_id', '!=', $houseId)->whereBetween(DB::raw('date(created_at)'), [$day_before, $day_before_end]);
         $notBookmarkCount = $notBookmarkAtDate->count();
         $bookmarkHouseNum =  $notBookmarkAtDate->select('house_id')->groupBy('house_id')->count();
         $otherBookmark = ['order' => $order,
@@ -245,43 +221,42 @@ $viewFirst = $views->whereBetween('created_at', array($day_before->toDateString(
       }
     }else if ($chartFilterOptions == "Year"){
       for($i = 13, $order = 1; $i > 0; $i--){
-        $month_before = date( 'Y-m-d h:i:s', strtotime( $date . ' -'.$i. ' month' ) );
-        $month_before_end = date( 'Y-m-d h:i:s', strtotime( $month_before . ' +1 month' ) );
+        // $month_before = date( 'Y-m-d h:i:s', strtotime( $date . ' -'.$i. ' month' ) );
+        // $month_before_end = date( 'Y-m-d h:i:s', strtotime( $month_before . ' +1 month' ) );
+        $month_before = Carbon::now()->subMonth($i)->toDateTimeString();;
+        $month_before_end = Carbon::now()->subMonth($i-1)->toDateTimeString();
 
-        $viewCount = $views->whereDate('created_at', '>=', $month_before)->whereDate('created_at', '<=', $month_before_end)->count();
-        // if($i == 1){
-        //   dd($viewCount);
-        // }
+        $viewCount = HouseVisitor::where('house_id', $houseId)->whereBetween(DB::raw('date(created_at)'), [$month_before, $month_before_end])->count();
         $targetView = ['order' => $order,
-                        'time' => $month_before_end,
+                        'time' => $month_before,
                         'x' => $order,
                         'y' => $viewCount
                       ];
         array_push($targetViews, $targetView);
 
-        $notViewAtDate = $notViews->whereDate('created_at', '>=', $month_before)->whereDate('created_at', '<=', $month_before_end);
+        $notViewAtDate = HouseVisitor::where('house_id', '!=', $houseId)->whereBetween(DB::raw('date(created_at)'), [$month_before, $month_before_end]);
         $notViewCount = $notViewAtDate->count();
         $viewHouseNum =  $notViewAtDate->select('house_id')->groupBy('house_id')->count();
         $otherView = ['order' => $order,
-                        'time' => $month_before_end,
+                        'time' => $month_before,
                         'x' => $order,
                         'y' => $viewHouseNum==0 ? 0 : $notViewCount/$viewHouseNum
                       ];
         array_push($otherViews, $otherView);
 
-        $bookmarkCount = $bookmarks->whereDate('created_at', '>=', $month_before)->whereDate('created_at', '<=', $month_before_end)->count();
+        $bookmarkCount = HousePostBookmark::where('house_id', $houseId)->whereBetween(DB::raw('date(created_at)'), [$month_before, $month_before_end])->count();
         $targetBookmark = ['order' => $order,
-                            'time' => $month_before_end,
+                            'time' => $month_before,
                             'x' => $order,
                             'y' => $bookmarkCount
                           ];
         array_push($targetBookmarks, $targetBookmark);
 
-        $notBookmarkAtDate = $notBookmarks->whereDate('created_at', '>=', $month_before)->whereDate('created_at', '<=', $month_before_end);
+        $notBookmarkAtDate = HousePostBookmark::where('house_id', '!=', $houseId)->whereBetween(DB::raw('date(created_at)'), [$month_before, $month_before_end]);
         $notBookmarkCount = $notBookmarkAtDate->count();
         $bookmarkHouseNum =  $notBookmarkAtDate->select('house_id')->groupBy('house_id')->count();
         $otherBookmark = ['order' => $order,
-                          'time' => $month_before_end,
+                          'time' => $month_before,
                           'x' => $order,
                           'y' => $bookmarkHouseNum==0 ? 0 : $notBookmarkCount/$bookmarkHouseNum
                           ];
