@@ -112,6 +112,7 @@ Route::get('/trade/{userId}/selling', 'API\TradeController@show_sellingTrade'); 
 Route::get('/trade/{userId}/bookmarked', 'API\TradeController@index_bookmarkedTrade'); // Get Trade Saved // Tested
 Route::get('/trade/{userId}/history', 'API\TradeController@index_tradeHistory'); // Get Past Trade // Tested
 Route::get('/trade/{userId}/featured', 'API\TradeController@index_tradeFeatured'); // Get Trade Featured
+Route::get('/trade/{userId}/tradeData/{tradeId}/view/{chartFilterOptions}', 'API\TradeController@get_tradeData'); // Get Trade Data
 Route::post('/trade', 'API\TradeController@store_trade'); // Create Trade Item //Tested
 Route::post('/trade/{id}/delete', 'API\TradeController@delete_trade'); //
 Route::post('/trade/image/upload', 'API\TradeController@upload_tradeItemPhoto'); // Create Trade Item:[Image]
