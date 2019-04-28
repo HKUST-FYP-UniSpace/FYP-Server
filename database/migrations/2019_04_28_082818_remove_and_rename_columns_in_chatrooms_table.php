@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnToChatroomsTable extends Migration
+class RemoveAndRenameColumnsInChatroomsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,9 @@ class AddColumnToChatroomsTable extends Migration
     public function up()
     {
         Schema::table('chatrooms', function (Blueprint $table) {
-            $table->integer('group_id')->length(11)->after('chatroom_type_id');
+            $table->dropColumn('house_id');
+            $table->dropColumn('trade_id');
+            $table->renameColumn('team_id', 'type_identifier');
         });
     }
 
