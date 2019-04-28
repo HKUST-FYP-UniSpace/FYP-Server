@@ -77,7 +77,6 @@
                         <a href="{{ url('/home') }}">Home</a>
                     @else
                         <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
                     @endif
                 </div>
             @endif --}}
@@ -100,6 +99,5 @@
             window.Laravel = {!! json_encode(['csrfToken' => csrf_token()]) !!};
         </script>
         <script src="{{ asset('/js/app.js') }}"></script>
-        <script  src="{{ asset('/js/sidefolder/side.js') }}"></script>
     </body>
 </html>

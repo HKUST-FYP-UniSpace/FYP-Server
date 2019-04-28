@@ -23,6 +23,9 @@
                   <dt class="col-sm-3">Trade ID</dt>
                   <dd class="col-sm-9">{{ $trade->id }}</dd>
 
+                  <dt class="col-sm-3">User ID</dt>
+                  <dd class="col-sm-9">{{ $trade->user_id }}</dd>
+
                   <dt class="col-sm-3">Title</dt>
                   <dd class="col-sm-9">{{ $trade->title }}</dd>
 

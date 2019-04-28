@@ -13,8 +13,11 @@ class ProfileController extends Controller
 {
     public function view_user_profile($id) {
          // get targeted data
+        // $profile = User::join('profiles','users.id','=','profiles.user_id')->where('users.id', $id)->latest('users.created_at')->get();
+        $profile = User::join('profiles','users.id','=','profiles.user_id')->where('profiles.user_id', $id)->first();
         $user = User::where('id', $id)->first();
-        $profile = $user->profile()->first();
+        // $profile = Profile::where('user_id', $id)->latest()->get();
+        // $profile = $user->profile()->first();
         $tenant_ratings = TenantRating::where('tenant_id', $id)->latest()->get();
 
     	return view('user.view-user', compact('user','profile','tenant_ratings'));
@@ -39,14 +42,14 @@ class ProfileController extends Controller
 			'edit-profile-selfIntroduction' => 'nullable|max:255'
         	],
 
-           [
-        	'edit-profile-username.required' => 'Input Username',
-        	'edit-profile-contact' => 'Input Contact',
+      [
+      'edit-profile-username.required' => 'Input Username',
+      'edit-profile-contact' => 'Input Contact',
 			'edit-profile-email' => 'Input Email',
 			'edit-profile-gender'  => 'Input Gender',
 			'edit-profile-selfIntroduction' => 'Input Self Introduction'
 
-        	]);
+      ]);
 
     	// get targeted data
     	$user = User::where('id', $id)->first();
