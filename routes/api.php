@@ -45,6 +45,7 @@ Route::post('/users/check/username', 'API\UserController@check_username');
 Route::post('/users/verify/{id}/email', 'API\UserController@send_verification_code');
 Route::post('/users/verify/{id}', 'API\UserController@verify_code');
 Route::get('/users/calendar/{id}/{year}/{month}', 'API\UserController@calendar');
+Route::post('/users/calendar/{id}', 'API\UserController@new_event');
 
 // Chatroom
 Route::post('/message/{id}', 'API\ChatroomController@get_message_summaries');
