@@ -289,7 +289,8 @@ class TradeController extends Controller
       //$errors = array();
 
       $result_trades = array();
-      $trades = Trade::get();
+      // $trades = Trade::get();
+      $trades = DB::table('Trades');
 
       // filter
       $title = $request->input('title');
@@ -300,7 +301,10 @@ class TradeController extends Controller
       $maxPrice = $request->input('maxPrice');
 
       if(isset($title)){
-        $trades = $trades->where('price', $title);
+        // $trades = $trades->where('title', 'LIKE', "%{$title}%")->orWhere('description', 'LIKE', "%{$title}%");
+        $trades = $trades->where(function ($query) use ($title){
+          $query->where('title', 'LIKE', "%{$title}%")->orWhere('description', 'LIKE', "%{$title}%");
+        });
       }
       if(isset($seller)){
         $trades = $trades->where('user_id', $seller);
@@ -317,6 +321,8 @@ class TradeController extends Controller
       if(isset($maxPrice)){
         $trades = $trades->where('price', '<=', $maxPrice);
       }
+
+      $trades= $trades->get();
 
       foreach ($trades as $trade) {
         $trade_id = $trade->id;
