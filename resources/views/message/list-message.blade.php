@@ -8,7 +8,7 @@
         <form  class="form-horizontal"  action="{{ url('/message/search')}}" method="GET" id='message-search'>
             <div class="panel panel-default col-md-12">
                 <div class="panel-body">
-                    <input class="form-control" type="search" name="search" placeholder="{{ $searchPhrase ?? 'Search by ID/identifiers' }}">
+                    <input class="form-control" type="search" name="search" placeholder="{{ $searchPhrase ?? 'Search by ID/title' }}">
                         <div class="text-right">Search</div>
                 </div>
             </div>
