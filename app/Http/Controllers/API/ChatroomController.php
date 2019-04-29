@@ -335,8 +335,6 @@ class ChatroomController extends Controller
         if(!empty($errors)) {
             return response()->json($errors, 403);
         }
-        $result['db'] = $group->leader_user_id;
-        $result['param'] = $id;
         if($group->leader_user_id == $id) {
             $result['isLeader'] = true;
         }
