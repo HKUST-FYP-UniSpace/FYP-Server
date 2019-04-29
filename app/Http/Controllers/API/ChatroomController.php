@@ -301,4 +301,48 @@ class ChatroomController extends Controller
 
     	return $result;
     }
+
+    // GET: get user role in team chatroom
+    public function get_user_role($id, $message_group_id) {
+        $result = array();
+
+        $errors = array();
+        $error = array();
+
+        $chatroom = Chatroom::where('chatroom_type_id', 2)->where('id', $message_group_id)->first();
+        if($chatroom == null) {
+            $error['message'] = "Invalid message group id.";
+            $error['source'] = "get_user_role()";
+            array_push($errors, $error);
+        }
+
+        $team_id = $chatroom->type_identifier;
+        $group = Group::where('id', $team_id)->first();
+        if($group == null) {
+            $error['message'] = "The target user is not found.";
+            $error['source'] = "get_user_role()";
+            array_push($errors, $error);
+        }
+
+        $group_details = GroupDetail::where('group_id', $team_id)->where('member_user_id', $id)->first();
+        if($group_details == null) {
+            $error['message'] = "The target user info is not found in group_details table.";
+            $error['source'] = "get_user_role()";
+            array_push($errors, $error);
+        }
+
+        if(!empty($errors)) {
+            return response()->json($errors, 403);
+        }
+        if($group->leader_user_id == $id) {
+            $result['isLeader'] = true;
+        }
+        else {
+            $result['isLeader'] = false;
+        }
+        // dd(((int) $group_details->status) - 1);
+        $result['status'] = ((int) $group_details->status) - 1;
+
+        return $result;
+    }
 }
