@@ -92,6 +92,7 @@ class ChatroomController extends Controller
 	    	}
 	    	if($chatroom_summary->chatroom_type_id == 2) {	// team
 	    		$temp['teamId'] = $chatroom_summary->type_identifier;
+                $temp['houseId'] = Group::where('id', $chatroom_summary->type_identifier)->first()->house_id;
 	    	}
 	    	if($chatroom_summary->chatroom_type_id == 3) {	//trade
 	    		$temp['tradeId'] = $chatroom_summary->type_identifier;
