@@ -69,7 +69,7 @@ class MessageController extends Controller
 
       $reply->message = $request->input('reply-message');
       $reply->chatroom_id = $chatroom_id;
-      $reply->sender = 99999;
+      $reply->sender = -1;
       $reply->deleted = 0;
       $reply->save();
 

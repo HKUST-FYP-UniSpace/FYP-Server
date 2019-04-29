@@ -25,6 +25,9 @@ use App\PreferenceItem;
 use App\PreferenceItemCategory;
 use App\HouseVisitor;
 use App\District;
+use App\Chatroom;
+use App\ChatroomParticipant;
+use App\Message;
 
 use Validator;
 use Illuminate\Support\Arr;
@@ -500,6 +503,14 @@ class HouseController extends Controller
     // param:
     // $request should include $userId(as leader_user_id) and houseId
     public function store_group(Request $request){
+      $user_id = $request->input('userId');
+      $house_id = $request->input('houseId');
+
+      $past_group = Group::where('leader_user_id', $user_id)->where('house_id', $house_id)->first();
+      if($past_group != null){
+        return ['isSuccess'=>false];
+      }
+
       $group = new Group();
 
       $group->title = $request->input('title');
@@ -507,19 +518,19 @@ class HouseController extends Controller
       $group->max_ppl = $request->input('groupSize');
 
       $group->image_url = "www.google.com"; //$request->input('image_url'); //extra
-      $group->leader_user_id = $request->input('userId');
+      $group->leader_user_id = $user_id;
       $group->duration = $request->input('duration');//extra
       $group->is_rent = 0;
-      $group->house_id = $request->input('houseId');
+      $group->house_id = $house_id;
       $group->save();
 
       // Put the leader information into group detail
-      $teamId = $group->id;
+      $team_id = $group->id;
 
       $group_detail = new GroupDetail();
-      $group_detail->member_user_id = $request->input('userId');
+      $group_detail->member_user_id = $user_id;
       $group_detail->status = 2; //Default to be "accepted" status
-      $group_detail->group_id = $teamId;
+      $group_detail->group_id = $team_id;
       $group_detail->save();
 
       //save preference model
@@ -534,9 +545,9 @@ class HouseController extends Controller
       //   $preference->save();
       //
       // }
-      self::regenerate_preference($teamId, $preferenceModel);
+      self::regenerate_preference($team_id, $preferenceModel);
 
-
+      app('App\Http\Controllers\API\ChatroomController')->create_chatroom_team($user_id, $team_id);
 
       // $success_msg = "New house stored Successfully! (House ID = {$house->id})";
       // return $success_msg;
@@ -557,18 +568,62 @@ class HouseController extends Controller
     // $id: teamId
     // $request should include userId
     public function join_group($teamId, Request $request){
+      $user_id = $request->input('userId');
+
       $groupDetail = new GroupDetail();
-
-      $groupDetail->member_user_id = $request->input('userId');
-      $groupDetail->status = 2; //*!!Test: 2 for accpeted // Status == 1 represent pending to be accepted by group leader (Accepted: 2, Rejected: 3)
+      $groupDetail->member_user_id = $user_id;
+      $groupDetail->status = 1; //*!!Test: 2 for accpeted // Status == 1 represent pending to be accepted by group leader (Accepted: 2, Rejected: 3)
       $groupDetail->group_id = $teamId;
-
       $groupDetail->save();
+
+      $message = $request->input('message');
+      app('App\Http\Controllers\API\ChatroomController')->create_chatroom_request($user_id, $teamId, $message);
 
       $response = ['isSuccess' => true];
       return $response;
     }
 
+
+    // Approve Join Team request
+    public function approve_groupMember($request_chatroomId, Request $request){
+      $leader_id = $request->input('leaderId');
+      $acceptance = $request->input('acceptance');
+      $group_id = Chatroom::where('id', $request_chatroomId)->first()->type_identifier;
+
+      $response = [];
+
+      if($acceptance == true){
+        $member_id = ChatroomParticipant::where('chatroom_id', $request_chatroomId)->where('user_id', '!=', $leader_id)->first()->user_id;
+
+        //create new chatroom participant linked to the requested group
+        $joint_chatroom = Chatroom::where('chatroom_type_id', 2)->where('type_identifier', $group_id)->first();
+        $joint_chatroom_id = $joint_chatroom->id;
+        $joint_chatroom->total_message = Message::where('chatroom_id', $joint_chatroom_id)->count() + 1;
+        $joint_chatroom->save();
+
+        $new_participant = new ChatroomParticipant();
+        $new_participant->chatroom_id = $joint_chatroom_id;
+      	$new_participant->user_id = $member_id;
+      	$new_participant->save();
+
+        $username = User::where('id', $member_id)->first()->username;
+
+        $message = new Message();
+        $message->message = "{$username} has been added to the group";
+      	$message->sender = $leader_id;
+      	$message->deleted = 0;
+      	$message->chatroom_id = $joint_chatroom_id;
+      	$message->save();
+      }
+
+      //delete request related records
+      Message::where('chatroom_id', $request_chatroomId)->delete();
+      ChatroomParticipant::where('chatroom_id', $request_chatroomId)->delete();
+      Chatroom::where('id', $request_chatroomId)->delete();
+
+      $response = ['isSuccess'=>true];
+      return $response;
+    }
 
     // Update Preference
     //
@@ -663,18 +718,17 @@ class HouseController extends Controller
 
     //Add Review
     public function review_house($houseId, Request $request){
-      //better send userId instead in the request, otherwise the following should be implemented
-      // $user = User::where('username', $request->input('username'))->first();
-      // if($user == null){
-      //   return null;
-      // }
-      // $user_id = $user->id;
+      $user_id = $request->input('userId');
+      $review_checker = Review::where('tenant_id', $user_id)->where('house_id', $houseId)->first();
+      if($review_checker != null){
+        return ['error'=> 'Review on the apartment has been created by the user!'];
+      }
 
       $review = new Review();
 
       $review->house_id = $houseId;
       //$review->tenant_id = $user_id; //better send userId instead in the request
-      $review->tenant_id = $request->input('userId');
+      $review->tenant_id = $user_id;
       //$review->tenant_id = $request->input('title'); //obsoleted
       //$review->tenant_id = $request->input('date'); // should just use creation date by default
       $review->details = $request->input('detail');
@@ -696,7 +750,7 @@ class HouseController extends Controller
         'accuracy'=>$review->accuracy,
         'communication'=>$review->communication,
         'house_id'=>$review->house_id,
-        'date'=>$review->created_at
+        'date'=>date($review->created_at)
       ];
 
       return $response;
@@ -771,7 +825,8 @@ class HouseController extends Controller
         // $tenant = Tenant::where('id', $review->tenant_id)->first();
         // $user = User::where('id', $tenant->user_id)->first();
         $user = User::where('id', $review->tenant_id)->first();
-        $user_icon = Profile::where('user_id', $user->id)->first()->icon_url;
+        $profile = Profile::where('user_id', $user->id)->first();
+        $user_icon = $profile!=null ? $profile->icon_url : null;
         $overall_rating = ( ($review->value) + ($review->cleaniness) + ($review->accuracy) + ($review->communication) )/4;
         $owner_comment = ReviewReply::where('review_id', $review->id)->where('owner_id', $owner_id)->first();
 
@@ -779,7 +834,7 @@ class HouseController extends Controller
           'id' => $review->tenant_id,
           'username' => $user->username,
           //'title' => ,
-          'date' => $review->created_at,
+          'date' => $review->created_at!=null ? date($review->created_at): null,
           'detail' => $review->details,
           'starRating' => $overall_rating,
           'ownerId' => $house->owner_id,
@@ -1203,7 +1258,11 @@ class HouseController extends Controller
     public function convertDistrictIdToEnum($id){
       $enum = District::where('id', $id)->first();
 
-      return $enum->name;
+      if($enum != null){
+        return $enum->name;
+      }
+
+      return null;
     }
 
 
@@ -1211,7 +1270,11 @@ class HouseController extends Controller
     public function convertDistrictEnumToId($name){
       $enum = District::where('name', $name)->first();
 
-      return $enum->id;
+      if($enum != null){
+        return $enum->id;
+      }
+
+      return null;
     }
 
     // This function is not used in the app but only kept here for testing data structure

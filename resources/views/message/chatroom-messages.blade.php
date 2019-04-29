@@ -23,7 +23,7 @@
 
                         <tbody>
                             <!-- <th>{{ $all_msg->id }}</th> -->
-                            @if($all_msg->sender != 99999)
+                            @if($all_msg->sender != -1)
                             <th>{{ $user}}</th>
                             @else
                             <th>{{ "Admin "}}</th>
@@ -31,7 +31,7 @@
 
                             <th>{{ $all_msg->message }}</th>
                             <th>{{ $all_msg->created_at }}</th>
-                            <!-- @if($all_msg->sender != 99999)
+                            <!-- @if($all_msg->sender != -1)
                             <td>
 
                             </td>

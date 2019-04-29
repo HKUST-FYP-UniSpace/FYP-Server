@@ -85,9 +85,17 @@ class ChatroomController extends Controller
 	    	$temp_user = array();
 	    	$participants = ChatroomParticipant::where('chatroom_id', $chatroom_summary->id)->get();
 	    	foreach($participants as $participant) {
-	    		$temp_user['id'] = $participant->user_id;
-	    		$temp_user['name'] = User::where('id', $participant->user_id)->first()['name'];
-	    		$temp_user['username'] = User::where('id', $participant->user_id)->first()['username'];
+                if($participant->user_id == -1) {
+                    $temp_user['id'] = $participant->user_id;
+                    $temp_user['name'] = 'Admin';
+                    $temp_user['username'] = 'admin';
+                }
+                else {
+                    $temp_user['id'] = $participant->user_id;
+                    $temp_user['name'] = User::where('id', $participant->user_id)->first()['name'];
+                    $temp_user['username'] = User::where('id', $participant->user_id)->first()['username']; 
+                }
+	    		
 	    		array_push($temp['users'], $temp_user);
 	    	}
 	    	if($chatroom_summary->chatroom_type_id == 2) {	// team
@@ -102,7 +110,7 @@ class ChatroomController extends Controller
     	}
 
     	return $result;
-    	
+
     }
 
     // GET: get all message from the requested chatroom
@@ -266,10 +274,10 @@ class ChatroomController extends Controller
     	$chatroom_participant_user->chatroom_id = $chatroom->id;
     	$chatroom_participant_user->user_id = $id;
     	$chatroom_participant_user->save();
-    	// $chatroom_participant_admin = new ChatroomParticipant();
-    	// $chatroom_participant_admin->chatroom_id = $chatroom->id;
-    	// $chatroom_participant_admin->user_id = Admin::get()->first()->id;
-    	// $chatroom_participant_admin->save();
+    	$chatroom_participant_admin = new ChatroomParticipant();
+    	$chatroom_participant_admin->chatroom_id = $chatroom->id;
+    	$chatroom_participant_admin->user_id = -1;
+    	$chatroom_participant_admin->save();
 
     	// send the message
     	$message = new Message();
@@ -283,6 +291,98 @@ class ChatroomController extends Controller
 
     	return $result;
     }
+
+
+    // POST: create chatroom: 1 user only (when first create team)
+    // note: type = 2 (team), type_identifier = team id
+    // This fucntion should be called from the store_group() function of House Controller
+    public function create_chatroom_team($id, $team_id){
+        $errors = array();
+        $error = array();
+
+    	// check if the chatroom exists
+    	$team_type_chatrooms = Chatroom::where('chatroom_type_id', 2)->get();	// get all the chatrooms of type = team
+    	foreach($team_type_chatrooms as $team_type_chatroom) {
+    		if($team_type_chatroom->type_identifier == $team_id) {
+    			$error['message'] = 'The team chatroom of this team exists.';
+    			$error['existChatroomId'] = $team_type_chatroom->id;
+    			array_push($errors, $error);
+    		}
+    	}
+    	if(!empty($errors)) {
+            return response()->json($errors, 403);
+        }
+
+    	// create a new chatroom
+    	$chatroom = new Chatroom();
+        $chatroom->total_message = 0; // Should have no messgae when team first created
+    	$chatroom->title = User::where('id', $id)->first()->username;	// title = leader username
+    	$chatroom->chatroom_type_id = 2;	// type = team
+        $chatroom->type_identifier = $team_id;
+    	$chatroom->save();
+
+    	// add only the leader into the chatroom_participants table
+    	$chatroom_participant_leader = new ChatroomParticipant();
+    	$chatroom_participant_leader->chatroom_id = $chatroom->id;
+    	$chatroom_participant_leader->user_id = $id;
+    	$chatroom_participant_leader->save();
+
+    	$result['chatroomId'] = $chatroom->id;
+
+    	return $result;
+    }
+
+    // POST: join chatroom: 1 user joining a chatroom of user(s)
+    // note: type = 4 (reqest), type_identifier = team id
+    // This fucntion should be called from the join_group() function of House Controller
+    public function create_chatroom_request($id, $team_id, $req_message){
+        $errors = array();
+        $error = array();
+
+    	// check if the chatroom exists
+    	$request_type_chatrooms = Chatroom::where('chatroom_type_id', 4)->get();	// get all the chatrooms of type = request
+    	foreach($request_type_chatrooms as $request_type_chatroom) {
+    		if($request_type_chatroom->type_identifier == $team_id) {
+    			$error['message'] = 'The team chatroom of this team exists.';
+    			$error['existChatroomId'] = $request_type_chatroom->id;
+    			array_push($errors, $error);
+    		}
+    	}
+    	if(!empty($errors)) {
+            return response()->json($errors, 403);
+        }
+
+    	// create a new chatroom (This new chatroom is just for record status purpose, the chatroom will be deleted after request acceptance)
+    	$chatroom = new Chatroom();
+        $chatroom->total_message = 0; // Should have no messgae when team first created
+    	$chatroom->title = User::where('id', $id)->first()->username;	// title = leader username
+    	$chatroom->chatroom_type_id = 4;	// type = request
+        $chatroom->type_identifier = $team_id;
+    	$chatroom->save();
+
+    	//add the leader and the jion group tenant into the chatroom_participants table
+    	$chatroom_participant_member = new ChatroomParticipant();
+    	$chatroom_participant_member->chatroom_id = $chatroom->id;
+    	$chatroom_participant_member->user_id = $id;
+    	$chatroom_participant_member->save();
+        $chatroom_participant_leader = new ChatroomParticipant();
+    	$chatroom_participant_leader->chatroom_id = $chatroom->id;
+    	$chatroom_participant_leader->user_id = Group::where('id', $team_id)->first()->leader_user_id;
+    	$chatroom_participant_leader->save();
+
+        // send the message
+    	$message = new Message();
+    	$message->message = $req_message;
+    	$message->sender = $id;
+    	$message->deleted = 0;
+    	$message->chatroom_id = $chatroom->id;
+    	$message->save();
+
+    	$result['chatroomId'] = $chatroom->id;
+
+    	return $result;
+    }
+
 
     // POST: send message
     public function send_message($id, $message_group_id, Request $request) {
