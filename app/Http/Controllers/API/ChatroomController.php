@@ -122,6 +122,7 @@ class ChatroomController extends Controller
     	foreach($messages as $message) {
     		$temp = array();
 
+            $temp['id'] = $message->id;
     		$temp['message'] = $message->message;
 	    	$temp['senderId'] = $message->sender;
 	    	$temp['messageType'] = 1;
