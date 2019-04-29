@@ -34,7 +34,13 @@ class ChatroomController extends Controller
 	    	$temp['title'] = $chatroom_summary->title;
 
 	    	// last message in the chatroom
-	    	$temp['subtitle'] = Message::where('chatroom_id', $chatroom_summary->id)->orderBy('created_at', 'desc')->first()->message;
+            if(Message::where('chatroom_id', $chatroom_summary->id)->orderBy('created_at', 'desc')->first() == null) {
+                $temp['subtitle'] = '';
+            }
+            else {
+               $temp['subtitle'] = Message::where('chatroom_id', $chatroom_summary->id)->orderBy('created_at', 'desc')->first()->message; 
+            }
+	    	
 
 	    	$temp['time'] = strtotime($chatroom_summary->created_at);
 	    	$temp['MessageGroupType'] = ( (int)$chatroom_summary->chatroom_type_id ) - 1;
@@ -52,7 +58,12 @@ class ChatroomController extends Controller
 
 	    	// chatroom icon
 	    	if($chatroom_summary->chatroom_type_id == 2) {	// team chatroom
-	    		$temp['photoURL'] = Group::where('id', $chatroom_summary->type_identifier)->first()->image_url;
+	    		if(Group::where('id', $chatroom_summary->type_identifier)->first() == null) {
+                    $temp['photoURL'] = '';
+                }
+                else {
+                    $temp['photoURL'] = Group::where('id', $chatroom_summary->type_identifier)->first()->image_url;
+                }
 	    	}
 	    	else {	// tenant vs owner, trade, request to join team
 	    		$receiver_user_id = '';
@@ -62,15 +73,21 @@ class ChatroomController extends Controller
 	    				$receiver_user_id = $participant->user_id;
 	    			}
 	    		}
-	    		$temp['photoURL'] = Profile::where('user_id', $receiver_user_id)->first()->icon_url;
+                if(Profile::where('user_id', $receiver_user_id)->first() == null) {
+                    $temp['photoURL'] = '';
+                }
+                else {
+                    $temp['photoURL'] = Profile::where('user_id', $receiver_user_id)->first()->icon_url;
+                }
+	    		
 	    	}
 	    	$temp['users'] = array();
 	    	$temp_user = array();
 	    	$participants = ChatroomParticipant::where('chatroom_id', $chatroom_summary->id)->get();
 	    	foreach($participants as $participant) {
 	    		$temp_user['id'] = $participant->user_id;
-	    		$temp_user['name'] = User::where('id', $participant->user_id)->first()->name;
-	    		$temp_user['username'] = User::where('id', $participant->user_id)->first()->username;
+	    		$temp_user['name'] = User::where('id', $participant->user_id)->first()['name'];
+	    		$temp_user['username'] = User::where('id', $participant->user_id)->first()['username'];
 	    		array_push($temp['users'], $temp_user);
 	    	}
 	    	if($chatroom_summary->chatroom_type_id == 2) {	// team
