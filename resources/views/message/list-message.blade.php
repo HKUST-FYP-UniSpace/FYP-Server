@@ -8,7 +8,7 @@
         <form  class="form-horizontal"  action="{{ url('/message/search')}}" method="GET" id='message-search'>
             <div class="panel panel-default col-md-12">
                 <div class="panel-body">
-                    <input class="form-control" type="search" name="search" placeholder="{{ $searchPhrase ?? 'Search by ID/identifiers' }}">
+                    <input class="form-control" type="search" name="search" placeholder="{{ $searchPhrase ?? 'Search by ID/title' }}">
                         <div class="text-right">Search</div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                     <thead>
                         <tr>
                             <th>Chatroom ID</th>
-                            <th>Identifiers</th>
+                            <th>Title</th>
                             <!-- <th>Total Messages</th> -->
                             <th>Post Date</th>
                             <th>Check Messages</th>
@@ -42,7 +42,7 @@
                     @foreach ($chatrooms as $chatroom)
                         <tbody>
                             <th>{{ $chatroom->id }}</th>
-                            <th>{{ $chatroom->identifiers }}</th>
+                            <th>{{ $chatroom->title }}</th>
                             <!-- <th>{{ $chatroom->total_message}}</th> -->
                             <th>{{ $chatroom->created_at}}</th>
                             <td><a href="{{ route('get-messages', $chatroom->id) }}"> Enter </a></td>

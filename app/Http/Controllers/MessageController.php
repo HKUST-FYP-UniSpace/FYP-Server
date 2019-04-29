@@ -33,7 +33,7 @@ class MessageController extends Controller
 
     //
     public function show_message() {
-      $chatrooms = Chatroom::get();
+      $chatrooms = Chatroom::where('chatroom_type_id', '5')->get();
       // $admin_chats = Chatroom::join('messages','chatrooms.id','=','messages.chatroom_id')
       //                       ->join('chatroom_types','chatrooms.chatroom_type_id', '=','chatroom_types.id')
       //                       ->get();
@@ -44,10 +44,9 @@ class MessageController extends Controller
     public function get_messages($chatroom_id){
 
       $all_msgs = Message::where('chatroom_id', $chatroom_id)->orderBy('created_at', 'asc')->get();
-      $user = User::select('name')
-              ->join('messages', 'users.id', '=','messages.sender')
-              ->where('chatroom_id', $chatroom_id)
-              ->first()->value('name');
+      $user = User::select('name')->join('messages', 'users.id', '=','messages.sender')
+                ->where('chatroom_id', $chatroom_id)
+                ->value('name');
 
       // $all_msgs = Message::where('chatroom_id', $chatroom_id)->latest()->get();
       // $chatrooms = Chatroom::where('id', $chatroom_id)->latest()->get();
@@ -76,10 +75,12 @@ class MessageController extends Controller
 
      $all_msgs = Message::where('chatroom_id', $chatroom_id)->orderBy('created_at', 'asc')->get();
       // $all_msgs = Message::where('chatroom_id', $chatroom_id)->latest()->get();
-    $user = User::select('name')
-              ->join('messages', 'users.id', '=','messages.sender')
+    // $user = User::join('messages', 'users.id', '=','messages.sender')
+    //           ->where('chatroom_id', $chatroom_id)
+    //           ->latest()->value('name');
+    $user = User::select('name')->join('messages', 'users.id', '=','messages.sender')
               ->where('chatroom_id', $chatroom_id)
-              ->first()->value('name');
+              ->value('name');
 
       return view('message.chatroom-messages', compact('all_msgs','user'));
     }
