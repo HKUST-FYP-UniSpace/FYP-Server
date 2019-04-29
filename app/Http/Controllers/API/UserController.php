@@ -702,5 +702,24 @@ class UserController extends Controller
         return $result;
     }
 
+    // POST: Create Calendar Event
+    public function new_event($id, Request $request) {
+        $event = new Calendar();
+        $event->event = $request['event'];
+        $event->date = date('Y-m-d', strtotime($request['date']));
+        $event->year = (int) date('Y', strtotime($event->date));
+        $event->month = (int) date('m', strtotime($event->date));;
+        $event->day = (int) date('d', strtotime($event->date));;
+        $event->start_time = date('h:i:s', strtotime($request['startTime']));
+        $event->end_time = date('h:i:s', strtotime($request['endTime']));
+        $event->venue = $request['venue'];
+        $event->user_id = $id;
+        
+        $event->save();
+        $result['isSuccess'] = true;
+
+        return $result;
+    }
+
     
 }

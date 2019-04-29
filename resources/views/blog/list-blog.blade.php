@@ -12,7 +12,7 @@
       <form  class="form-horizontal"  action="{{ url('/blog/search')}}" method="GET" id='blog-search'>
           <div class="panel panel-default col-md-12">
               <div class="panel-body">
-                  <input class="form-control" type="search" name="search" placeholder="{{ $searchPhrase ?? 'Search' }}">
+                  <input class="form-control" type="search" name="search" placeholder="{{ $searchPhrase ?? 'Search by ID/title/subtitle/detail' }}">
                       <div class="text-right">Search</div>
               </div>
           </div>
@@ -36,6 +36,7 @@
                         <tr>
                             <th>Blog ID</th>
                             <th>Title</th>
+                            <th>Subitle</th>
                             <th>Post Date</th>
                             <th>Update Date</th>
                             <th>Admin ID </th>
@@ -51,6 +52,7 @@
 
                             <th>{{ $blog->id }}</th>
                             <th>{{ $blog->title }}</th>
+                            <th>{{ $blog->subtitle }}</th>
                             <th>{{ $blog->created_at }}</th>
                             <th>{{ $blog->updated_at }}</th>
                             <th>{{ $blog->admin_id }}</th>

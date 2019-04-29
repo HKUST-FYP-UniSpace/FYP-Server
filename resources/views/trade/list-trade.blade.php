@@ -6,7 +6,7 @@
         <form  class="form-horizontal"  action="{{ url('/trade/search')}}" method="GET" id='trade-search'>
             <div class="panel panel-default col-md-12">
                 <div class="panel-body">
-                    <input class="form-control" type="search" name="search" placeholder="{{ $searchPhrase ?? 'Search' }}">
+                    <input class="form-control" type="search" name="search" placeholder="{{ $searchPhrase ?? 'Search by ID/title/price/user ID' }}">
                         <div class="text-right">Search</div>
                 </div>
             </div>

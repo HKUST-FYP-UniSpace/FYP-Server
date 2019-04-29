@@ -14,7 +14,7 @@ class AddColumnTiBlogsTable extends Migration
     public function up()
     {
         Schema::table('blogs', function (Blueprint $table) {
-            $table->integer('is_deleted')->length(1);
+            $table->integer('is_deleted')->length(1)->after('image_url');
         });
     }
 

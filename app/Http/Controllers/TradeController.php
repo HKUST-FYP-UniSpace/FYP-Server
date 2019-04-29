@@ -164,6 +164,7 @@ class TradeController extends Controller
                 'add-trade-price' => 'required|max:255',
                 'add-trade-quantity' => 'required|integer',
                 'add-trade-description' => 'required|max:255',
+                'add-trade-user_id' => 'required|max:255',
                 'add-trade-status' => 'required',
                 'add-trade-trade_category_id' => 'required',
                 'add-trade-trade_condition_type_id' => 'required',
@@ -182,6 +183,9 @@ class TradeController extends Controller
 
                 'add-trade-description.required' => 'Input description',
                 'add-trade-description.max' => 'Description cannot be too long',
+
+                'add-trade-user_id.required' => 'Input trade user_id',
+                'add-trade-user_id.max' => 'User ID cannot be too long',
 
                 'add-trade-status.required' => 'Select Status', //select from database
                 'add-trade-trade_category_id.required' => 'Select Trade Category', //select from database
@@ -204,6 +208,8 @@ class TradeController extends Controller
         $trade->quantity = $request->input('add-trade-quantity');
         // price
         $trade->price = $request->input('add-trade-price');
+        //$user_id
+        $trade->user_id = $request->input('add-trade-user_id');
         // status
         $trade->trade_status_id = intval($request->input('add-trade-status'));
         // trade_category_id
@@ -249,4 +255,23 @@ class TradeController extends Controller
 
       return back();
     }
+
+    public function search(Request $request){
+    if ( $request->has('search') ){
+
+        $trades = Trade::where('id', "LIKE", "%".$request->search."%")
+                        ->orWhere('title', "LIKE", "%".$request->search."%")
+                        ->orWhere('price', "LIKE", "%".$request->search."%")
+                        ->orWhere('user_id', "LIKE", "%".$request->search."%")
+                        ->latest()
+                        ->paginate(5)
+                        ->appends('search', $request->search);
+
+    }else{
+      $trades = Trade::latest()->paginate(5);
+    }
+
+    $searchPhrase = $request->search;
+    return view('trade.list-trade', compact('trades','searchPhrase'));
+   }
 }

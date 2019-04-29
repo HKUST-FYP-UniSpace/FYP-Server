@@ -182,29 +182,48 @@ class BlogController extends Controller
         return view('blog.add-blog-success', ['id'=> $blog->id]);
     }
 
+    // public function search(Request $request){
+    //   if ( $request->has('search') ){
+    //       // get profiles
+    //       $blogs = Blog::where('title', "LIKE", "%".$request->search."%")
+    //                           ->orWhere('subtitle', "LIKE", "%".$request->search."%")
+    //                           ->orWhere('detail', "LIKE", "%".$request->search."%")
+    //                           ->orWhere('status', "LIKE", "%".$request->search."%")
+    //                           ->orWhere('admin_id', "LIKE", "%".$request->search."%")
+    //                           ->orWhere('id', "LIKE", "%".$request->search."%");
+    //   }else{
+    //     $blogs = Blog::get();
+    //   }
+    //   $searchPhrase = $request->search;
+    //   return view('blog.list-blog', compact('blogs','searchPhrase'));
+    // }
+    //
+    // public function delete($delete_id, Request $request) {
+    //   //dd($request);
+    //   $blog= Blog::where('id', $delete_id)->first();
+    //   $blog->is_deleted = 1;
+    //   $blog->save();
+    //
+    //   return back();
+    // }
+
     public function search(Request $request){
-      if ( $request->has('search') ){
-          // get profiles
-          $blogs = Blog::where('title', "LIKE", "%".$request->search."%")
-                              ->orWhere('subtitle', "LIKE", "%".$request->search."%")
-                              ->orWhere('detail', "LIKE", "%".$request->search."%")
-                              ->orWhere('status', "LIKE", "%".$request->search."%")
-                              ->orWhere('admin_id', "LIKE", "%".$request->search."%")
-                              ->orWhere('id', "LIKE", "%".$request->search."%");
-      }else{
-        $blogs = Blog::get();
-      }
-      $searchPhrase = $request->search;
-      return view('blog.list-blog', compact('blogs','searchPhrase'));
+    if ( $request->has('search') ){
+
+        $blogs = Blog::where('id', "LIKE", "%".$request->search."%")
+                        ->orWhere('title', "LIKE", "%".$request->search."%")
+                        ->orWhere('subtitle', "LIKE", "%".$request->search."%")
+                        ->orWhere('detail', "LIKE", "%".$request->search."%")
+                        ->latest()
+                        ->paginate(5)
+                        ->appends('search', $request->search);
+
+    }else{
+      $blogs = Blog::latest()->paginate(5);
     }
 
-    public function delete($delete_id, Request $request) {
-      //dd($request);
-      $blog= Blog::where('id', $delete_id)->first();
-      $blog->is_deleted = 1;
-      $blog->save();
-
-      return back();
-    }
+    $searchPhrase = $request->search;
+    return view('blog.list-blog', compact('blogs','searchPhrase'));
+   }
 
 }

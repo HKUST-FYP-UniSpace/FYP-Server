@@ -2,7 +2,7 @@
 
 <!-- css style (name corresponds to app.blade.php) -->
 @push('add-style')
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/form.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')

@@ -17,25 +17,29 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// Test
-Route::get('/hi', function() {
-	return "hi";
-});
-
-// Admin
+Route::get('/home', 'HomeController@index')->name('home');
+// Admin Login
 Route::prefix('admin')->group(function() {
 	// admin login blank page
     Route::name('admin.login')->get('/login', 'Auth\AdminLoginController@show_login_form');
     // submit admin login
     Route::name('admin.login.submit')->post('/login', 'Auth\AdminLoginController@login');
-    // index page after logged in
+    Route::name('admin.dashboard')->get('/', 'AdminController@landing');
+    // Route::name('admin-list')->get('/', 'AdminController@index');
+    // Route::name('admin-add')->get('/new', 'AdminController@add_admin_form');
+    // Route::name('addadmin-form')->post('/new/add','AdminController@add_admin');// submit add
+    // Route::name('admin-delete')->post('/{id}/delete', 'AdminController@delete');
+});
+
+
+// // pages to be accessed after sucessful login
+// Route::group(['middleware' => 'auth:admin'], function(){
+Route::prefix('admin')->group(function() {
     Route::name('admin-list')->get('/', 'AdminController@index');
     Route::name('admin-add')->get('/new', 'AdminController@add_admin_form');
     Route::name('addadmin-form')->post('/new/add','AdminController@add_admin');// submit add
     Route::name('admin-delete')->post('/{id}/delete', 'AdminController@delete');
-
-
-});
+    });
 
 //Trade
 Route::prefix('trade')->group(function(){
@@ -75,6 +79,8 @@ Route::prefix('house')->group(function(){
 Route::prefix('message')->group(function(){
   Route::name('search')->get('/search','MessageController@search');
 	Route::name('message-list')->get('/', 'MessageController@show_message');
+  Route::name('get-messages')->get('/chatroom_{chatroom_id}/', 'MessageController@get_messages');
+  Route::name('reply-message')->post('/chatroom_{chatroom_id}/reply/', 'MessageController@reply');
 
 });
 
@@ -115,42 +121,25 @@ Route::prefix('statistics')->group(function(){
 
 //select
 Route::prefix('select')->group(function(){
+  //select index
 	Route::name('select')->get('/','SelectController@select');
+  //house districts selections
   Route::name('district')->get('/district','SelectController@show_district'); //add
   Route::name('district-add')->post('/district/add','SelectController@add_district');// submit add
-
+  //trade category selections
   Route::name('trade_category')->get('/trade_category','SelectController@show_trade_category');
   Route::name('trade_category-add')->post('/trade_category/add','SelectController@add_trade_category');// submit add
-
+  //trade condition types selections
   Route::name('trade_condition')->get('/trade_condition','SelectController@show_trade_condition'); //add
   Route::name('trade_condition-add')->post('/trade_condition/add','SelectController@add_trade_condition');// submit add
-
+  //user preference selections
   Route::name('preference_item')->get('/preference_item','SelectController@show_preference_item'); //add
   Route::name('preference_item-add')->post('/preference_item/add','SelectController@add_preference_item');// submit add
-  // Route::name('edit-edit-preference_item')->post('/preference_item/edit','SelectController@edit_preference_item');// submit add
   Route::name('edit-preference_item')->post('/preference_item/{id}/edit', 'SelectController@edit_preference_item');//do
-
+  //preference catefory selections
   Route::name('preference_item_category')->get('/preference_item_category','SelectController@show_preference_item_category'); //add
   Route::name('preference_item_category-add')->post('/preference_item_category/add','SelectController@add_preference_item_category');// submit add
 });
 
 
-
-
-
-
-// put all the routes inside at last
-// only for those who have logged in can access these pages
-Route::group(['middleware' => 'auth:admin'], function(){
-
-});//end middleware auth:admin
-
-
-// ======================================================================================
-// Web API
-Route::name('user.list')->get('/show_profile/{id}', 'Web\UserController@list_all_user');
-
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+// });//end middleware auth:admin
