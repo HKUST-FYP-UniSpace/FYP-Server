@@ -354,7 +354,8 @@ class ChatroomController extends Controller
 
     	// create a new chatroom (This new chatroom is just for record status purpose, the chatroom will be deleted after request acceptance)
     	$chatroom = new Chatroom();
-        $chatroom->total_message = 0; // Should have no messgae when team first created
+        $chatroom->total_message = 1; // Should have no messgae when team first created
+
     	$chatroom->title = User::where('id', $id)->first()->username;	// title = leader username
     	$chatroom->chatroom_type_id = 4;	// type = request
         $chatroom->type_identifier = $team_id;

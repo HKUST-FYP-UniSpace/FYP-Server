@@ -290,7 +290,7 @@ class TradeController extends Controller
 
       $result_trades = array();
       // $trades = Trade::get();
-      $trades = DB::table('Trades');
+      $trades = DB::table('trades');
 
       // filter
       $title = $request->input('title');
