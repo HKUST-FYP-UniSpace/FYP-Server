@@ -158,52 +158,7 @@ class ChatroomController extends Controller
     // POST: create chatroom: 2 users [trade]
     // note: type = owner, type_identifier = trade item id
     public function create_chatroom_trade($id, Request $request) {
-      $errors = array();
-      $error = array();
 
-    	// check if the chatroom exists
-    	$team_id = $request['teamId'];
-    	$owner_type_chatrooms = Chatroom::where('chatroom_type_id', 1)->get();	// get all the chatrooms of type = owner
-    	foreach($owner_type_chatrooms as $owner_type_chatroom) {
-    		if($owner_type_chatroom->type_identifier == $team_id) {
-    			$error['message'] = 'The owner chatroom of this team exists.';
-    			$error['existChatroomId'] = $owner_type_chatroom->id;
-    			array_push($errors, $error);
-    		}
-    	}
-    	if(!empty($errors)) {
-            return response()->json($errors, 403);
-        }
-
-    	// create a new chatroom
-    	$chatroom = new Chatroom();
-    	$chatroom->total_message = 1;	// first message will be sent in this API
-    	$chatroom->title = User::where('id', $id)->first()->username;	// title = leader username
-    	$chatroom->chatroom_type_id = 1;	// type = owner
-    	$chatroom->type_identifier = $request['teamId'];
-    	$chatroom->save();
-
-    	// add the leader & house owner into the chatroom_participants table
-    	$chatroom_participant_leader = new ChatroomParticipant();
-    	$chatroom_participant_leader->chatroom_id = $chatroom->id;
-    	$chatroom_participant_leader->user_id = $id;
-    	$chatroom_participant_leader->save();
-    	$chatroom_participant_owner = new ChatroomParticipant();
-    	$chatroom_participant_owner->chatroom_id = $chatroom->id;
-    	$chatroom_participant_owner->user_id = (int) $request['ownerId'];
-    	$chatroom_participant_owner->save();
-
-    	// send the message
-    	$message = new Message();
-    	$message->message = $request['message'];
-    	$message->sender = $id;
-    	$message->deleted = 0;
-    	$message->chatroom_id = $chatroom->id;
-    	$message->save();
-
-    	$result['chatroomId'] = $chatroom->id;
-
-    	return $result;
     }
 
     // POST: create chatroom: user + admin
@@ -274,7 +229,7 @@ class ChatroomController extends Controller
 
     	// create a new chatroom (This new chatroom is just for record status purpose, the chatroom will be deleted after request acceptance)
     	$chatroom = new Chatroom();
-      $chatroom->total_message = 0; // Should have no messgae when team first created
+      $chatroom->total_message = 1; // Should have no messgae when team first created
     	$chatroom->title = User::where('id', $id)->first()->username;	// title = leader username
     	$chatroom->chatroom_type_id = 4;	// type = request
       $chatroom->type_identifier = $team_id;
