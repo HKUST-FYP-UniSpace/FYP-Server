@@ -14,6 +14,9 @@ use App\Message;
 use App\Group;
 use App\GroupDetail;
 use App\Profile;
+use App\Trade;
+use App\House;
+use App\Admin;
 
 class ChatroomController extends Controller
 {
@@ -139,7 +142,8 @@ class ChatroomController extends Controller
     	$chatroom_participant_leader->save();
     	$chatroom_participant_owner = new ChatroomParticipant();
     	$chatroom_participant_owner->chatroom_id = $chatroom->id;
-    	$chatroom_participant_owner->user_id = (int) $request['ownerId'];
+    	$house_id = Group::where('id', $request['teamId'])->first()->house_id;
+    	$chatroom_participant_owner->user_id = House::where('id', $house_id)->first()->owner_id;
     	$chatroom_participant_owner->save();
 
     	// send the message
@@ -158,13 +162,108 @@ class ChatroomController extends Controller
     // POST: create chatroom: 2 users [trade]
     // note: type = owner, type_identifier = trade item id
     public function create_chatroom_trade($id, Request $request) {
+    	$errors = array();
+        $error = array();
+
+    	// check if the chatroom exists
+    	$trade_id = $request['tradeId'];
+    	$trade_type_chatrooms = Chatroom::where('chatroom_type_id', 3)->get();	// get all the chatrooms of type = trade
+    	foreach($trade_type_chatrooms as $trade_type_chatroom) {
+    		if($trade_type_chatroom->type_identifier == $trade_id) {	// same trade item
+    			$trade_type_chatroom_participants = $trade_type_chatroom->chatroom_participant()->get();
+    			foreach($trade_type_chatroom_participants as $trade_type_chatroom_participant) {
+    				if($trade_type_chatroom_participant->user_id == $id) {	// same buyer
+						$error['message'] = 'The trade chatroom of this user exists.';
+		    			$error['existChatroomId'] = $trade_type_chatroom->id;
+		    			array_push($errors, $error);
+    				}
+    			}
+    		}
+    	}
+    	if(!empty($errors)) {
+            return response()->json($errors, 403);
+        }
+
+        // create a new chatroom
+    	$chatroom = new Chatroom();
+    	$chatroom->total_message = 1;	// first message will be sent in this API
+    	$chatroom->title = User::where('id', $id)->first()->username;	// title = leader username
+    	$chatroom->chatroom_type_id = 3;	// type = trade
+    	$chatroom->type_identifier = $request['tradeId'];
+    	$chatroom->save();
+
+    	// add the leader & house owner into the chatroom_participants table
+    	$chatroom_participant_user = new ChatroomParticipant();
+    	$chatroom_participant_user->chatroom_id = $chatroom->id;
+    	$chatroom_participant_user->user_id = $id;
+    	$chatroom_participant_user->save();
+    	$chatroom_participant_owner = new ChatroomParticipant();
+    	$chatroom_participant_owner->chatroom_id = $chatroom->id;
+    	$chatroom_participant_owner->user_id = Trade::where('id', $request['tradeId'])->first()->user_id;
+    	$chatroom_participant_owner->save();
+
+    	// send the message
+    	$message = new Message();
+    	$message->message = $request['message'];
+    	$message->sender = $id;
+    	$message->deleted = 0;
+    	$message->chatroom_id = $chatroom->id;
+    	$message->save();
+
+    	$result['chatroomId'] = $chatroom->id;
+
+    	return $result;
 
     }
 
     // POST: create chatroom: user + admin
     // note: type = owner, type_identifier = user id
     public function create_chatroom_admin($id, Request $request) {
+    	$errors = array();
+        $error = array();
 
+    	// check if the chatroom exists
+    	$admin_type_chatrooms = Chatroom::where('chatroom_type_id', 5)->get();	// get all the chatrooms of type = admin
+    	foreach($admin_type_chatrooms as $admin_type_chatroom) {
+    		if($admin_type_chatroom->type_identifier == $id) {
+    			$error['message'] = 'The admin chatroom of this user exists.';
+    			$error['existChatroomId'] = $admin_type_chatroom->id;
+    			array_push($errors, $error);
+    		}
+    	}
+    	if(!empty($errors)) {
+            return response()->json($errors, 403);
+        }
+
+        // create a new chatroom
+    	$chatroom = new Chatroom();
+    	$chatroom->total_message = 1;	// first message will be sent in this API
+    	$chatroom->title = User::where('id', $id)->first()->username;	// title = leader username
+    	$chatroom->chatroom_type_id = 5;	// type = admin
+    	$chatroom->type_identifier = $id;
+    	$chatroom->save();
+
+    	// add the leader & house owner into the chatroom_participants table
+    	$chatroom_participant_user = new ChatroomParticipant();
+    	$chatroom_participant_user->chatroom_id = $chatroom->id;
+    	$chatroom_participant_user->user_id = $id;
+    	$chatroom_participant_user->save();
+    	// $chatroom_participant_admin = new ChatroomParticipant();
+    	// $chatroom_participant_admin->chatroom_id = $chatroom->id;
+    	// $chatroom_participant_admin->user_id = Admin::get()->first()->id;
+    	// $chatroom_participant_admin->save();
+
+    	// send the message
+    	$message = new Message();
+    	$message->message = $request['message'];
+    	$message->sender = $id;
+    	$message->deleted = 0;
+    	$message->chatroom_id = $chatroom->id;
+    	$message->save();
+
+    	$result['chatroomId'] = $chatroom->id;
+
+    	return $result;
     }
 
     // POST: send message
