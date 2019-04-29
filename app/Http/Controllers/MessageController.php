@@ -33,7 +33,7 @@ class MessageController extends Controller
 
     //
     public function show_message() {
-      $chatrooms = Chatroom::get();
+      $chatrooms = Chatroom::where('chatroom_type_id', '5')->get();
       // $admin_chats = Chatroom::join('messages','chatrooms.id','=','messages.chatroom_id')
       //                       ->join('chatroom_types','chatrooms.chatroom_type_id', '=','chatroom_types.id')
       //                       ->get();
