@@ -85,9 +85,17 @@ class ChatroomController extends Controller
 	    	$temp_user = array();
 	    	$participants = ChatroomParticipant::where('chatroom_id', $chatroom_summary->id)->get();
 	    	foreach($participants as $participant) {
-	    		$temp_user['id'] = $participant->user_id;
-	    		$temp_user['name'] = User::where('id', $participant->user_id)->first()['name'];
-	    		$temp_user['username'] = User::where('id', $participant->user_id)->first()['username'];
+                if($participant->user_id == -1) {
+                    $temp_user['id'] = $participant->user_id;
+                    $temp_user['name'] = 'Admin';
+                    $temp_user['username'] = 'admin';
+                }
+                else {
+                    $temp_user['id'] = $participant->user_id;
+                    $temp_user['name'] = User::where('id', $participant->user_id)->first()['name'];
+                    $temp_user['username'] = User::where('id', $participant->user_id)->first()['username']; 
+                }
+	    		
 	    		array_push($temp['users'], $temp_user);
 	    	}
 	    	if($chatroom_summary->chatroom_type_id == 2) {	// team
@@ -266,10 +274,10 @@ class ChatroomController extends Controller
     	$chatroom_participant_user->chatroom_id = $chatroom->id;
     	$chatroom_participant_user->user_id = $id;
     	$chatroom_participant_user->save();
-    	// $chatroom_participant_admin = new ChatroomParticipant();
-    	// $chatroom_participant_admin->chatroom_id = $chatroom->id;
-    	// $chatroom_participant_admin->user_id = Admin::get()->first()->id;
-    	// $chatroom_participant_admin->save();
+    	$chatroom_participant_admin = new ChatroomParticipant();
+    	$chatroom_participant_admin->chatroom_id = $chatroom->id;
+    	$chatroom_participant_admin->user_id = -1;
+    	$chatroom_participant_admin->save();
 
     	// send the message
     	$message = new Message();
