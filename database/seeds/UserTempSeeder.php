@@ -20,6 +20,7 @@ class UserTempSeeder extends Seeder
             'password'=>'xxx1',
             'token'=>'abc001',
             'is_verified'=>1,
+            'verification_code'=>'111111',
             'is_deleted'=>0
           ],
           [
@@ -29,6 +30,7 @@ class UserTempSeeder extends Seeder
             'password'=>'xxx2',
             'token'=>'abc002',
             'is_verified'=>1,
+            'verification_code'=>'222222',
             'is_deleted'=>0
           ],
           [
@@ -38,6 +40,7 @@ class UserTempSeeder extends Seeder
             'password'=>'xxx3',
             'token'=>'abc003',
             'is_verified'=>1,
+            'verification_code'=>'333333',
             'is_deleted'=>0
           ],
           [
@@ -47,6 +50,7 @@ class UserTempSeeder extends Seeder
             'password'=>'xxx4',
             'token'=>'abc004',
             'is_verified'=>0,
+            'verification_code'=>'444444',
             'is_deleted'=>0
           ],
         ]);

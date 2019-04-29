@@ -64,10 +64,10 @@ Route::get('/owner/{userId}/houseSummary', 'API\OwnerController@get_houseSummary
 Route::get('/owner/{userId}/teamSummary/{houseId}', 'API\OwnerController@get_teamSummary'); // Get Owner Team Summary // Tested
 Route::get('/owner/{userId}/houseData/{houseId}/view/{chartFilterOptions}', 'API\OwnerController@get_houseData'); // Get House Data //
 Route::post('/owner/{reviewId}/reply', 'API\OwnerController@store_reviewReply'); // Reply Review // Tested
-Route::post('/owner/house/add', 'API\OwnerController@store_house'); // Add House // Tested[Local]
-Route::post('/owner/house/img', 'API\OwnerController@store_houseImage'); // Add House [Image] // Tested[Local]
-Route::put('/owner/{houseId}/houseStatus', 'API\OwnerController@update_houseStatus'); // Change House Status // Tested[Local]
-Route::put('/owner/house/update', 'API\OwnerController@update_house'); // Edit House
+Route::post('/owner/house/add', 'API\OwnerController@store_house'); // Add House // Tested
+Route::post('/owner/house/img', 'API\OwnerController@store_houseImage'); // Add House [Image] // Tested
+Route::put('/owner/{houseId}/houseStatus', 'API\OwnerController@update_houseStatus'); // Change House Status // Tested
+Route::put('/owner/house/update', 'API\OwnerController@update_house'); // Edit House // Tested
 Route::post('/owner/houseImg/update', 'API\OwnerController@update_houseImage');  // Edit House [Image]
 
 // House
@@ -75,7 +75,7 @@ Route::post('/owner/houseImg/update', 'API\OwnerController@update_houseImage'); 
 // Route::get('/house/{id}/edit', 'API\HouseController@edit_house');
 Route::get('/house/{id}', 'API\HouseController@show_house'); //
 Route::get('/house/{userId}/index', 'API\HouseController@index_house'); //Get House List //Tested
-Route::get('/house/{userId}/houseView/{houseId}', 'API\HouseController@show_houseView'); //Get House View //Tested
+Route::get('/house/{userId}/houseView/{houseId}', 'API\HouseController@show_houseView'); //Get House View //
 Route::get('/house/{userId}/saved', 'API\HouseController@index_houseSaved'); //Get House Saved //Tested
 Route::get('/house/{userId}/history', 'API\HouseController@index_houseHistory'); // Get House History // Tested
 Route::get('/house/{userId}/suggestion', 'API\HouseController@index_houseSuggestion'); // Get House Suggestion //
@@ -94,10 +94,11 @@ Route::get('/house/{id}/addProfileDetail/{itemId}', 'API\HouseController@add_pro
 // Group (House Team/ House Post Group)
 Route::get('/housePostGroup/{teamId}', 'API\HouseController@show_group'); // Get Team View // Tested
 Route::get('/housePostGroup', 'API\HouseController@index_housePostGroup');
-Route::post('/housePostGroup', 'API\HouseController@store_group'); // Create Team //Tested
-Route::post('/housePostGroup/{teamId}/join', 'API\HouseController@join_group'); // Join Team //Tested
+Route::post('/housePostGroup', 'API\HouseController@store_group'); // Create Team //
+Route::post('/housePostGroup/{teamId}/join', 'API\HouseController@join_group'); // Join Team //
+Route::post('/housePostGroup/{request_chatroomId}/approve', 'API\HouseController@approve_groupMember'); // Approve Join Team request //
 Route::post('/housePostGroup/{id}/delete', 'API\HouseController@delete_housePostGroup'); //
-Route::post('/housePostGroup/image/upload', 'API\HouseController@upload_teamPhoto'); // Create Team:[Image]
+Route::post('/housePostGroup/image/upload', 'API\HouseController@upload_teamPhoto'); // Create Team:[Image] // Tested
 Route::put('/housePostGroup/{id}', 'API\HouseController@update_housePostGroup'); //
 Route::put('housePostGroup/{teamId}/preference', 'API\HouseController@update_preference'); //Update Preference //Tested
 
@@ -114,7 +115,7 @@ Route::post('/houseBookmark/{id}/delete', 'API\HouseBookmarkController@delete_ho
 // Trade
 // Route::get('/trade/create', 'API\TradeController@create_trade');
 // Route::get('/trade/{id}/edit', 'API\TradeController@edit_trade');
-Route::get('/trade/{userId}/detail/{id}', 'API\TradeController@show_trade'); // Get Trade Detail //Tested
+Route::get('/trade/{userId}/detail/{id}', 'API\TradeController@show_trade'); // Get Trade Detail //
 Route::get('/trade/{userId}/index', 'API\TradeController@index_trade'); // Get Trade List // Tested with filter
 Route::get('/trade/{userId}/selling', 'API\TradeController@show_sellingTrade'); // Get Trade Selling Items // Tested
 Route::get('/trade/{userId}/bookmarked', 'API\TradeController@index_bookmarkedTrade'); // Get Trade Saved // Tested

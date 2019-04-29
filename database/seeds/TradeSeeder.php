@@ -22,7 +22,8 @@ class TradeSeeder extends Seeder
             'trade_condition_type_id'=>1, //Perfect
             'trade_status_id'=>1,
             'is_deleted'=>0,
-            'user_id'=>1
+            'user_id'=>1,
+            'district_id'=>1
           ],
 
           [
@@ -34,7 +35,8 @@ class TradeSeeder extends Seeder
             'trade_condition_type_id'=>2, //Almost Perfect
             'trade_status_id'=>1,
             'is_deleted'=>0,
-            'user_id'=>2
+            'user_id'=>2,
+            'district_id'=>2
           ],
 
           [
@@ -46,7 +48,8 @@ class TradeSeeder extends Seeder
             'trade_condition_type_id'=>3, //Okay
             'trade_status_id'=>1,
             'is_deleted'=>0,
-            'user_id'=>3
+            'user_id'=>3,
+            'district_id'=>3
           ],
 
           [
@@ -58,7 +61,8 @@ class TradeSeeder extends Seeder
             'trade_condition_type_id'=>4, //Worn
             'trade_status_id'=>1,
             'is_deleted'=>0,
-            'user_id'=>4
+            'user_id'=>4,
+            'district_id'=>4
           ]
         ]);
     }
