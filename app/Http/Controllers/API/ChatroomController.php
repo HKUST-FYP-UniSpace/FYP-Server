@@ -34,7 +34,13 @@ class ChatroomController extends Controller
 	    	$temp['title'] = $chatroom_summary->title;
 
 	    	// last message in the chatroom
-	    	$temp['subtitle'] = Message::where('chatroom_id', $chatroom_summary->id)->orderBy('created_at', 'desc')->first()->message;
+            if(Message::where('chatroom_id', $chatroom_summary->id)->orderBy('created_at', 'desc')->first() == null) {
+                $temp['subtitle'] = '';
+            }
+            else {
+               $temp['subtitle'] = Message::where('chatroom_id', $chatroom_summary->id)->orderBy('created_at', 'desc')->first()->message; 
+            }
+	    	
 
 	    	$temp['time'] = strtotime($chatroom_summary->created_at);
 	    	$temp['MessageGroupType'] = ( (int)$chatroom_summary->chatroom_type_id ) - 1;
@@ -52,7 +58,12 @@ class ChatroomController extends Controller
 
 	    	// chatroom icon
 	    	if($chatroom_summary->chatroom_type_id == 2) {	// team chatroom
-	    		$temp['photoURL'] = Group::where('id', $chatroom_summary->type_identifier)->first()->image_url;
+	    		if(Group::where('id', $chatroom_summary->type_identifier)->first() == null) {
+                    $temp['photoURL'] = '';
+                }
+                else {
+                    $temp['photoURL'] = Group::where('id', $chatroom_summary->type_identifier)->first()->image_url;
+                }
 	    	}
 	    	else {	// tenant vs owner, trade, request to join team
 	    		$receiver_user_id = '';
@@ -62,19 +73,26 @@ class ChatroomController extends Controller
 	    				$receiver_user_id = $participant->user_id;
 	    			}
 	    		}
-	    		$temp['photoURL'] = Profile::where('user_id', $receiver_user_id)->first()->icon_url;
+                if(Profile::where('user_id', $receiver_user_id)->first() == null) {
+                    $temp['photoURL'] = '';
+                }
+                else {
+                    $temp['photoURL'] = Profile::where('user_id', $receiver_user_id)->first()->icon_url;
+                }
+	    		
 	    	}
 	    	$temp['users'] = array();
 	    	$temp_user = array();
 	    	$participants = ChatroomParticipant::where('chatroom_id', $chatroom_summary->id)->get();
 	    	foreach($participants as $participant) {
 	    		$temp_user['id'] = $participant->user_id;
-	    		$temp_user['name'] = User::where('id', $participant->user_id)->first()->name;
-	    		$temp_user['username'] = User::where('id', $participant->user_id)->first()->username;
+	    		$temp_user['name'] = User::where('id', $participant->user_id)->first()['name'];
+	    		$temp_user['username'] = User::where('id', $participant->user_id)->first()['username'];
 	    		array_push($temp['users'], $temp_user);
 	    	}
 	    	if($chatroom_summary->chatroom_type_id == 2) {	// team
 	    		$temp['teamId'] = $chatroom_summary->type_identifier;
+                $temp['houseId'] = Group::where('id', $chatroom_summary->type_identifier)->first()->house_id;
 	    	}
 	    	if($chatroom_summary->chatroom_type_id == 3) {	//trade
 	    		$temp['tradeId'] = $chatroom_summary->type_identifier;
@@ -283,5 +301,49 @@ class ChatroomController extends Controller
     	$result['messageId'] = $message->id;
 
     	return $result;
+    }
+
+    // GET: get user role in team chatroom
+    public function get_user_role($id, $message_group_id) {
+        $result = array();
+
+        $errors = array();
+        $error = array();
+
+        $chatroom = Chatroom::where('chatroom_type_id', 2)->where('id', $message_group_id)->first();
+        if($chatroom == null) {
+            $error['message'] = "Invalid message group id.";
+            $error['source'] = "get_user_role()";
+            array_push($errors, $error);
+        }
+
+        $team_id = $chatroom->type_identifier;
+        $group = Group::where('id', $team_id)->first();
+        if($group == null) {
+            $error['message'] = "The target user is not found.";
+            $error['source'] = "get_user_role()";
+            array_push($errors, $error);
+        }
+
+        $group_details = GroupDetail::where('group_id', $team_id)->where('member_user_id', $id)->first();
+        if($group_details == null) {
+            $error['message'] = "The target user info is not found in group_details table.";
+            $error['source'] = "get_user_role()";
+            array_push($errors, $error);
+        }
+
+        if(!empty($errors)) {
+            return response()->json($errors, 403);
+        }
+        if($group->leader_user_id == $id) {
+            $result['isLeader'] = true;
+        }
+        else {
+            $result['isLeader'] = false;
+        }
+        // dd(((int) $group_details->status) - 1);
+        $result['status'] = ((int) $group_details->status) - 1;
+
+        return $result;
     }
 }

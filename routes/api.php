@@ -54,6 +54,7 @@ Route::post('/message/{id}/owner', 'API\ChatroomController@create_chatroom_owner
 Route::post('/message/{id}/trade', 'API\ChatroomController@create_chatroom_trade');
 Route::post('/message/{id}/admin', 'API\ChatroomController@create_chatroom_admin');
 Route::post('/message/{id}/{message_group_id}', 'API\ChatroomController@send_message');
+Route::get('/message/{id}/{message_group_id}/role', 'API\ChatroomController@get_user_role');
 
 // Upload
 Route::post('image/upload', 'API\UploadController@image_upload');
