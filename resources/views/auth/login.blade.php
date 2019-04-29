@@ -7,13 +7,13 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12" style="border-color: red; padding-left:20%; padding-right:10%;">
+        <div class="col-md-12" style="padding-left:20%; padding-right:10%;">
             <div class="card">
                 <div class="card-header" style="font-size: 30px;padding-bottom: 30px;">{{ __('Admin Login') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
+                    <form class="form-horizontal" role="form" method="POST" action="{{ route('admin.login.submit') }}">
+                        {{csrf_field()}}
 
                         <div class="form-group row">
                             <label for="email" class="col-sm-4 col-form-label text-md-right" style="font-size: 20px;">{{ __('E-Mail Address') }}</label>

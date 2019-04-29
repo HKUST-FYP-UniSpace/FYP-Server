@@ -14,7 +14,6 @@ use App\Owner;
 class UserController extends Controller
 {
 
-    //
     public function list_all_user() {
     	$users = array();
     	$stacks = User::get();
@@ -27,8 +26,6 @@ class UserController extends Controller
     	}
     	return $users;
     }
-
-    // ==================
 
     public function show_user() {
         $users = User::paginate(5);
@@ -53,22 +50,23 @@ class UserController extends Controller
     public function search(Request $request){
     if ( $request->has('search') ){
         // get profiles
-        $user_ids = Profile::where('name', "LIKE", "%".$request->search."%")
+        $user_ids = Profile::where('id', "LIKE", "%".$request->search."%")
                             ->orWhere('self_intro', "LIKE", "%".$request->search."%")
                             ->orWhere('contact', "LIKE", "%".$request->search."%")
                             ->orWhere('gender', "LIKE", "%".$request->search."%")
                             ->pluck('user_id')->toArray();
         $users = User::where('email', "LIKE", "%".$request->search."%")
                         ->orWhere('username', "LIKE", "%".$request->search."%")
+                        ->orWhere('name', "LIKE", "%".$request->search."%")
                         ->orWhereIn('id',$user_ids)
                         ->latest()
-                        ->paginate(2)
+                        ->paginate(5)
                         ->appends('search', $request->search);
 
     }else{
-      $users = User::latest()->paginate(2);
+      $users = User::latest()->paginate(5);
     }
     $searchPhrase = $request->search;
     return view('user.list-user', compact('users','searchPhrase'));
-}
+   }
 }

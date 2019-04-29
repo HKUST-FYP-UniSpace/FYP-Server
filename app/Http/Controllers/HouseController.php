@@ -314,4 +314,25 @@ class HouseController extends Controller
       return back();
     }
 
+    public function search(Request $request){
+    if ( $request->has('search') ){
+
+        $houses = House::where('id', "LIKE", "%".$request->search."%")
+                        ->orWhere('title', "LIKE", "%".$request->search."%")
+                        ->orWhere('subtitle', "LIKE", "%".$request->search."%")
+                        ->orWhere('size', "LIKE", "%".$request->search."%")
+                        ->orWhere('price', "LIKE", "%".$request->search."%")
+                        ->orWhere('owner_id', "LIKE", "%".$request->search."%")
+                        ->latest()
+                        ->paginate(5)
+                        ->appends('search', $request->search);
+
+    }else{
+      $houses = House::latest()->paginate(5);
+    }
+
+    $searchPhrase = $request->search;
+    return view('house.list-house', compact('houses','searchPhrase'));
+   }
+
 }

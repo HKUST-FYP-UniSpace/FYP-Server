@@ -9,9 +9,10 @@ use Auth;
 use Hash;
 use Validator;
 
+
 class AdminController extends Controller
 {
-    //
+
     public function list_all_admin() {
     	$admins = array();
     	$stacks = Admin::get();
@@ -23,6 +24,11 @@ class AdminController extends Controller
         $admin['email'] = $stack->email;
     	}
     	return $admins;
+    }
+
+    public function landing()
+    {
+        return view('admin');
     }
 
     public function index() {
@@ -56,6 +62,7 @@ class AdminController extends Controller
           $admin->name = $request->input('add-admin-name');
           $admin->email = $request->input('add-admin-email');
           $admin->password = Hash::make($request->input('password'));
+          $admin->is_deleted = 0;
           $admin->save();
 
       return view('admin.add-admin-success');

@@ -56,9 +56,9 @@
                      <li><a href="{{ url('/') }}"><i class="fas fa-sign-out-alt" style=" padding-right: 5px;"></i>Logout</a></li>
               </ul>
 
-              <!-- App Statistics -->
+              <!-- Selections -->
               <ul class="nav navbar-nav navbar-right">
-                  @if( \Request::is('message/*') )
+                  @if( \Request::is('select/*') || \Request::is('select'))
                        <li class="active"><a href="{{ url('/select') }}"><i class="fas fa-plus" style=" padding-right: 5px;"></i>Selections</a></li>
                   @else
                        <li ><a href="{{ url('/select') }}"><i class="fas fa-plus" style=" padding-right: 5px;"></i>Selections</a></li>
@@ -67,7 +67,7 @@
 
               <!-- App Statistics -->
               <ul class="nav navbar-nav navbar-right">
-                  @if( \Request::is('message/*') )
+                  @if( \Request::is('statistics/*') || \Request::is('statistics') )
                        <li class="active"><a href="{{ url('/statistics') }}"><i class="fas fa-users-cog" style=" padding-right: 5px;"></i>App Statistics</a></li>
                   @else
                        <li ><a href="{{ url('/statistics') }}"><i class="fas fa-chart-bar" style=" padding-right: 5px;"></i>App Statistics</a></li>
@@ -76,7 +76,7 @@
 
               <!-- Admin -->
               <ul class="nav navbar-nav navbar-right">
-                  @if( \Request::is('message/*') )
+                  @if( \Request::is('admin/*') || \Request::is('admin') )
                        <li class="active"><a href="{{ url('/admin') }}"><i class="fas fa-users-cog" style=" padding-right: 5px;"></i>Admin</a></li>
                   @else
                        <li ><a href="{{ url('/admin') }}"><i class="fas fa-users-cog" style=" padding-right: 5px;"></i> Admin</a></li>
@@ -85,7 +85,7 @@
 
               <!-- User -->
               <ul class="nav navbar-nav navbar-right">
-                    @if( \Request::is('users') || \Request::is('profile/*') || \Request::is('user/*'))
+                    @if( \Request::is('user') || \Request::is('profile/*') || \Request::is('user/*'))
                             <li class="active"><a href="{{ url('/user') }}"><i class="fas fa-users" style=" padding-right: 5px;"></i>User</a></li>
                     @else
                             <li ><a href="{{ url('/user') }}"><i class="fas fa-users" style=" padding-right: 5px;"></i>User</a></li>
@@ -94,7 +94,7 @@
 
                 <!-- Message -->
                 <ul class="nav navbar-nav navbar-right">
-                    @if( \Request::is('message/*') )
+                    @if( \Request::is('message/*') || \Request::is('message') )
                          <li class="active"><a href="{{ url('/message') }}"><i class="fas fa-envelope" style=" padding-right: 5px;"></i>Message</a></li>
                     @else
                          <li ><a href="{{ url('/message') }}"><i class="fas fa-envelope" style=" padding-right: 5px;"></i>Message</a></li>
@@ -103,7 +103,7 @@
 
                 <!-- Blog -->
                 <ul class="nav navbar-nav navbar-right">
-                    @if( \Request::is('other-mission/*') || \Request::is('other-missions')|| \Request::is('mission/*/othersmission'))
+                    @if( \Request::is('blog/*') || \Request::is('blog') )
                          <li class="active"><a href="{{ url('/blog') }}"><i class="fab fa-blogger" style=" padding-right: 5px;"></i>Blog</a></li>
                     @else
                          <li ><a href="{{ url('/blog') }}"><i class="fab fa-blogger" style=" padding-right: 5px;"></i>Blog</a></li>
@@ -112,7 +112,7 @@
 
                 <!-- Trade -->
                 <ul class="nav navbar-nav navbar-right">
-                      @if( \Request::is('report/*') || \Request::is('reports'))
+                      @if( \Request::is('trade/*') || \Request::is('trade'))
                           <li class="active"><a href="{{ url('/trade') }}"><i class="fas fa-shopping-cart" style=" padding-right: 5px;"></i>Trade</a></li>
                       @else
                           <li ><a href="{{ url('/trade') }}"><i class="fas fa-shopping-cart" style=" padding-right: 5px;"></i>Trade</a></li>
@@ -121,7 +121,7 @@
 
                 <!-- Apartment -->
                 <ul class="nav navbar-nav navbar-right">
-                     @if( (\Request::is('mission/*') || \Request::is('missions') ) && !\Request::is('mission/*/othersmission'))
+                     @if( (\Request::is('house/*') || \Request::is('house') ))
                           <li class="active"><a href="{{ url('/house') }}"><i class="fas fa-band-aid" style=" padding-right: 5px;"></i>Apartment</a></li>
                      @else
                          <li ><a href="{{ url('/house') }}"><i class="fas fa-band-aid" style=" padding-right: 5px;"></i>Apartment</a></li>

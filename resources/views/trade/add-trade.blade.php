@@ -101,6 +101,17 @@
                         </div>
                     </div>
 
+                    <!-- User ID -->
+                    <div class="form-group row {{ $errors->has('add-trade-user_id') ? 'has-error' : '' }}">
+                        <label for="add-trade-user_id" class="col-sm-3 col-form-label"> User ID </label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="add-trade-user_id" name="add-trade-user_id" value="{{ old('add-trade-user_id') }}">
+                            @if($errors->has('add-trade-user_id'))
+                                <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-trade-user_id') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
                     <!-- Description -->
                     <div class="form-group row {{ $errors->has('add-trade-description') ? 'has-error' : '' }}">
                         <label for="add-trade-description" class="col-sm-2 col-form-label">Description </label>
