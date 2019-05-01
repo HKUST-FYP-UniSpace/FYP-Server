@@ -338,7 +338,7 @@ class OwnerController extends Controller
         $extension = $images[$i]->getClientOriginalExtension();
 
         $now = strtotime(Carbon::now());
-        $url = 'trade_' . $house_id . '_' . $now . '_' .$i .'.' . $extension;
+        $url = 'house_' . $house_id . '_' . $now . '_' .$i .'.' . $extension;
         Storage::disk('public')->put($url,  File::get($images[$i]));
 
         // Save url in db
@@ -407,7 +407,18 @@ class OwnerController extends Controller
     $images = $request->file('photoURLs');
     $size = sizeof($images);
 
-    HouseImage::where('house_id', $house_id)->delete(); // first delete old images
+    // first delete old images
+    $old_images = HouseImage::where('house_id', $house_id)->get();
+    foreach($old_images as $old_image){
+      $old_img_url = $old_image->img_url;
+
+      if(isset($old_img_url)){
+        $url_parts = explode('/', $old_img_url);
+        $delete_file = end($url_parts);
+        Storage::disk('public')->delete($delete_file);
+      }
+    }
+    HouseImage::where('house_id', $house_id)->delete();
 
     if(!empty($images)) {
       // foreach($images as $image) {
@@ -415,7 +426,7 @@ class OwnerController extends Controller
         $extension = $images[$i]->getClientOriginalExtension();
 
         $now = strtotime(Carbon::now());
-        $url = 'trade_' . $house_id . '_' . $now . '_' .$i .'.' . $extension;
+        $url = 'house_' . $house_id . '_' . $now . '_' .$i .'.' . $extension;
         Storage::disk('public')->put($url,  File::get($images[$i]));
 
         // Save url in db
