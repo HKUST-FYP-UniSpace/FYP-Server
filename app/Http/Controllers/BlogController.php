@@ -198,14 +198,23 @@ class BlogController extends Controller
     //   return view('blog.list-blog', compact('blogs','searchPhrase'));
     // }
     //
-    // public function delete($delete_id, Request $request) {
-    //   //dd($request);
-    //   $blog= Blog::where('id', $delete_id)->first();
-    //   $blog->is_deleted = 1;
-    //   $blog->save();
-    //
-    //   return back();
-    // }
+    public function delete($delete_id, Request $request) {
+      //dd($request);
+      $blog= Blog::where('id', $delete_id)->first();
+      $blog->is_deleted = 1;
+      $blog->save();
+
+      return back();
+    }
+
+    public function undelete($delete_id, Request $request) {
+      //dd($request);
+      $blog= Blog::where('id', $delete_id)->first();
+      $blog->is_deleted = 0;
+      $blog->save();
+
+      return back();
+    }
 
     public function search(Request $request){
     if ( $request->has('search') ){

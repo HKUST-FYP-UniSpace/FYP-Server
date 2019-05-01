@@ -21,42 +21,42 @@
 
 
                   <dt class="col-sm-3">Trade ID</dt>
-                  <dd class="col-sm-9">{{ $trade->id }}</dd>
+                  <dd class="col-sm-9">{{ $trade['id'] }}</dd>
 
                   <dt class="col-sm-3">User ID</dt>
-                  <dd class="col-sm-9">{{ $trade->user_id }}</dd>
+                  <dd class="col-sm-9">{{ $trade['user_id'] }}</dd>
 
                   <dt class="col-sm-3">Title</dt>
-                  <dd class="col-sm-9">{{ $trade->title }}</dd>
+                  <dd class="col-sm-9">{{ $trade['title'] }}</dd>
 
                   <dt class="col-sm-3">Price</dt>
-                  <dd class="col-sm-9">{{ $trade->price }}</dd>
+                  <dd class="col-sm-9">{{ $trade['price'] }}</dd>
 
                   <dt class="col-sm-3">Quantity</dt>
-                  <dd class="col-sm-9">{{ $trade->quantity }}</dd>
+                  <dd class="col-sm-9">{{ $trade['quantity'] }}</dd>
 
                   <dt class="col-sm-3">Description</dt>
-                  <dd class="col-sm-9">{{ $trade->description }}</dd>
+                  <dd class="col-sm-9">{{ $trade['description'] }}</dd>
 
                   <dt class="col-sm-3">Category</dt>
-                  <dd class="col-sm-9">{{ $category->category}}</dd>
+                  <dd class="col-sm-9">{{ $category['category']}}</dd>
 
                   <dt class="col-sm-3">Condition Type</dt>
-                  <dd class="col-sm-9">{{ $condition_type->type }}</dd>
+                  <dd class="col-sm-9">{{ $condition_type['type'] }}</dd>
 
                   @foreach ($trade_urls as $trade_url)
                   <dt class="col-sm-3">Image URLs</dt>
-                  <dd class="col-sm-9">{{ $trade_url->image_url }}</dd>
+                  <dd class="col-sm-9">{{ $trade_url['image_url'] }}</dd>
                   @endforeach
 
                   <dt class="col-sm-3">Status</dt>
-                  <dd class="col-sm-9">{{ $status->status}}</dd>
+                  <dd class="col-sm-9">{{ $status['status']}}</dd>
 
                   <dt class="col-sm-3">Post Date</dt>
-                  <dd class="col-sm-9">{{ $trade->created_at }}</dd>
+                  <dd class="col-sm-9">{{ $trade['created_at'] }}</dd>
 
                   <dt class="col-sm-3">Update Date</dt>
-                  <dd class="col-sm-9">{{ $trade->updated_at }}</dd>
+                  <dd class="col-sm-9">{{ $trade['updated_at'] }}</dd>
 
               </div>
 

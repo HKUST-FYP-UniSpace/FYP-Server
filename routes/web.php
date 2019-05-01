@@ -46,6 +46,7 @@ Route::prefix('trade')->group(function(){
   Route::name('search')->get('/search','TradeController@search');
 	Route::name('trade-list')->get('/', 'TradeController@show_trade');
   Route::name('trade-delete')->post('/{id}/delete', 'TradeController@delete');
+  Route::name('trade-undelete')->post('/{id}/undelete', 'TradeController@undelete');
 	Route::name('trade-view')->get('/{id}/view-trade','TradeController@show_trade_details');
 	Route::name('trade-edit')->get('/{id}/edit-trade', 'TradeController@edit_trade_form'); //click edit
 	Route::name('trade-edit-form')->post('/{id}/edit-trade/update', 'TradeController@update_trade');//do
@@ -61,6 +62,7 @@ Route::prefix('house')->group(function(){
   Route::name('search')->get('/search','HouseController@search');
 	Route::name('house-list')->get('/', 'HouseController@show_house');
   Route::name('house-delete')->post('/{id}/delete', 'HouseController@delete');
+  Route::name('house-undelete')->post('/{id}/undelete', 'HouseController@undelete');
 	Route::name('house-view')->get('/{id}/view-house','HouseController@show_house_details');
   Route::name('house-group')->get('/{id}/group-house','HouseController@show_group_details'); //check group details
 	Route::name('house-edit')->get('/{id}/edit-house', 'HouseController@edit_house_form'); //click edit
@@ -91,6 +93,7 @@ Route::prefix('blog')->group(function(){
   Route::name('search')->get('/search','BlogController@search');
 	Route::name('blog-list')->get('/', 'BlogController@show_blog');
   Route::name('blog-delete')->post('/{id}/delete', 'BlogController@delete');
+  Route::name('blog-undelete')->post('/{id}/undelete', 'BlogController@undelete');
 	Route::name('blog-view')->get('/{id}/view-blog','BlogController@show_blog_details');
 	Route::name('blog-edit')->get('/{id}/edit-blog', 'BlogController@edit_blog_form'); //click edit
 	Route::name('blog-edit-form')->post('/{id}/edit-blog/update', 'BlogController@update_blog');//do edit

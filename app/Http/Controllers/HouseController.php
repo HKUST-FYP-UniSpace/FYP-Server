@@ -307,6 +307,15 @@ class HouseController extends Controller
       return back();
     }
 
+    public function undelete($delete_id, Request $request) {
+      //dd($request);
+      $house= House::where('id', $delete_id)->first();
+      $house->is_deleted = 0;
+      $house->save();
+
+      return back();
+    }
+
     public function delete_image($house_imgArray) {
 
       $house_image = HouseImage::where('img_url',$house_imgArray)->first()->delete();
