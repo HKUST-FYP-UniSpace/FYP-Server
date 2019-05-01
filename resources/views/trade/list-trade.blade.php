@@ -56,6 +56,13 @@
                                     <a><button type="submit" class="btn-danger submit-delete" onclick="return confirm('Are you sure to delete this item?')"> Delete </button></a>
                                 </form>
                             </td>
+                            @else
+                            <td>
+                                <form method="POST" action="{{ route('trade-undelete', $trade->id) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <a><button type="submit" class="btn-primary" onclick="return confirm('Are you sure to undelete this item?')"> Undelete </button></a>
+                                </form>
+                            </td>
                             @endif
                         </tbody>
                      @endforeach

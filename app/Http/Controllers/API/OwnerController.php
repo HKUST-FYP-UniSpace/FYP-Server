@@ -42,7 +42,7 @@ class OwnerController extends Controller
     // $userId = $request->input('userId');
     $result_summary = array();
 
-    $owned_houses = House::where('owner_id', $userId)->get();
+    $owned_houses = House::where('owner_id', $userId)->where('is_deleted', 0)->get();
 
     if(!isset($owned_houses)){
       $response = ["isSuccess"=>false];

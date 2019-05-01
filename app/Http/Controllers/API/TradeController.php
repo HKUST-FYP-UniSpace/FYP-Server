@@ -322,7 +322,7 @@ class TradeController extends Controller
         $trades = $trades->where('price', '<=', $maxPrice);
       }
 
-      $trades= $trades->where('trade_status_id', 1)->orWhere('trade_status_id', 3)->get(); // get data that are revealed or sold only
+      $trades= $trades->where('is_deleted', 0)->get(); // get data that are not deleted only
 
       foreach ($trades as $trade) {
         $trade_id = $trade->id;
@@ -512,28 +512,30 @@ class TradeController extends Controller
       $bookmarkedTrades = TradeBookmark::where('user_id', $userId)->get();
 
       foreach ($bookmarkedTrades as $bookmarkedTrade) {
-        $trade = Trade::where('id', $bookmarkedTrade->trade_id)->first();
-        $trade_id = $trade->id;
+        $trade = Trade::where('id', $bookmarkedTrade->trade_id)->where('is_deleted', 0)->first();
+        if($trade != null){
+          $trade_id = $trade->id;
 
-        $trade_imgList = TradeImage::where('trade_id', $trade_id);
-        $trade_imgArray = array();
-        if($trade_imgList->count()>0){
-          $trade_imgs = $trade_imgList->get();
-          foreach($trade_imgs as $trade_img){
-            array_push($trade_imgArray, $trade_img->img_url);
+          $trade_imgList = TradeImage::where('trade_id', $trade_id);
+          $trade_imgArray = array();
+          if($trade_imgList->count()>0){
+            $trade_imgs = $trade_imgList->get();
+            foreach($trade_imgs as $trade_img){
+              array_push($trade_imgArray, $trade_img->img_url);
+            }
           }
+
+          $result_bookmarkedTrade = [
+            'id' => $trade_id,
+            'title' => $trade->title,
+            'price' => $trade->price,
+            'status' => self::convertTradeConditionIdtoStr($trade->trade_condition_type_id),
+            'description' => $trade->description,
+            'photoURLs' => $trade_imgArray
+          ];
+
+          array_push($result_bookmarkedTrades, $result_bookmarkedTrade);
         }
-
-        $result_bookmarkedTrade = [
-          'id' => $trade_id,
-          'title' => $trade->title,
-          'price' => $trade->price,
-          'status' => self::convertTradeConditionIdtoStr($trade->trade_condition_type_id),
-          'description' => $trade->description,
-          'photoURLs' => $trade_imgArray
-        ];
-
-        array_push($result_bookmarkedTrades, $result_bookmarkedTrade);
       }
 
       return $result_bookmarkedTrades;

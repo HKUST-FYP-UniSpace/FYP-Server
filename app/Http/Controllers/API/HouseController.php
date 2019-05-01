@@ -217,7 +217,6 @@ class HouseController extends Controller
       }
       if(isset($travelTime) && isset($origin)){
         $districts_in_range = app('App\Http\Controllers\API\SearchEngineController')->get_districtsInDistance($origin, $travelTime);
-        dd($districts_in_range);
         $houses = $houses->whereIn("district_id", $districts_in_range);
       }
       if(isset($type)){
@@ -236,7 +235,7 @@ class HouseController extends Controller
         $houses = $houses->where("size", '<=', $maxSize);
       }
 
-      $houses = $houses->where('status', 2)->orWhere('status', 4)->get(); // get revealed or rent houses only
+      $houses = $houses->where('is_deleted', 0)->get(); // get houses that are not deleted only
 
       foreach ($houses as $house) {
         $house_id = $house->id;
@@ -350,35 +349,37 @@ class HouseController extends Controller
 
       $result_savedHouses = array();
       foreach($bookmarks as $bookmark){
-        $savedHouse = House::where('id', $bookmark->house_id)->first();
-        $savedHouse_id = $savedHouse->id;
+        $savedHouse = House::where('id', $bookmark->house_id)->where('is_deleted', 0)->first();
+        if($savedHouse != null){
+          $savedHouse_id = $savedHouse->id;
 
-        //$savedHouse_img = HouseImage::where('house_id', $savedHouse_id);
-        $house_imgList = HouseImage::where('house_id', $savedHouse_id);
-        $savedHouse_img = array();
-        if($house_imgList->count()>0){
-          $house_imgs = $house_imgList->get();
-          foreach($house_imgs as $house_img){
-            array_push($savedHouse_img, $house_img->img_url);
+          //$savedHouse_img = HouseImage::where('house_id', $savedHouse_id);
+          $house_imgList = HouseImage::where('house_id', $savedHouse_id);
+          $savedHouse_img = array();
+          if($house_imgList->count()>0){
+            $house_imgs = $house_imgList->get();
+            foreach($house_imgs as $house_img){
+              array_push($savedHouse_img, $house_img->img_url);
+            }
           }
+
+
+          if($savedHouse == null){
+            return "Saved house does not exist!";
+          }
+
+          $result_savedHouse = [
+            'id' => $savedHouse_id,
+            'title' => $savedHouse->title,
+            'price' => $savedHouse->price,
+            'size' => $savedHouse->size,
+            'starRating' => self::get_averageHouseOverallRating($savedHouse_id),
+            'subtitle' => $savedHouse->subtitle, //refering to the "description" in the db maybe?
+            'photoURLs' => $savedHouse_img
+          ];
+
+          array_push($result_savedHouses, $result_savedHouse);
         }
-
-
-        if($savedHouse == null){
-          return "Saved house does not exist!";
-        }
-
-        $result_savedHouse = [
-          'id' => $savedHouse_id,
-          'title' => $savedHouse->title,
-          'price' => $savedHouse->price,
-          'size' => $savedHouse->size,
-          'starRating' => self::get_averageHouseOverallRating($savedHouse_id),
-          'subtitle' => $savedHouse->subtitle, //refering to the "description" in the db maybe?
-          'photoURLs' => $savedHouse_img
-        ];
-
-        array_push($result_savedHouses, $result_savedHouse);
       }
 
       return $result_savedHouses;

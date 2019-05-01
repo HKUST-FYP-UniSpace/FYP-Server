@@ -250,6 +250,15 @@ class TradeController extends Controller
       return back();
     }
 
+    public function undelete($delete_id, Request $request) {
+      //dd($request);
+      $trade= Trade::where('id', $delete_id)->first();
+      $trade->is_deleted = 0;
+      $trade->save();
+
+      return back();
+    }
+
     public function delete_image($trade_imgArray) {
 
       $trade_image = TradeImage::where('image_url',$trade_imgArray)->first()->delete();
