@@ -156,7 +156,7 @@ class TradeController extends Controller
             //store
             $trade_image= new TradeImage();
             $trade_image->trade_id = $trade->id;
-            $trade_image->image_url = $url;
+            $trade_image->image_url = url('uploads/'.$url);
             $trade_image->save();
           }
         }
@@ -248,7 +248,7 @@ class TradeController extends Controller
             //store
             $trade_image= new TradeImage();
             $trade_image->trade_id = $trade->id;
-            $trade_image->image_url = $url;
+            $trade_image->image_url = url('uploads/'.$url);
             $trade_image->save();
           }
         }

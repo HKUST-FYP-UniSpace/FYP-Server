@@ -73,7 +73,7 @@
             </div>
 
             <div class = "buttonView">
-                <a href="{{ route('trade-edit', $trade['id']) }}">
+                <a href="{{ route('trade-edit', $trade->id) }}">
                 <button class="btn" style="width: 120px;">Edit</button></a>
 
                 <a href="{{ url('/trade') }}">
