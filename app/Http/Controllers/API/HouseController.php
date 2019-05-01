@@ -33,6 +33,7 @@ use Validator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class HouseController extends Controller
@@ -192,11 +193,50 @@ class HouseController extends Controller
     }
 
 
-    //Get House List
+    //Get House List (Search House)
     // Filter to be added
-    public function index_house($userId){
+    public function index_house($userId, Request $request){
       $result_houses = array();
-      $houses = House::get();
+      // $houses = House::get();
+      $houses = DB::table('houses');
+
+      $keyword = $request->input('keyword');
+      $origin = $request->input('origin'); //required for the distance matrix api
+      $travelTime = $request ->input('travelTime'); //required for the distance matrix api
+      $type = self::convertHouseTypeEnumtoId($request->input('type'));
+      $minPrice = $request->input('minPrice');
+      $maxPrice = $request->input('maxPrice');
+      $minSize = $request->input('minSize');
+      $maxSize = $request->input('maxSize');
+
+      if(isset($keyword)){
+        $houses = $houses->where(function ($query) use ($keyword){
+          $query->where('title', 'LIKE', "%{$keyword}%")->orWhere('subtitle', 'LIKE', "%{$keyword}%")
+          ->orWhere('description', 'LIKE', "%{$keyword}%")->orWhere('address', 'LIKE', "%{$keyword}%");
+        });
+      }
+      if(isset($travelTime) && isset($origin)){
+        $districts_in_range = app('App\Http\Controllers\API\SearchEngineController')->get_districtsInDistance($origin, $travelTime);
+        dd($districts_in_range);
+        $houses = $houses->whereIn("district_id", $districts_in_range);
+      }
+      if(isset($type)){
+        $houses = $houses->where("type", $type);
+      }
+      if(isset($minPrice)){
+        $houses = $houses->where("price", '>=' , $minPrice);
+      }
+      if(isset($maxPrice)){
+        $houses = $houses->where("price", '<=', $maxPrice);
+      }
+      if(isset($minSize)){
+        $houses = $houses->where("size", '>=' , $minSize);
+      }
+      if(isset($maxSize)){
+        $houses = $houses->where("size", '<=', $maxSize);
+      }
+
+      $houses = $houses->where('status', 2)->orWhere('status', 4)->get(); // get revealed or rent houses only
 
       foreach ($houses as $house) {
         $house_id = $house->id;
@@ -1156,7 +1196,7 @@ class HouseController extends Controller
         arsort($matched_group);
         $result = array_slice($matched_group, 0, $required_num, $preserve_keys = TRUE);
 
-        return Group::whereIn('id', array_keys($result));
+        return Group::whereIn('id', array_keys($result))->get();
       }
 
       // look for matched group in trending houses
@@ -1272,6 +1312,38 @@ class HouseController extends Controller
 
       if($enum != null){
         return $enum->id;
+      }
+
+      return null;
+    }
+
+
+    // This is a helper function that convert house type to their enum name value
+    public function convertHouseTypeIdToEnum($id){
+      if($id == 0){
+        return 'Flat';
+      }elseif($id == 1){
+        return 'Cottage';
+      }elseif($id == 2){
+        return 'Detached';
+      }elseif($id == 3){
+        return 'Sub-divided';
+      }
+
+      return null;
+    }
+
+
+    // This is helper function that convert house type enum string to their id value
+    public function convertHouseTypeEnumtoId($type){
+      if($type == 'Flat'){
+        return 0;
+      }elseif($type == 'Cottage'){
+        return 1;
+      }elseif($type == 'Detached'){
+        return 2;
+      }elseif($type == 'Sub-divided'){
+        return 3;
       }
 
       return null;
