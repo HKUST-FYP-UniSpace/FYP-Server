@@ -30,7 +30,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Title</th>
-                            <th>Price</th>
+                            <th>Price (HKD)</th>
                             <th>Description</th>
                             <th>Quantity</th>
                             <th>Post Date</th>
@@ -44,7 +44,7 @@
 
                             <th>{{ $trade->id }}</th>
                             <th>{{ $trade->title }}</th>
-                            <th>{{ $trade->price }}</th>
+                            <th>${{ $trade->price }}</th>
                             <th>{{ $trade->description }}</th>
                             <th>{{ $trade->quantity }}</th>
                             <th>{{ $trade->created_at }}</th>

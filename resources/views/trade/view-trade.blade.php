@@ -10,7 +10,7 @@
         {{ csrf_field() }}
 
         <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">  <!--size of form box -->
-            <div class="panel panel-default" style="height: 400px;"> <!-- border+background -->
+            <div class="panel panel-default" style="height: 700px;"> <!-- border+background -->
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Trade Item</h4>
                 </div>
@@ -24,16 +24,22 @@
                   <dd class="col-sm-9">{{ $trade['id'] }}</dd>
 
                   <dt class="col-sm-3">User ID</dt>
-                  <dd class="col-sm-9">{{ $trade['user_id'] }}</dd>
+                  <dd class="col-sm-9">{{ $trade['user_id']  }}</dd>
+
+                  <dt class="col-sm-3">User Name</dt>
+                  <dd class="col-sm-9">{{ $user }}</dd>
 
                   <dt class="col-sm-3">Title</dt>
                   <dd class="col-sm-9">{{ $trade['title'] }}</dd>
 
-                  <dt class="col-sm-3">Price</dt>
-                  <dd class="col-sm-9">{{ $trade['price'] }}</dd>
+                  <dt class="col-sm-3">Price (HKD)</dt>
+                  <dd class="col-sm-9">${{ $trade['price'] }}</dd>
 
                   <dt class="col-sm-3">Quantity</dt>
                   <dd class="col-sm-9">{{ $trade['quantity'] }}</dd>
+
+                  <dt class="col-sm-3">Trade District</dt>
+                  <dd class="col-sm-9">{{ $district_id['name'] }}</dd>
 
                   <dt class="col-sm-3">Description</dt>
                   <dd class="col-sm-9">{{ $trade['description'] }}</dd>
@@ -46,7 +52,8 @@
 
                   @foreach ($trade_urls as $trade_url)
                   <dt class="col-sm-3">Image URLs</dt>
-                  <dd class="col-sm-9">{{ $trade_url['image_url'] }}</dd>
+                  <dd class="col-sm-9"><img src="{{ $trade_url['image_url'] }}" style="height: 100px; padding-bottom: 10px"></dd>
+                  <!-- <dd class="col-sm-9">{{ $trade_url['image_url'] }}</dd> -->
                   @endforeach
 
                   <dt class="col-sm-3">Status</dt>
@@ -66,7 +73,7 @@
             </div>
 
             <div class = "buttonView">
-                <a href="{{ route('trade-edit', $trade->id) }}">
+                <a href="{{ route('trade-edit', $trade['id']) }}">
                 <button class="btn" style="width: 120px;">Edit</button></a>
 
                 <a href="{{ url('/trade') }}">

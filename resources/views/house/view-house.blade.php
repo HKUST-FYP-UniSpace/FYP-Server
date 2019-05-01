@@ -23,7 +23,7 @@
                                 <th>Maximum No. People</th>
                                 <th>Duration</th>
                                 <th>Rent</th>
-                                <th>Image</th>
+                                <th>Group Icon</th>
 
                             </tr>
                         </thead>
@@ -32,10 +32,11 @@
                                 <th>{{ $group->id }}</th>
                                 <td><a href="{{ route('house-group', $group->id) }}">{{ $group->title}}</a></td>
                                 <th>{{ $group->leader_user_id }}</th>
-                                <th>{{ $group->max_ppl }}</th>
                                 <th>{{ $group->description }}</th>
+                                <th>{{ $group->max_ppl }}</th>
+                                <th>{{ $group->duration }}</th>
                                 <th>{{ $group->is_rent }}</th>
-                                <th>{{ $group->image_url }}</th>
+                                <th><img src="{{ $group->image_url }}" style="height: 100px;"></th>
                             </tbody>
                          @endforeach
                     </table>
@@ -48,7 +49,7 @@
         <div class="panel panel-default col-md-12" style="border-color: transparent; padding-left:10%; padding-right:10%;">  <!--size of form box -->
 
 
-            <div class="panel panel-default" style="height: 500px;"> <!-- border+background -->
+            <div class="panel panel-default" style="height: 600px;"> <!-- border+background -->
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Apartment</h4>
                 </div>
@@ -68,28 +69,36 @@
                   <dd class="col-sm-9">{{ $house->address }}</dd>
 
                   <dt class="col-sm-3">Apartment Type</dt>
-                  <dd class="col-sm-9">{{ $house->type }}</dd>
+                  <dd class="col-sm-9">{{ $type }}</dd>
 
                   <dt class="col-sm-3">Apartment Size</dt>
-                  <dd class="col-sm-9">{{ $house->size }}</dd>
+                  <dd class="col-sm-9">{{ $house->size }} sq.feets</dd>
 
                   <dt class="col-sm-3">Max. No. People</dt>
                   <dd class="col-sm-9">{{ $house->max_ppl }}</dd>
 
                   <dt class="col-sm-3">Price</dt>
-                  <dd class="col-sm-9">{{ $house->price }}</dd>
+                  <dd class="col-sm-9">${{ $house->price }}</dd>
 
 
                   @foreach ($house_urls as $house_url)
                   <dt class="col-sm-3">Image URLs </dt>
-                  <dd class="col-sm-9">{{ $house_url->img_url }}</dd>
+                  <!-- <dd class="col-sm-9">{{ $house_url->img_url }}</dd> -->
+                  <dd class="col-sm-9"><img src="{{ $house_url->img_url }}" style="height: 100px; padding-bottom: 10px"></dd>
                   @endforeach
 
                   <dt class="col-sm-3">Status</dt>
-                  <dd class="col-sm-9">{{ $house->status }}</dd>
+                  @if ($status  == "1") <dd class="col-sm-9">{{ "Hide" }}</dd>
+                  @elseif ($status  == "2") <dd class="col-sm-9">{{ "Reveal" }}</dd>
+                  @elseif ($status  == "3") <dd class="col-sm-9">{{ "Archive"  }}</dd>
+                  @else <dd class="col-sm-9">{{ "Rent" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Owner ID</dt>
                   <dd class="col-sm-9">{{ $house->owner_id }}</dd>
+
+                  <dt class="col-sm-3">Owner Name</dt>
+                  <dd class="col-sm-9">{{ $owner['name']}}</dd>
 
                   <dt class="col-sm-3">Visitors Count</dt>
                   <dd class="col-sm-9">{{ $house_visitors }}</dd>
@@ -115,6 +124,7 @@
               <button class="btn" style="width: 120px;">Edit</button></a>
 
               <a href="{{ url('/house') }}">
+              <!-- <a href="javascript:history.go(-1)"> -->
               <button type="button" class="btn" style="width: 120px; background-color: orange;">Back</button></a>
           </div>
 
