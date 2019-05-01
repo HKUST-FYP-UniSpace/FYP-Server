@@ -186,6 +186,7 @@ class HouseController extends Controller
            $j = $last_image;
           for($i = 0; $i < $size; $i++) {
             $extension = $images[$i]->getClientOriginalExtension();
+
             $now = strtotime(Carbon::now());
             $url = 'house_' . $house->id . '_' . $now . '_' .$j .'.' . $extension;
             Storage::disk('public')->put($url,  File::get($images[$i]));
@@ -193,7 +194,7 @@ class HouseController extends Controller
             //store
             $house_image= new HouseImage();
             $house_image->house_id = $house->id;
-            $house_image->img_url = $url;
+            $house_image->img_url = url('uploads/'.$url);
             $house_image->save();
           }
         }
@@ -305,7 +306,7 @@ class HouseController extends Controller
             //store
             $house_image= new HouseImage();
             $house_image->house_id = $house->id;
-            $house_image->img_url = $url;
+            $house_image->img_url = url('uploads/'.$url);
             $house_image->save();
           }
         }

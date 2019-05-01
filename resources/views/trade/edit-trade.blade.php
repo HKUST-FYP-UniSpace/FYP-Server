@@ -118,7 +118,7 @@
                           @foreach($trade_imgArrays as $trade_imgArray)
                           <div class="col-sm-4" style="padding-left:30px; padding-bottom: 10px;font-size:15px;"><img src="{{ $trade_imgArray }}" style="height: 200px;"></div>
 
-                          <div class="row" style="font-size:15px;">
+                          <div class="row" style="padding-left: 90%; font-size:15px;">
                             <form method="POST" action="{{ route('image-delete', $trade_imgArray) }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <a><button type="submit" class="btn-danger" onclick="return confirm('Are you sure to delete {{ $trade_imgArray }}?')"> Delete </button></a>
