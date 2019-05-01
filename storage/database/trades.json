@@ -1,0 +1,197 @@
+[{
+  "quantity": 2,
+  "trade_condition_type_id": 3,
+  "price": 6990,
+  "title": "STOCKHOLM 2017",
+  "trade_category_id": 3,
+  "image": [{
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0447583_PE597395_S5.JPG"
+  }, {
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0447589_PE597399_S5.JPG"
+  }, {
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0523541_PH141757_S5.JPG"
+  }, {
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0748956_PE745347_S5.JPG"
+  }],
+  "trade_status_id": 1,
+  "description": "Three-seat sofa, Sandbacka dark blue",
+  "is_deleted": 0,
+  "user_id": 4,
+  "district_id": 19
+}, {
+  "quantity": 3,
+  "trade_condition_type_id": 4,
+  "price": 2290,
+  "title": "STOCKSUND",
+  "trade_category_id": 3,
+  "image": [{
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0405174_PE575064_S5.JPG"
+  }, {
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0738001_PE689685_S5.JPG"
+  }, {
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0620580_PE689682_S5.JPG"
+  }, {
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0620576_PE689677_S5.JPG"
+  }],
+  "trade_status_id": 1,
+  "description": "2-seat sofa, Ljungen blue, black\/wood",
+  "is_deleted": 0,
+  "user_id": 9,
+  "district_id": 7
+}, {
+  "quantity": 1,
+  "trade_condition_type_id": 1,
+  "price": 199.89999389648438,
+  "title": "FOTO",
+  "trade_category_id": 3,
+  "image": [{
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0613055_PE686144_S5.JPG"
+  }, {
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0545744_PE655672_S5.JPG"
+  }, {
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0545745_PE655671_S5.JPG"
+  }],
+  "trade_status_id": 1,
+  "description": "Pendant lamp, brass-colour",
+  "is_deleted": 0,
+  "user_id": 2,
+  "district_id": 7
+}, {
+  "quantity": 2,
+  "trade_condition_type_id": 1,
+  "price": 99.900001525878906,
+  "title": "FINTORP",
+  "trade_category_id": 1,
+  "image": [{
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0712634_PE728950_S5.JPG"
+  }, {
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0451467_PE600457_S5.JPG"
+  }, {
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0460998_PE607209_S5.JPG"
+  }],
+  "trade_status_id": 1,
+  "description": "Dish drainer, nickel-plated",
+  "is_deleted": 0,
+  "user_id": 14,
+  "district_id": 3
+}, {
+  "quantity": 3,
+  "trade_condition_type_id": 1,
+  "price": 99.900001525878906,
+  "title": "FINTORP",
+  "trade_category_id": 1,
+  "image": [{
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0711699_PE728390_S5.JPG"
+  }, {
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0451478_PE600465_S5.JPG"
+  }, {
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0460997_PE607208_S5.JPG"
+  }],
+  "trade_status_id": 1,
+  "description": "Kitchen roll holder",
+  "is_deleted": 0,
+  "user_id": 7,
+  "district_id": 15
+}, {
+  "quantity": 4,
+  "trade_condition_type_id": 3,
+  "price": 29.899999618530273,
+  "title": "GRUNDVATTNET",
+  "trade_category_id": 1,
+  "image": [{
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0430312_PE584591_S5.JPG"
+  }, {
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0676186_PH149076_S5.JPG"
+  }, {
+    "image_url": "https:\/\/www.ikea.com\/PIAimages\/0579981_PH142986_S5.JPG"
+  }],
+  "trade_status_id": 1,
+  "description": "Box, grey",
+  "is_deleted": 0,
+  "user_id": 9,
+  "district_id": 17
+}, {
+  "quantity": 4,
+  "trade_condition_type_id": 2,
+  "price": 12,
+  "title": "Notebook",
+  "trade_category_id": 6,
+  "image": [{
+    "image_url": "https:\/\/img.muji.net\/img\/item\/4547315040124_1260.jpg"
+  }],
+  "trade_status_id": 1,
+  "description": "Planted Wood Paper Double Ringed Ruled Notebook",
+  "is_deleted": 0,
+  "user_id": 19,
+  "district_id": 13
+}, {
+  "quantity": 3,
+  "trade_condition_type_id": 2,
+  "price": 7,
+  "title": "Notebook",
+  "trade_category_id": 6,
+  "image": [{
+    "image_url": "https:\/\/img.muji.net\/img\/item\/4547315264971_1260.jpg"
+  }],
+  "trade_status_id": 1,
+  "description": "Planted Wood Paper Double Ringed Ruled Notebook",
+  "is_deleted": 0,
+  "user_id": 11,
+  "district_id": 12
+}, {
+  "quantity": 4,
+  "trade_condition_type_id": 1,
+  "price": 35,
+  "title": "Binder",
+  "trade_category_id": 6,
+  "image": [{
+    "image_url": "https:\/\/img.muji.net\/img\/item\/4547315267200_1260.jpg"
+  }],
+  "trade_status_id": 1,
+  "description": "The cover is made of recycled paper",
+  "is_deleted": 0,
+  "user_id": 12,
+  "district_id": 6
+}, {
+  "quantity": 3,
+  "trade_condition_type_id": 4,
+  "price": 788,
+  "title": "Cotton Oxford Cardigan",
+  "trade_category_id": 7,
+  "image": [{
+    "image_url": "https:\/\/img.muji.net\/img\/item\/4550182082777_1260.jpg"
+  }],
+  "trade_status_id": 1,
+  "description": "Made of strong and durable fabric, it is lightweight and airy",
+  "is_deleted": 0,
+  "user_id": 11,
+  "district_id": 6
+}, {
+  "quantity": 3,
+  "trade_condition_type_id": 4,
+  "price": 1680,
+  "title": "Water Repellent Reversible Hooded Coat",
+  "trade_category_id": 7,
+  "image": [{
+    "image_url": "https:\/\/img.muji.net\/img\/item\/4550182083507_1260.jpg"
+  }],
+  "trade_status_id": 1,
+  "description": "Coat made of water-repellent material and can be worn reversibly",
+  "is_deleted": 0,
+  "user_id": 10,
+  "district_id": 1
+}, {
+  "quantity": 2,
+  "trade_condition_type_id": 2,
+  "price": 788,
+  "title": "High Density Cotton Off-Shoulder Shirt",
+  "trade_category_id": 7,
+  "image": [{
+    "image_url": "https:\/\/img.muji.net\/img\/item\/4550182082531_1260.jpg"
+  }],
+  "trade_status_id": 1,
+  "description": "Made of strong cotton fabric with a dropped shoulder and relaxed silhouette",
+  "is_deleted": 0,
+  "user_id": 19,
+  "district_id": 1
+}]

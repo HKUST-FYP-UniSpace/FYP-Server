@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class PreferenceItemCategorySeeder extends Seeder
 {
@@ -13,11 +14,11 @@ class PreferenceItemCategorySeeder extends Seeder
     {
         //
         DB::table('preference_item_categories')->insert([
-        	['category' => 'gender',],
-        	['category' => 'petFree'],
-        	['category' => 'timeInHouse'],
-        	['category' => 'personalities'],
-        	['category' => 'interests'],
+        	['category' => 'gender', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['category' => 'petFree', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['category' => 'timeInHouse', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['category' => 'personalities', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['category' => 'interests', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
         ]);
     }
 }

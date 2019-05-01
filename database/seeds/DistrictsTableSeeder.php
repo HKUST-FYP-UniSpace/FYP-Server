@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class DistrictsTableSeeder extends Seeder
 {
@@ -13,24 +14,24 @@ class DistrictsTableSeeder extends Seeder
     {
         //
         DB::table('districts')->insert([
-        	['name' => 'Islands',],
-        	['name' => 'Kwai Tsing'],
-        	['name' => 'North'],
-        	['name' => 'Sai Kung'],
-        	['name' => 'Shatin'],
-        	['name' => 'Tai Po'],
-        	['name' => 'Tsuen Wan'],
-        	['name' => 'Tuen Mun'],
-        	['name' => 'Yuen Long'],
-        	['name' => 'Kowloon City'],
-        	['name' => 'Kwun Tong'],
-        	['name' => 'Sham Shui Po'],
-        	['name' => 'Wong Tai Sin'],
-        	['name' => 'Yau Tsim Mong'],
-        	['name' => 'Central & Western'],
-        	['name' => 'Eastern'],
-        	['name' => 'Southern'],
-        	['name' => 'Wan Chai'],
+        	['name' => 'Islands', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Kwai Tsing', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'North', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Sai Kung', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Shatin', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Tai Po', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Tsuen Wan', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Tuen Mun', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Yuen Long', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Kowloon City', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Kwun Tong', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Sham Shui Po', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Wong Tai Sin', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Yau Tsim Mong', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Central & Western', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Eastern', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Southern', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
+        	['name' => 'Wan Chai', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
         ]);
     }
 }

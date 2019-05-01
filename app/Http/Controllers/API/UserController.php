@@ -671,7 +671,8 @@ class UserController extends Controller
         $month = (int) $month;
         $user = User::where('id', $id)->first();
         $events = $user->calendar()->where('year', $year)->where('month', $month)->orderBy('date')->orderBy('start_time')->get();
-        $first_day = (int) $events[0]->day;
+        $first_day = 1;
+        // $first_day = (int) $events[0]->day;
 
         if(empty($events)) {
             $result = null;

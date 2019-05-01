@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class ChatroomTypesTableSeeder extends Seeder
 {
@@ -13,15 +14,15 @@ class ChatroomTypesTableSeeder extends Seeder
     {
         DB::table('chatroom_types')->insert([
 			// id: 1
-        	['type' => 'Owner'],
+        	['type' => 'Owner', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
 			// id: 2
-			['type' => 'Team'],
+			['type' => 'Team', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
 			//id: 3
-        	['type' => 'Trade'],
+        	['type' => 'Trade', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
 			//id: 4
-			['type' => 'Request'],
+			['type' => 'Request', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
 			//id: 5
-			['type' => 'Admin'],
+			['type' => 'Admin', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
         ]);
     }
 }

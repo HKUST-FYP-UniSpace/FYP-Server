@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class TradeConditionTypeSeeder extends Seeder
 {
@@ -14,13 +15,13 @@ class TradeConditionTypeSeeder extends Seeder
         //
         DB::table('trade_condition_types')->insert([
           // id: 1
-        	['type' => 'Perfect'],
+        	['type' => 'Perfect', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
           // id: 2
-        	['type' => 'Almost Perfect'],
+        	['type' => 'Almost Perfect', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
           // id: 3
-        	['type' => 'Okay'],
+        	['type' => 'Okay', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
           // id: 4
-        	['type' => 'Worn']
+        	['type' => 'Worn', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')]
         ]);
     }
 }
