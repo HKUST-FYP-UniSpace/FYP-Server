@@ -322,7 +322,7 @@ class TradeController extends Controller
         $trades = $trades->where('price', '<=', $maxPrice);
       }
 
-      $trades= $trades->get();
+      $trades= $trades->where('trade_status_id', 1)->orWhere('trade_status_id', 3)->get(); // get data that are revealed or sold only
 
       foreach ($trades as $trade) {
         $trade_id = $trade->id;
