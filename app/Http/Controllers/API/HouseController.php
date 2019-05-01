@@ -28,6 +28,7 @@ use App\District;
 use App\Chatroom;
 use App\ChatroomParticipant;
 use App\Message;
+use App\HouseDetail;
 
 use Validator;
 use Illuminate\Support\Arr;
@@ -161,7 +162,7 @@ class HouseController extends Controller
         }
       }
 
-
+      $house_detail = HouseDetail::where('house_id', $house_id)->first();
 
       $result_house = [
         'id' => $house->id,
@@ -170,9 +171,13 @@ class HouseController extends Controller
         'size' => $house->size,
         'starRating' => self::get_averageHouseOverallRating($id),
         'subtitle' => $house->subtitle, // refering to the description in the DB maybe?
-        'address' => $house->address,
+        // 'address' => $house->address,
+        'address' => self::convertDistrictIdToEnum($house->district_id),
         'isBookmarked' => (HousePostBookmark::where('house_id', $house_id)->where('tenant_id', $userId)->count()>0)?true:false,
-        'photoURLs' => $house_imgArray
+        'photoURLs' => $house_imgArray,
+        'rooms' => $house_detail!=null?$house_detail->room:null,
+        'beds' => $house_detail!=null?$house_detail->bed:null,
+        'toilets' => $house_detail!=null?$house_detail->toilet:null
         // 'district_id' => $house->district_id,
         // 'description' => $house->description,
         // 'max_ppl' => $house->max_ppl,
@@ -256,7 +261,8 @@ class HouseController extends Controller
           'size' => $house->size,
           'starRating' => self::get_averageHouseOverallRating($house_id),
           'subtitle' => $house->subtitle, // refering to the description in the DB maybe?
-          'address' => $house->address,
+          // 'address' => $house->address,
+          'address' => self::convertDistrictIdToEnum($house->district_id),
           'isBookmarked' => (HousePostBookmark::where('house_id', $house->id)->where('tenant_id', $userId)->count()>0)?true:false,
           'photoURLs' => $house_imgArray
           // 'district_id' => $house->district_id,
