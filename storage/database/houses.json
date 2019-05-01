@@ -1,0 +1,413 @@
+[{
+  "detail": [{
+    "bed": 3,
+    "room": 3,
+    "toilet": 3
+  }],
+  "description": "",
+  "subtitle": "Nice Full Sea View Three Bedroom **Have Key**",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "The Merton",
+  "price": 37000,
+  "address": "38 Kennedy Town New Praya",
+  "size": 886,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/750x434-fit\/y0gu47d16a2a-2852-43b7-994e-e860a92de70f_3888x2592.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/p3mcd78f232f-54b6-48fe-8428-fc4c456c87d8_2189x1459.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/3cgn12f18197-98d8-4dc4-bf8f-eab4d2af1b86_2189x1459.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/r6sx750e3f2c-6acb-47bb-976a-489b1139a488_2189x1459.jpeg"
+  }],
+  "owner_id": 10,
+  "district_id": 15,
+  "is_deleted": 0,
+  "status": 2
+}, {
+  "detail": [{
+    "bed": 2,
+    "room": 1,
+    "toilet": 1
+  }],
+  "description": "",
+  "subtitle": "Village house",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "Sai Kung Village House",
+  "price": 7300,
+  "address": "Floor G, 97 Sai Kung Road",
+  "size": 300,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/iv1x937164b1-cf81-4443-9e49-5fecb74a3163_2560x1280.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/3rfq92d0d054-171c-43ee-a5c2-20eb388cfb93_2560x1280.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/0yew4931e94c-0276-430c-b20a-4305ae58766e_2560x1280.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/fdt0d24994f6-8e0a-49f2-9eff-764323bb9676_2560x1280.jpeg"
+  }],
+  "owner_id": 8,
+  "district_id": 4,
+  "is_deleted": 0,
+  "status": 2
+}, {
+  "detail": [{
+    "bed": 2,
+    "room": 1,
+    "toilet": 1
+  }],
+  "description": "",
+  "subtitle": "Village house",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "Sai Kung Village House",
+  "price": 9000,
+  "address": "Floor G, 53a Ho Chung New Village",
+  "size": 400,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/y1rz31af4444-a140-45c8-8e9d-ee0fcb75d5b8_3264x2448.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/aho6ab461ac1-6673-4c31-8f02-8a2fd9984b51_3264x2448.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/206l3dede364-a6a3-44ba-a7be-37294ece6d89_3264x2448.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/dr7366b764c4-0b01-41a4-823e-4e4cf0b7a450_3264x2448.jpeg"
+  }],
+  "owner_id": 5,
+  "district_id": 4,
+  "is_deleted": 0,
+  "status": 2
+}, {
+  "detail": [{
+    "bed": 2,
+    "room": 1,
+    "toilet": 1
+  }],
+  "description": "",
+  "subtitle": "Village house",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "Sai Kung Village House",
+  "price": 9500,
+  "address": "Floor G, 55n Tseng Lan Shue",
+  "size": 450,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/1vlmfd2abb3b-3c97-4027-8e81-cea39f3e6c90_2560x1280.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/dnllf5be4102-ecb3-4110-bf2c-978c1d3ecc36_2560x1280.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/zk5291a050bf-f8d2-4139-ac5c-862725c70714_2560x1280.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/tcza1dd4ce79-bd76-4d3e-8db1-fa14e9ee7dd3_2560x1280.jpeg"
+  }],
+  "owner_id": 7,
+  "district_id": 4,
+  "is_deleted": 0,
+  "status": 2
+}, {
+  "detail": [{
+    "bed": 3,
+    "room": 1,
+    "toilet": 1
+  }],
+  "description": "",
+  "subtitle": "Village house",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "Yuen Long Village house",
+  "price": 9500,
+  "address": "Floor 1, 219 Shui Lau Tin",
+  "size": 700,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/fy2h5d3afd72-abe2-4878-98e2-7eaf1eb646bc_1200x1600.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/tm7vb22ff72f-2fff-4bbe-b49e-82533f4c4984_1200x1600.jpeg"
+  }],
+  "owner_id": 3,
+  "district_id": 4,
+  "is_deleted": 0,
+  "status": 2
+}, {
+  "detail": [{
+    "bed": 3,
+    "room": 1,
+    "toilet": 1
+  }],
+  "description": "",
+  "subtitle": "Village house",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "Yuen Long Village house",
+  "price": 9500,
+  "address": "Floor 1, 219 Shui Lau Tin",
+  "size": 700,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/fy2h5d3afd72-abe2-4878-98e2-7eaf1eb646bc_1200x1600.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/tm7vb22ff72f-2fff-4bbe-b49e-82533f4c4984_1200x1600.jpeg"
+  }],
+  "owner_id": 6,
+  "district_id": 4,
+  "is_deleted": 0,
+  "status": 2
+}, {
+  "detail": [{
+    "bed": 1,
+    "room": 1,
+    "toilet": 1
+  }],
+  "description": "",
+  "subtitle": "Nice apartment",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "Seven Victory Avenue",
+  "price": 11000,
+  "address": "7 Victory Aveune",
+  "size": 180,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/eph73893dd37-2a1c-4563-bc17-d1350a1d7794_768x1024.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/f4p2b3b0ea02-c987-417a-bf30-78a57e6b5d29_768x1024.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/ebei83c014bb-e9db-4f30-b4ea-6adae8bd1ee9_768x1024.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/s95172e541e5-31dd-47e3-96c9-3d8856f5efc8_768x1024.jpeg"
+  }],
+  "owner_id": 1,
+  "district_id": 10,
+  "is_deleted": 0,
+  "status": 2
+}, {
+  "detail": [{
+    "bed": 1,
+    "room": 1,
+    "toilet": 1
+  }],
+  "description": "",
+  "subtitle": "Village house",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "Clearwater Bay Village House",
+  "price": 11000,
+  "address": "7 Victory Aveune",
+  "size": 300,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/ib8e59bfc530-5641-4c22-8f8d-695f71082739_1200x1600.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/kmap8a0036ea-6ea0-4228-89a3-3083215fcb48_1600x1200.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/u95sb55346e4-f82c-4ad6-a71a-1c68b46bab97_1200x1600.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/uppl631b6d88-3c3a-4feb-8ecf-b40b9296e1a4_1200x1600.jpeg"
+  }],
+  "owner_id": 3,
+  "district_id": 1,
+  "is_deleted": 0,
+  "status": 2
+}, {
+  "detail": [{
+    "bed": 2,
+    "room": 1,
+    "toilet": 1
+  }],
+  "description": "",
+  "subtitle": "Phase 3 Parkvale Village",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "Coral Court",
+  "price": 12800,
+  "address": "Coral Court, Discovery Bay",
+  "size": 432,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/ul8nf06786ec-ad96-409e-861d-1ce474dbb9e9_650x487.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/3y8bcac64aa8-dee9-4942-82d1-f1163946d8a1_650x487.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/20ha695e7c50-528a-460c-80d5-0d5bd7d5ef08_487x650.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/au2j4d5df44e-8d4d-4a96-93b9-ac4342d8dc61_487x650.jpeg"
+  }],
+  "owner_id": 4,
+  "district_id": 17,
+  "is_deleted": 0,
+  "status": 2
+}, {
+  "detail": [{
+    "bed": 1,
+    "room": 1,
+    "toilet": 1
+  }],
+  "description": "",
+  "subtitle": "Phase 3 Parkvale Village",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "Coral Court",
+  "price": 12800,
+  "address": "Coral Court, Discovery Bay",
+  "size": 432,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/vkogc8ca7507-b6db-43ba-ab59-b430d2a98bfa_400x300.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/d9w6a1fafb71-e61d-4558-8c21-f8076ea2e3e7_400x300.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/kcsuc7c7fa2b-9cdf-4839-9efd-5fd7b5614291_400x300.jpeg"
+  }],
+  "owner_id": 2,
+  "district_id": 17,
+  "is_deleted": 0,
+  "status": 2
+}, {
+  "detail": [{
+    "bed": 2,
+    "room": 1,
+    "toilet": 1
+  }],
+  "description": "",
+  "subtitle": "Phase 4 Parkvale Village",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "Coral Court",
+  "price": 13500,
+  "address": "Coral Court, Discovery Bay",
+  "size": 472,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/b2yja0254402-caa4-417d-a0d5-39e3a94fcbdf_640x480.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/4v0ud62ada05-350a-4254-a74a-4b29958ead5b_640x480.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/v96j4eb7fd8d-760e-4aaa-bfac-e2edb7a61afa_640x480.jpeg"
+  }],
+  "owner_id": 6,
+  "district_id": 17,
+  "is_deleted": 0,
+  "status": 2
+}, {
+  "detail": [{
+    "bed": 4,
+    "room": 4,
+    "toilet": 2
+  }],
+  "description": "",
+  "subtitle": "Sai Kung",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "Razor Hill Road",
+  "price": 13500,
+  "address": "Razor Hill Road, Sai Kung",
+  "size": 1380,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/ocl024dfa1fe-90ad-4f89-88cc-80abbbc8ce59_1440x1080.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/w9fu3794d1d5-e9d9-463d-8c85-33ea62a79b05_1440x1080.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/h1lx8a297ce4-4ac7-4ec0-bf9e-b465aacbf39e_1440x1080.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/2zecc4866d64-eeeb-466e-b486-b069bad81fa6_1080x1440.jpeg"
+  }],
+  "owner_id": 3,
+  "district_id": 4,
+  "is_deleted": 0,
+  "status": 2
+}, {
+  "detail": [{
+    "bed": 2,
+    "room": 2,
+    "toilet": 1
+  }],
+  "description": "",
+  "subtitle": "Kennedy Town",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "University Heights",
+  "price": 13500,
+  "address": "University Heights, Kennedy Town",
+  "size": 529,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/x4gi44ea9e82-5de1-4503-af65-b21bdcb3ef79_2560x1920.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/rdv70a883ddb-02f3-483c-ac0e-2a17a4474d8b_640x480.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/8tr233c27836-0501-4fc3-a616-6b8ba53b3ff6_3024x4032.jpeg"
+  }],
+  "owner_id": 3,
+  "district_id": 15,
+  "is_deleted": 0,
+  "status": 2
+}, {
+  "detail": [{
+    "bed": 3,
+    "room": 2,
+    "toilet": 2
+  }],
+  "description": "",
+  "subtitle": "Kowloon Station",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "The HarbourSide",
+  "price": 43000,
+  "address": "Kowloon Station",
+  "size": 1039,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/b4p9760e5be0-a8dd-4bd9-b481-1ec58171b44a_1440x1080.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/aqxd7b89646f-1bf5-4958-b7db-dfcbf0575ea5_1440x1080.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/7vodb43cde81-f668-4d2d-b548-c2291162d3f8_1440x1080.jpeg"
+  }],
+  "owner_id": 10,
+  "district_id": 14,
+  "is_deleted": 0,
+  "status": 2
+}, {
+  "detail": [{
+    "bed": 3,
+    "room": 2,
+    "toilet": 2
+  }],
+  "description": "",
+  "subtitle": "Kowloon Station",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "The HarbourSide",
+  "price": 43000,
+  "address": "Kowloon Station",
+  "size": 1039,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/b4p9760e5be0-a8dd-4bd9-b481-1ec58171b44a_1440x1080.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/aqxd7b89646f-1bf5-4958-b7db-dfcbf0575ea5_1440x1080.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/7vodb43cde81-f668-4d2d-b548-c2291162d3f8_1440x1080.jpeg"
+  }],
+  "owner_id": 1,
+  "district_id": 10,
+  "is_deleted": 0,
+  "status": 2
+}, {
+  "detail": [{
+    "bed": 2,
+    "room": 2,
+    "toilet": 1
+  }],
+  "description": "",
+  "subtitle": "Yau Ma Tei",
+  "max_ppl": 4,
+  "type": 0,
+  "title": "The Coronation",
+  "price": 22000,
+  "address": "The Coronation, Yau Ma Tei",
+  "size": 607,
+  "image": [{
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/ft7b990a9feb-48af-48f3-b5e9-73c64d0533c4_2048x1152.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/up5v35b9f7d7-632b-426b-8761-d07a16abc0b9_800x600.jpeg"
+  }, {
+    "img_url": "https:\/\/img.rea-asia.com\/hk-squarefoot\/premium\/750x420-crop\/14gh50c3c30e-c634-4231-a3f9-ddfbd1aebfbd_800x600.jpeg"
+  }],
+  "owner_id": 8,
+  "district_id": 14,
+  "is_deleted": 0,
+  "status": 2
+}]

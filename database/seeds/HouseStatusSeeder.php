@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class HouseStatusSeeder extends Seeder
 {
@@ -14,16 +15,16 @@ class HouseStatusSeeder extends Seeder
         //
         DB::table('house_statuses')->insert([
           //id: 1
-        	['status' => 'hide'],	// soft delete
+        	['status' => 'hide', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],	// soft delete
 
           //id: 2
-        	['status' => 'reveal'],	// available or show
+        	['status' => 'reveal', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],	// available or show
 
           //id: 3
-        	['status' => 'archive'],
+        	['status' => 'archive', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
 
           //id: 4
-        	['status' => 'rent'],
+        	['status' => 'rent', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
         ]);
     }
 }
