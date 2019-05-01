@@ -43,7 +43,7 @@
         <div class= "row">
 
         <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">  <!--size of form box -->
-            <div class="panel panel-default" style="height: 350px;"> <!-- border+background -->
+            <div class="panel panel-default" style="height: 400px;"> <!-- border+background -->
                 <div class="panel-heading text-center">
 
                 <h4 class="title text-muted">User</h4>
@@ -51,35 +51,36 @@
 
                 <div class="panel-body-edit">
 
-      				  <dt class="col-sm-5">Profile ID</dt>
-      				  <dd class="col-sm-7">{{ $profile->id}}</dd>
+      				  <dt class="col-sm-3">Profile ID</dt>
+      				  <dd class="col-sm-9">{{ $profile->id}}</dd>
 
-      				  <dt class="col-sm-5">Username</dt>
-      				  <dd class="col-sm-7">{{ $user->username }}</dd>
+      				  <dt class="col-sm-3">Username</dt>
+      				  <dd class="col-sm-9">{{ $user->username }}</dd>
 
-      				  <dt class="col-sm-5">User ID</dt>
-      				  <dd class="col-sm-7">{{ $profile->user_id }}</dd>
+      				  <dt class="col-sm-3">User ID</dt>
+      				  <dd class="col-sm-9">{{ $profile->user_id }}</dd>
 
-      				  <dt class="col-sm-5">Contact</dt>
-      				  <dd class="col-sm-7">{{ $profile->contact }}</dd>
+      				  <dt class="col-sm-3">Contact</dt>
+      				  <dd class="col-sm-9">{{ $profile->contact }}</dd>
 
-      				  <dt class="col-sm-5">Email</dt>
-      				  <dd class="col-sm-7">{{ $user->email }}</dd>
+      				  <dt class="col-sm-3">Email</dt>
+      				  <dd class="col-sm-9">{{ $user->email }}</dd>
 
-      				  <dt class="col-sm-5 text-truncate">Gender</dt>
-      				  <dd class="col-sm-7">{{ $profile->gender }}</dd>
+      				  <dt class="col-sm-3 text-truncate">Gender</dt>
+      				  <dd class="col-sm-9">{{ $profile->gender }}</dd>
 
-      				  <dt class="col-sm-5">Self Introduction</dt>
-      				  <dd class="col-sm-7">{{ $profile->self_intro}}</dd>
+      				  <dt class="col-sm-3">Self Introduction</dt>
+      				  <dd class="col-sm-9">{{ $profile->self_intro}}</dd>
 
-      				  <dt class="col-sm-5">User Icon</dt>
-      				  <dd class="col-sm-7">{{ $profile->icon_url }}</dd>
+      				  <dt class="col-sm-3">User Icon</dt>
+                <dd class="col-sm-9"><img src="{{ $profile->icon_url }}" style="height: 100px; padding-bottom: 10px"></dd>
+      				  <!-- <dd class="col-sm-9">{{ $profile->icon_url }}</dd> -->
 
-                <dt class="col-sm-5">Regestration Date</dt>
-                <dd class="col-sm-7">{{ $user->created_at}}</dd>
+                <dt class="col-sm-3">Regestration Date</dt>
+                <dd class="col-sm-9">{{ $user->created_at}}</dd>
 
-                <dt class="col-sm-5">Update Date</dt>
-                <dd class="col-sm-7">{{ $user->updated_at}}</dd>
+                <dt class="col-sm-3">Update Date</dt>
+                <dd class="col-sm-9">{{ $user->updated_at}}</dd>
 
 			          </div>
                     <!-- edit button -->

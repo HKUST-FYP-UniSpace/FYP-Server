@@ -112,6 +112,22 @@
                         </div>
                     </div>
 
+                    <!-- trade District ID: need to select -->
+                     <div class="form-group row {{ $errors->has('add-trade-district_id') ? 'has-error' : '' }}">
+                        <label for="add-trade-district_id" class="col-sm-5 col-form-label"> Trade District ID </label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="add-trade-district_id" name="add-trade-district_id" value="{{ old('add-trade-district_id')}}">
+                                <option value="" selected disabled hidden> Please Select </option>
+                                @foreach($trade_districts as $trade_district)
+                                    <option value="{{ $trade_district->id }}">{{ $trade_district->name }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('add-trade-district_id'))
+                                <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-trade-district_id') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
                     <!-- Description -->
                     <div class="form-group row {{ $errors->has('add-trade-description') ? 'has-error' : '' }}">
                         <label for="add-trade-description" class="col-sm-2 col-form-label">Description </label>
