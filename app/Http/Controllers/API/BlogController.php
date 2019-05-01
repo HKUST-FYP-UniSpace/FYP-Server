@@ -205,7 +205,7 @@ class BlogController extends Controller
     // Get blog summaries
     public function index_blogSummary(){
       $result_blogs = array();
-      $blogs = Blog::get();
+      $blogs = Blog::where('is_deleted', 0)->get();
       foreach ($blogs as $blog) {
         $result_blog = [
           'id' => $blog->id,
