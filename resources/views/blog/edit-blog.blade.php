@@ -43,9 +43,9 @@
                         </dd>
                     </div>
 
-                    <!-- House Type: need to select -->
+                    <!-- Blog Status: need to select -->
                     <div class="form-group row">
-                        <dt for="edit-blog-status" class="col-sm-9" style="padding-left:30px"> Apartment Type </dt>
+                        <dt for="edit-blog-status" class="col-sm-9" style="padding-left:30px"> Blog Status </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
                           <select class="form-control" id="edit-blog-status" name="edit-blog-status" value="{{ isset($house) ? old('edit-blog-status', $house->type) :  old('edit-blog-status')}}">
                               <option value= "" selected disabled hidden> Please Select </option>

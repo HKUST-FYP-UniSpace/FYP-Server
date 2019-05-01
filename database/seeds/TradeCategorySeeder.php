@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class TradeCategorySeeder extends Seeder
 {
@@ -14,21 +15,21 @@ class TradeCategorySeeder extends Seeder
         //
         DB::table('trade_categories')->insert([
           // id: 1
-        	['category' => 'Electronics'],
+        	['category' => 'Electronics', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
           // id: 2
-        	['category' => 'Furniture'],
+        	['category' => 'Furniture', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
           // id: 3
-        	['category' => 'Health & Beauty'],
+        	['category' => 'Health & Beauty', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
           // id: 4
-        	['category' => 'Toys & Games'],
+        	['category' => 'Toys & Games', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
           // id: 5
-        	['category' => 'Kitchenwares'],
+        	['category' => 'Kitchenwares', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
           // id: 6
-        	['category' => 'Books & Stationery'],
+        	['category' => 'Books & Stationery', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
           // id: 7
-        	['category' => 'Fashion'],
+        	['category' => 'Fashion', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
           // id: 8
-        	['category' => 'Sports'],
+        	['category' => 'Sports', 'created_at' => Carbon::now()->format('Y-m-d H:i:s'), 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')],
         ]);
     }
 }

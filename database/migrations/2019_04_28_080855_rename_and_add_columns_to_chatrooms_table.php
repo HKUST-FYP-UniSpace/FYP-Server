@@ -16,7 +16,7 @@ class RenameAndAddColumnsToChatroomsTable extends Migration
         Schema::table('chatrooms', function (Blueprint $table) {
             $table->renameColumn('identifiers', 'title');
             $table->integer('house_id')->length(11)->nullable()->after('chatroom_type_id');
-            $table->dropColumn('group_id');
+            // $table->dropColumn('group_id');
             $table->integer('team_id')->nullable()->after('house_id');
             $table->integer('trade_id')->length(11)->nullable()->after('team_id');
             
