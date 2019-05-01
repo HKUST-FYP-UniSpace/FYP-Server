@@ -14,6 +14,7 @@ use App\Preference;
 use App\GroupDetail;
 use App\HouseImage;
 use App\HouseVisitor;
+use App\Owner;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
@@ -60,8 +61,23 @@ class HouseController extends Controller
         $house = HouseImage::join('houses','house_images.house_id','=','houses.id')->where('houses.id', $id)->first();
         $house_urls = $house->where('house_id', $id)->get();
         $house_visitors = HouseVisitor::join('houses','house_visitors.house_id','=','houses.id')->where('houses.id', $id)->get()->count();
+        $owner = Owner::join('houses','owners.id','=','houses.owner_id')
+                ->join('users','owners.user_id','=','users.id')
+                ->where('houses.id', $id)->first();
+        $status = HouseStatus::join('houses','house_statuses.id','=','houses.status')->where('houses.id', $id)->first();
+        $house_type = House::where('id',$id)->first()->value('type');
 
-		return view('house.view-house',compact('house','groups','house_urls','house_visitors'));
+        if ($house_type == 0)
+          $type = "Flat";
+        elseif ($house_type == 1)
+          $type = "Cottage";
+        elseif ($house_type == 2)
+          $type = "Detached";
+        else
+          $type = "Sub-divided";
+
+
+		return view('house.view-house',compact('house','groups','house_urls','house_visitors','owner','status','house_type','type'));
 	}
 
   public function show_group_details($id) {

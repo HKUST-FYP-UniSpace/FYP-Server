@@ -128,7 +128,7 @@
                     <div class="form-group row">
                         <dt for="edit-house-description" class="col-sm-9" style="padding-left:30px">House Description </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                            <textarea class="form-control" id="edit-house-description" name="edit-house-description" placeholder="Write something.." style="height:200px" value="{{ isset($house) ? old('edit-house-description', $house->description) : old('edit-house-description') }}">{{$house->description}}</textarea>
+                            <textarea class="form-control" id="edit-house-description" name="edit-house-description" placeholder="Write something.." style="height:100px" value="{{ isset($house) ? old('edit-house-description', $house->description) : old('edit-house-description') }}">{{$house->description}}</textarea>
                         </dd>
                     </div>
 
@@ -136,8 +136,10 @@
                     <div class="form-group row">
                         <label for="edit-file" class="col-sm-12">House images</label>
                           @foreach($house_imgArrays as $house_imgArray)
-                          <div class="col-sm-5" style="padding-left:30px; padding-bottom: 20px;font-size:15px;">{{ $house_imgArray }}</div>
-                          <div class="row" style="padding-left:90%;  font-size:15px;">
+                          <!-- <div class="col-sm-5" style="padding-left:30px; padding-bottom: 20px;font-size:15px;">{{ $house_imgArray }}</div> -->
+                          <div class="col-sm-4" style="padding-left:30px; padding-bottom: 10px;font-size:15px;"><img src="{{ $house_imgArray }}" style="height: 200px;"></div>
+
+                          <div class="row" style="font-size:15px;">
                             <form method="POST" action="{{ route('image-delete', $house_imgArray) }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <a><button type="submit" class="btn-danger" onclick="return confirm('Are you sure to delete {{ $house_imgArray }}?')"> Delete </button></a>

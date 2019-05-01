@@ -43,10 +43,16 @@
                         </dd>
                     </div>
 
+                    <!-- House Type: need to select -->
                     <div class="form-group row">
-                        <dt for="edit-blog-status" class="col-sm-9" style="padding-left:30px"> Status </dt>
+                        <dt for="edit-blog-status" class="col-sm-9" style="padding-left:30px"> Apartment Type </dt>
                         <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
-                            <input type="text" class="form-control" id="edit-blog-status" name="edit-blog-status" value="{{ isset($blog) ? old('edit-blog-status', $blog->status) : old('edit-blog-status') }}">
+                          <select class="form-control" id="edit-blog-status" name="edit-blog-status" value="{{ isset($house) ? old('edit-blog-status', $house->type) :  old('edit-blog-status')}}">
+                              <option value= "" selected disabled hidden> Please Select </option>
+                              <option value = "1" {{ old('edit-blog-status') == 0 ? 'selected' : '' }}> Hide </option>
+                              <option value = "2" {{ old('edit-blog-status') == 1 ? 'selected' : '' }}> Reveal </option>
+                              <option value = "3" {{ old('edit-blog-status') == 1 ? 'selected' : '' }}> Archive </option>
+                          </select>
                         </dd>
                     </div>
 
