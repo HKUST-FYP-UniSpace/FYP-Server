@@ -33,7 +33,7 @@
                             <th>Subtitle</th>
                             <th>Address</th>
                             <th>Type</th>
-                            <th>Size(Sq.feets)</th>
+                            <th>Size</th>
                             <th>Price(HKD)</th>
                             <th>Status</th>
                             <th>Owner ID</th>
@@ -58,7 +58,7 @@
                             @else <th>{{ "Sub-divided" }}</th>
                             @endif
 
-                            <th>{{ $house->size }}</th>
+                            <th>{{ $house->size }}sq.ft.</th>
                             <th>${{ $house->price }}</th>
 
                             @if ($house->status == "1") <th>{{ "Hide" }}</th>
