@@ -441,7 +441,7 @@ class TradeController extends Controller
       return $result_pastTrades;
     }
 
-
+    // Get Trade Featured
     public function index_tradeFeatured($userId){
       $required_num = 4;// default as 4
       $popularity_score = array();
@@ -474,7 +474,7 @@ class TradeController extends Controller
       // dd($popularity_score);
       $result = array_slice($popularity_score, 0, $required_num, $preserve_keys = TRUE);
 
-      $trades = Trade::whereIn('id', array_keys($result))->get();
+      $trades = Trade::whereIn('id', array_keys($result))->where('is_deleted', 0)->get();
       $result_trade = array();
       foreach($trades as $trade){
         $trade_id = $trade->id;
