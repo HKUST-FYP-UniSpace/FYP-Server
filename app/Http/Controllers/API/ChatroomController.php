@@ -157,7 +157,7 @@ class ChatroomController extends Controller
     	// create a new chatroom
     	$chatroom = new Chatroom();
     	$chatroom->total_message = 1;	// first message will be sent in this API
-    	$chatroom->title = User::where('id', $id)->first()->username;	// title = leader username
+    	$chatroom->title = User::where('id', $id)->first()->username . ' Team Request';	// title = leader username
     	$chatroom->chatroom_type_id = 1;	// type = owner
     	$chatroom->type_identifier = $request['teamId'];
     	$chatroom->save();
@@ -214,7 +214,7 @@ class ChatroomController extends Controller
         // create a new chatroom
     	$chatroom = new Chatroom();
     	$chatroom->total_message = 1;	// first message will be sent in this API
-    	$chatroom->title = User::where('id', $id)->first()->username;	// title = leader username
+    	$chatroom->title = Trade::where('id', $request['tradeId'])->first()->title;	// title = trade item name
     	$chatroom->chatroom_type_id = 3;	// type = trade
     	$chatroom->type_identifier = $request['tradeId'];
     	$chatroom->save();
@@ -265,7 +265,7 @@ class ChatroomController extends Controller
         // create a new chatroom
     	$chatroom = new Chatroom();
     	$chatroom->total_message = 1;	// first message will be sent in this API
-    	$chatroom->title = User::where('id', $id)->first()->username;	// title = leader username
+    	$chatroom->title = 'Admin';
     	$chatroom->chatroom_type_id = 5;	// type = admin
     	$chatroom->type_identifier = $id;
     	$chatroom->save();
@@ -317,7 +317,7 @@ class ChatroomController extends Controller
     	// create a new chatroom
     	$chatroom = new Chatroom();
         $chatroom->total_message = 0; // Should have no messgae when team first created
-    	$chatroom->title = User::where('id', $id)->first()->username;	// title = leader username
+    	$chatroom->title = Group::where('id', $request['teamId'])->first()->title;	// title = team name
     	$chatroom->chatroom_type_id = 2;	// type = team
         $chatroom->type_identifier = $team_id;
     	$chatroom->save();
