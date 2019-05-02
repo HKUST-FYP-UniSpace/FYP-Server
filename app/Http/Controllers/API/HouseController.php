@@ -307,7 +307,7 @@ class HouseController extends Controller
 
     // Get House Suggestion (suggest group)
     public function index_houseSuggestion($userId){
-      $required_num = 4; // Default set the number of suggested group to 4
+      $required_num = 10; // Default set the number of suggested group to 10
       $groups = self::match_group($userId, $required_num);
       $result = array();
       foreach($groups as $group){
@@ -576,7 +576,7 @@ class HouseController extends Controller
 
       $group_detail = new GroupDetail();
       $group_detail->member_user_id = $user_id;
-      $group_detail->status = 2; //Default to be "accepted" status
+      $group_detail->status = 1; //Default to be "accepted" status
       $group_detail->group_id = $team_id;
       $group_detail->save();
 
