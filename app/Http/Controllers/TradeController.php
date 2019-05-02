@@ -142,12 +142,10 @@ class TradeController extends Controller
         $trade->save();
 
         $images = $request->file('filename');
-        $size = sizeof($images);
-        $last_image = TradeImage::where('trade_id',$id)->get()->count();
-
-
 
         if(!empty($images)) {
+          $size = sizeof($images);
+          $last_image = TradeImage::where('trade_id',$id)->get()->count();
           // foreach($images as $image) {
            $j = $last_image;
           for($i = 0; $i < $size; $i++) {
