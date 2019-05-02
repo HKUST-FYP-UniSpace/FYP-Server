@@ -619,7 +619,7 @@ class HouseController extends Controller
 
       $groupDetail = new GroupDetail();
       $groupDetail->member_user_id = $user_id;
-      $groupDetail->status = 1; //*!!Test: 2 for accpeted // Status == 1 represent pending to be accepted by group leader (Accepted: 2, Rejected: 3)
+      $groupDetail->status = 0; //*!!Test: 1 for accpeted // Status == 0 represent pending to be accepted by group leader (Accepted: 2, Rejected: 3)
       $groupDetail->group_id = $teamId;
       $groupDetail->save();
 

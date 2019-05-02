@@ -213,7 +213,7 @@ class TradeController extends Controller
       }
 
       $result_trade = [
-        'id' => $id,
+        'id' => $trade->id,
         'title' => $trade->title,
         'price' => $trade->price,
         'status' => self::convertTradeConditionIdtoStr($trade->trade_condition_type_id),
@@ -443,7 +443,7 @@ class TradeController extends Controller
 
     // Get Trade Featured
     public function index_tradeFeatured($userId){
-      $required_num = 4;// default as 4
+      $required_num = 10;// default as 10
       $popularity_score = array();
       // get all common house_id in tradeBookmark table
       // then distribute score by the number of records they have (Default 10 points per each record)
