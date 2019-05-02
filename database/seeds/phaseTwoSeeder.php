@@ -32,7 +32,7 @@ class phaseTwoSeeder extends Seeder
 
     	// custome
         $this->call(TenantsTableSeeder2::class);        // add 20 users as tenant
-        $this->call(HouseDetailsRemainingSeeder::class) // add into house_details for all the missing records
+        $this->call(HouseDetailsRemainingSeeder::class); // add into house_details for all the missing records
 		
 		// custome: factory 
         $this->call(UsersAndProfilesSeeder::class);	    // create 20 tenants
