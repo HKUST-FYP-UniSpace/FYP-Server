@@ -256,22 +256,22 @@ class TradeController extends Controller
       foreach($trades as $trade){
         $trade_id = $trade->id;
         // $trade_img = (TradeImage::where('trade_id', $trade_id)->count()>0)?TradeImage::where('trade_id', $trade_id)->get():null;
-        //$trade_img = TradeImage::where('trade_id', $trade_id)->get();
-        $trade_imgList = TradeImage::where('trade_id', $trade_id);
-        $trade_imgArray = array();
-        if($trade_imgList->count()>0){
-          $trade_imgs = $trade_imgList->get();
-          foreach($trade_imgs as $trade_img){
-            array_push($trade_imgArray, $trade_img->image_url);
-          }
-        }
+        $trade_img = TradeImage::where('trade_id', $trade_id)->first();
+        // $trade_imgList = TradeImage::where('trade_id', $trade_id);
+        // $trade_imgArray = array();
+        // if($trade_imgList->count()>0){
+        //   $trade_imgs = $trade_imgList->get();
+        //   foreach($trade_imgs as $trade_img){
+        //     array_push($trade_imgArray, $trade_img->image_url);
+        //   }
+        // }
 
         $result_trade=[
           'id'=>$trade_id,
           'title'=>$trade->title,
           'price'=>$trade->price,
           'views'=>TradeVisitor::where('trade_item_id', $trade_id)->count(), //visitor counter to be added
-          'photoURLs'=>$trade_imgArray
+          'photoURLs'=>$trade_img!=null?$trade_img->image_url:null
         ];
         array_push($result_trades, $result_trade);
       }
