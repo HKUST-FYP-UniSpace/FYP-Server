@@ -112,7 +112,7 @@
 
 
                   @foreach ($house_urls as $house_url)
-                  <dt class="col-sm-3">Image URLs </dt>
+                  <dt class="col-sm-3">Image</dt>
                   <!-- <dd class="col-sm-9">{{ $house_url->img_url }}</dd> -->
                   <dd class="col-sm-9"><img src="{{ $house_url->img_url }}" style="height: 200px; padding-bottom: 10px"></dd>
                   @endforeach
