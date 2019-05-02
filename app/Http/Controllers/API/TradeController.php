@@ -390,7 +390,7 @@ class TradeController extends Controller
         if($trade_imgList->count()>0){
           $trade_imgs = $trade_imgList->get();
           foreach($trade_imgs as $trade_img){
-            array_push($trade_imgArray, $trade_img->iamge_url);
+            array_push($trade_imgArray, $trade_img->image_url);
           }
         }
 
