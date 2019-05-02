@@ -180,12 +180,10 @@ class HouseController extends Controller
         $house->save();
 
         $images = $request->file('filename');
-        $size = sizeof($images);
-        $last_image = HouseImage::where('house_id',$id)->get()->count();
-
-
 
         if(!empty($images)) {
+          $size = sizeof($images);
+          $last_image = HouseImage::where('house_id',$id)->get()->count();
           // foreach($images as $image) {
            $j = $last_image;
           for($i = 0; $i < $size; $i++) {
