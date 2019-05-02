@@ -64,19 +64,20 @@ class HouseController extends Controller
         $owner = Owner::join('houses','owners.id','=','houses.owner_id')
                 ->join('users','owners.user_id','=','users.id')
                 ->where('houses.id', $id)->first();
+
         $status = HouseStatus::join('houses','house_statuses.id','=','houses.status')->where('houses.id', $id)->first();
-        $house_type = House::where('id',$id)->first()->value('type');
+        $house_type = House::where('id',$id)->first();
+
         $district = District::join('houses','houses.district_id','=','districts.id')->where('houses.id',$id)->first()->value("name");
 
-        if ($house_type == 0)
+        if ($house_type->type == "0")
           $type = "Flat";
-        elseif ($house_type == 1)
+        elseif ($house_type->type == "1")
           $type = "Cottage";
-        elseif ($house_type == 2)
+        elseif ($house_type->type == "2")
           $type = "Detached";
         else
           $type = "Sub-divided";
-
 
 		return view('house.view-house',compact('house','groups','house_urls','house_visitors','owner','status','house_type','type','district'));
 	}
@@ -107,14 +108,16 @@ class HouseController extends Controller
 
         $house_imgList = HouseImage::where('house_id', $id)->get();
         $house_imgArrays = array();
+        $house_imgIDs = array();
         if($house_imgList->count()>0){
           $house_imgs = $house_imgList;
           foreach($house_imgs as $house_img){
             array_push($house_imgArrays, $house_img->img_url);
+            array_push($house_imgIDs, $house_img);
           }
         }
 
-        return view('house.edit-house', compact('house','house_districts','house_statuses','house_imgArrays'));
+        return view('house.edit-house', compact('house','house_districts','house_statuses','house_imgArrays','house_imgIDs'));
     }
 
     public function add_house_form() { // $id is user id
@@ -334,9 +337,9 @@ class HouseController extends Controller
       return back();
     }
 
-    public function delete_image($house_imgArray) {
+    public function delete_image($house_imgID) {
 
-      $house_image = HouseImage::where('img_url',$house_imgArray)->first()->delete();
+      $house_image = HouseImage::where('id',$house_imgID)->delete();
 
       return back();
     }

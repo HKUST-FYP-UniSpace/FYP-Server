@@ -77,14 +77,17 @@ class TradeController extends Controller
 
         $trade_imgList = TradeImage::where('trade_id', $id)->get();
         $trade_imgArrays = array();
+        $trade_imgIDs = array();
+
         if($trade_imgList->count()>0){
           $trade_imgs = $trade_imgList;
           foreach($trade_imgs as $trade_img){
             array_push($trade_imgArrays, $trade_img->image_url);
+            array_push($trade_imgIDs, $trade_img);
           }
         }
 
-        return view('trade.edit-trade', compact('trade','trade_statuses','trade_categories','trade_conditions','trade_imgArrays','trade_districts'));
+        return view('trade.edit-trade', compact('trade','trade_statuses','trade_categories','trade_conditions','trade_imgArrays','trade_districts','trade_imgIDs'));
 
     }
 
@@ -274,9 +277,9 @@ class TradeController extends Controller
       return back();
     }
 
-    public function delete_image($trade_imgArray) {
+    public function delete_image($trade_imgID) {
 
-      $trade_image = TradeImage::where('image_url',$trade_imgArray)->first()->delete();
+      $trade_image = TradeImage::where('id',$trade_imgID)->delete();
 
       return back();
     }
