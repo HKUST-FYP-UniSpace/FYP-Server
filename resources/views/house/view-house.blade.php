@@ -49,7 +49,7 @@
         <div class="panel panel-default col-md-12" style="border-color: transparent; padding-left:10%; padding-right:10%;">  <!--size of form box -->
 
 
-            <div class="panel panel-default" style="height: 800px;"> <!-- border+background -->
+            <div class="panel-default"> <!-- border+background -->
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Apartment</h4>
                 </div>
@@ -118,10 +118,14 @@
                   @endforeach
 
                   <dt class="col-sm-3">Status</dt>
-                  @if ($status  == "1") <dd class="col-sm-9">{{ "Hide" }}</dd>
-                  @elseif ($status  == "2") <dd class="col-sm-9">{{ "Reveal" }}</dd>
-                  @elseif ($status  == "3") <dd class="col-sm-9">{{ "Archive"  }}</dd>
-                  @else <dd class="col-sm-9">{{ "Rent" }}</dd>
+                  @if ($status->status  == "1")
+                      <dd class="col-sm-9">{{ "Hide" }}</dd>
+                  @elseif ($status->status  == "2")
+                      <dd class="col-sm-9">{{ "Reveal" }}</dd>
+                  @elseif ($status->status  == "3")
+                      <dd class="col-sm-9">{{ "Archive"  }}</dd>
+                  @else
+                      <dd class="col-sm-9">{{ "Rent" }}</dd>
                   @endif
 
                   <dt class="col-sm-3">Owner ID</dt>
@@ -177,6 +181,5 @@
 
         </div>
 
-    </div>
 </div>
 @endsection

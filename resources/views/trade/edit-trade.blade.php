@@ -115,17 +115,17 @@
                     <!-- Images -->
                     <div class="form-group row">
                         <label for="edit-file" class="col-sm-12">Trade images</label>
-                          @foreach($trade_imgArrays as $trade_imgArray)
-                          <div class="col-sm-4" style="padding-left:30px; padding-bottom: 10px;font-size:15px;"><img src="{{ $trade_imgArray }}" style="height: 200px;"></div>
+                        @foreach($trade_imgIDs as $trade_imgID)
+                        <div class="col-sm-6" style="padding-left:30px; padding-bottom: 10px;font-size:15px;"><img src="{{ $trade_imgID["image_url"] }}" style="height: 200px;"></div>
 
-                          <div class="row" style="padding-left: 90%; font-size:15px;">
-                            <form method="POST" action="{{ route('image-delete', $trade_imgArray) }}">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <a><button type="submit" class="btn-danger" onclick="return confirm('Are you sure to delete {{ $trade_imgArray }}?')"> Delete </button></a>
-                            </form>
-                          </div>
+                        <div class="row" style="padding-left: 90%;font-size:15px;">
+                          <form method="POST" action="{{ route('tradeimage-delete', $trade_imgID["id"]) }}">
+                              <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                              <a><button type="submit" class="btn-danger" onclick="return confirm('Are you sure to delete {{ $trade_imgID["image_url"] }}?')"> Delete </button></a>
+                          </form>
+                        </div>
 
-                          @endforeach
+                        @endforeach
 
                       <div class="col-sm-12" style="padding-bottom: 15px; left: 2%;">
                         <i class="fas fa-plus" style=" padding-right: 5px;"></i><input id="myButton" type="button" class="btn btn-default" value="Add New Images"/>
