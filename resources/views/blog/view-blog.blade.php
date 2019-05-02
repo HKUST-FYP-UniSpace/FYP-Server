@@ -12,7 +12,7 @@
 
         <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">  <!--size of form box -->
 
-            <div class="panel panel-default" style="height: 400px;"> <!-- border+background -->
+            <div class="panel panel-default" style="height: 500px;"> <!-- border+background -->
 
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Blog</h4>
@@ -41,7 +41,7 @@
                   <dd class="col-sm-9">{{ $blog->detail}}</dd>
 
                   <dt class="col-sm-3">Image</dt>
-                  <dd class="col-sm-9"><img src="{{ $blog->image_url }}" style="height: 100px; padding-bottom: 10px"></dd>
+                  <dd class="col-sm-9"><img src="{{ $blog->image_url }}" style="height: 200px; padding-bottom: 10px"></dd>
                   <!-- <dd class="col-sm-9">{{ $blog->image_url }}</dd> -->
 
                   <dt class="col-sm-3">Post Date</dt>
