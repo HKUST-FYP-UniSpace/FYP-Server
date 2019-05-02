@@ -10,7 +10,7 @@
         {{ csrf_field() }}
 
         <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">  <!--size of form box -->
-            <div class="panel panel-default" style="height: 700px;"> <!-- border+background -->
+            <div class="panel panel-default" style="height: 1000px;"> <!-- border+background -->
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Trade Item</h4>
                 </div>
@@ -52,7 +52,7 @@
 
                   @foreach ($trade_urls as $trade_url)
                   <dt class="col-sm-3">Image URLs</dt>
-                  <dd class="col-sm-9"><img src="{{ $trade_url['image_url'] }}" style="height: 100px; padding-bottom: 10px"></dd>
+                  <dd class="col-sm-9"><img src="{{ $trade_url['image_url'] }}" style="height: 200px; padding-bottom: 10px"></dd>
                   <!-- <dd class="col-sm-9">{{ $trade_url['image_url'] }}</dd> -->
                   @endforeach
 

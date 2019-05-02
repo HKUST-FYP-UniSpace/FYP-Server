@@ -66,6 +66,7 @@ class HouseController extends Controller
                 ->where('houses.id', $id)->first();
         $status = HouseStatus::join('houses','house_statuses.id','=','houses.status')->where('houses.id', $id)->first();
         $house_type = House::where('id',$id)->first()->value('type');
+        $district = District::join('houses','houses.district_id','=','districts.id')->where('houses.id',$id)->first()->value("name");
 
         if ($house_type == 0)
           $type = "Flat";
@@ -77,7 +78,7 @@ class HouseController extends Controller
           $type = "Sub-divided";
 
 
-		return view('house.view-house',compact('house','groups','house_urls','house_visitors','owner','status','house_type','type'));
+		return view('house.view-house',compact('house','groups','house_urls','house_visitors','owner','status','house_type','type','district'));
 	}
 
   public function show_group_details($id) {

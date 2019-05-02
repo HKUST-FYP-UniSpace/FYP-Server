@@ -49,7 +49,7 @@
         <div class="panel panel-default col-md-12" style="border-color: transparent; padding-left:10%; padding-right:10%;">  <!--size of form box -->
 
 
-            <div class="panel panel-default" style="height: 600px;"> <!-- border+background -->
+            <div class="panel panel-default" style="height: 800px;"> <!-- border+background -->
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Apartment</h4>
                 </div>
@@ -57,34 +57,64 @@
             <div class="panel-body-edit">
 
                   <dt class="col-sm-3">Apartment ID</dt>
+                  @if ( $house->id != null)
                   <dd class="col-sm-9">{{ $house->id }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Title</dt>
+                  @if ( $house->title != null)
                   <dd class="col-sm-9">{{ $house->title }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Subtitle</dt>
+                  @if ( $house->title != null)
                   <dd class="col-sm-9">{{ $house->subtitle }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Address</dt>
+                  @if ( $house->address != null)
                   <dd class="col-sm-9">{{ $house->address }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
+
+                  <dt class="col-sm-3">District</dt>
+                  @if ( $district != null)
+                  <dd class="col-sm-9">{{ $district }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Apartment Type</dt>
+                  @if ( $type != null)
                   <dd class="col-sm-9">{{ $type }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Apartment Size</dt>
-                  <dd class="col-sm-9">{{ $house->size }} sq.feets</dd>
+                  @if ( $house->size != null)
+                  <dd class="col-sm-9">{{ $house->size }}sq.feets</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Max. No. People</dt>
-                  <dd class="col-sm-9">{{ $house->max_ppl }}</dd>
+                  @if ( $house->max_ppl  != null)
+                  <dd class="col-sm-9">{{ $house->max_ppl  }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
-                  <dt class="col-sm-3">Price</dt>
+                  <dt class="col-sm-3">Price (HKD)</dt>
+                  @if ( $house->price   != null)
                   <dd class="col-sm-9">${{ $house->price }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
 
                   @foreach ($house_urls as $house_url)
                   <dt class="col-sm-3">Image URLs </dt>
                   <!-- <dd class="col-sm-9">{{ $house_url->img_url }}</dd> -->
-                  <dd class="col-sm-9"><img src="{{ $house_url->img_url }}" style="height: 100px; padding-bottom: 10px"></dd>
+                  <dd class="col-sm-9"><img src="{{ $house_url->img_url }}" style="height: 200px; padding-bottom: 10px"></dd>
                   @endforeach
 
                   <dt class="col-sm-3">Status</dt>
@@ -95,23 +125,40 @@
                   @endif
 
                   <dt class="col-sm-3">Owner ID</dt>
-                  <dd class="col-sm-9">{{ $house->owner_id }}</dd>
+                  @if ( $house->owner_id    != null)
+                  <dd class="col-sm-9">{{ $house->owner_id  }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Owner Name</dt>
-                  <dd class="col-sm-9">{{ $owner['name']}}</dd>
+                  @if ( $owner['name']   != null)
+                  <dd class="col-sm-9">{{ $owner['name'] }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Visitors Count</dt>
+                  @if ( $house_visitors    != null)
                   <dd class="col-sm-9">{{ $house_visitors }}</dd>
+                  @else <dd class="col-sm-9">{{ "0" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Description</dt>
-                  <dd class="col-sm-9">{{ $house->description }}</dd>
+                  @if ( $house->description != null)
+                  <dd class="col-sm-9">{{ $house->description  }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Post Date</dt>
-                  <dd class="col-sm-9">{{ $house->created_at }}</dd>
+                  @if ( $house->created_at != null)
+                  <dd class="col-sm-9">{{ $house->created_at  }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Update Date</dt>
-                  <dd class="col-sm-9">{{ $house->updated_at}}</dd>
-
+                  @if ( $house->updated_at  != null)
+                  <dd class="col-sm-9">{{ $house->updated_at }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
             </div>
 
