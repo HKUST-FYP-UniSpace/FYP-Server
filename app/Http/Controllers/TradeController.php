@@ -62,7 +62,7 @@ class TradeController extends Controller
         $status = TradeStatus::join('trades','trade_statuses.id','=','trades.trade_status_id')->where('trades.id', $id)->first();
         $district_id = District::join('trades','districts.id','=','trades.district_id')->where('trades.id', $id)->first();
         $user = User::join('trades','users.id','=','trades.user_id')
-                ->where('trades.id', $id)->first()->value('name');
+                ->where('trades.id', $id)->first();
 
 
 		return view('trade.view-trade',compact('trade','trade_urls','category','condition_type','status','district_id','user'));

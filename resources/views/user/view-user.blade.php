@@ -43,7 +43,7 @@
         <div class= "row">
 
         <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">  <!--size of form box -->
-            <div class="panel panel-default" style="height: 400px;"> <!-- border+background -->
+            <div class="panel panel-default" style="height: 600px;"> <!-- border+background -->
                 <div class="panel-heading text-center">
 
                 <h4 class="title text-muted">User</h4>
@@ -69,18 +69,29 @@
       				  <dt class="col-sm-3 text-truncate">Gender</dt>
       				  <dd class="col-sm-9">{{ $profile->gender }}</dd>
 
-      				  <dt class="col-sm-3">Self Introduction</dt>
-      				  <dd class="col-sm-9">{{ $profile->self_intro}}</dd>
+                <dt class="col-sm-3">Self Introduction</dt>
+                @if ( $profile->self_intro != null)
+                <dd class="col-sm-9">{{ $profile->self_intro }}</dd>
+                @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                @endif
 
-      				  <dt class="col-sm-3">User Icon</dt>
-                <dd class="col-sm-9"><img src="{{ $profile->icon_url }}" style="height: 100px; padding-bottom: 10px"></dd>
-      				  <!-- <dd class="col-sm-9">{{ $profile->icon_url }}</dd> -->
+                <dt class="col-sm-3">User Icon</dt>
+                @if ( $profile->icon_url  != null)
+                <dd class="col-sm-9"><img src="{{ $profile->icon_url }}" style="height: 200px; padding-bottom: 10px"></dd>
+                @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                @endif
 
                 <dt class="col-sm-3">Regestration Date</dt>
-                <dd class="col-sm-9">{{ $user->created_at}}</dd>
+                @if ( $user->created_at != null)
+                <dd class="col-sm-9">{{ $user->created_at }}</dd>
+                @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                @endif
 
                 <dt class="col-sm-3">Update Date</dt>
-                <dd class="col-sm-9">{{ $user->updated_at}}</dd>
+                @if ( $user->updated_at != null)
+                <dd class="col-sm-9">{{ $user->updated_at }}</dd>
+                @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                @endif
 
 			          </div>
                     <!-- edit button -->

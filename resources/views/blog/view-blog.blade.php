@@ -31,7 +31,7 @@
                   @if ($blog->status  == "1") <dd class="col-sm-9">{{ "Hide" }}</dd>
                   @elseif ($blog->status  == "2") <dd class="col-sm-9">{{ "Reveal" }}</dd>
                   @elseif ($blog->status  == "3") <dd class="col-sm-9">{{ "Archive"  }}</dd>
-                  @else <dd class="col-sm-9">{{ "" }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
                   @endif
 
                   <dt class="col-sm-3">Admin ID</dt>
@@ -45,11 +45,16 @@
                   <!-- <dd class="col-sm-9">{{ $blog->image_url }}</dd> -->
 
                   <dt class="col-sm-3">Post Date</dt>
-                  <dd class="col-sm-9">{{ $blog->created_at}}</dd>
+                  @if ( $blog->created_at  != null)
+                  <dd class="col-sm-9">{{ $blog->created_at   }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Update Date</dt>
-                  <dd class="col-sm-9">{{ $blog->updated_at}}</dd>
-
+                  @if ( $blog->updated_at != null)
+                  <dd class="col-sm-9">{{ $blog->updated_at  }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
               </div>
 
