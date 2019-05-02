@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+    	// ------------------- Phase 1 -------------------
         // $this->call(UsersTableSeeder::class);
         
         // Disable all mass assignment restrictions
