@@ -46,7 +46,8 @@ class ChatroomController extends Controller
 	    	$temp['MessageGroupType'] = ( (int)$chatroom_summary['chatroom_type_id'] ) - 1;
 
 	    	$counter = 0;
-	    	$timestamp = date('Y-m-d H:i:s', $request[$chatroom_summary['id']]);;
+            $chatroom_id = $chatroom_summary['id'];
+	    	$timestamp = date('Y-m-d H:i:s', $request->$chatroom_id);;
 	    	$messages = Message::where('chatroom_id', $chatroom_summary['id'])->get();
 	    	foreach($messages as $message) {
 	    		$message_createtime = $message->created_at->toDateTimeString();
