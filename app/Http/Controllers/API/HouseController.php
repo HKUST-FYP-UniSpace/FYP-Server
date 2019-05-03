@@ -310,7 +310,7 @@ class HouseController extends Controller
       $required_num = 8; // Default set the number of suggested group to 8
       $groups = self::match_group($userId, $required_num);
       $result = array();
-      if(isset($groups)){
+      if(!isset($groups)){
         return null;
       }
       foreach($groups as $group){
