@@ -271,7 +271,7 @@ class TradeController extends Controller
           'title'=>$trade->title,
           'price'=>$trade->price,
           'views'=>TradeVisitor::where('trade_item_id', $trade_id)->count(), //visitor counter to be added
-          'photoURLs'=>$trade_img!=null?$trade_img->image_url:null
+          'photoURL'=>$trade_img!=null?$trade_img->image_url:null
         ];
         array_push($result_trades, $result_trade);
       }
