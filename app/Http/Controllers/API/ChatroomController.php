@@ -413,7 +413,7 @@ class ChatroomController extends Controller
         $errors = array();
         $error = array();
 
-        $chatroom = Chatroom::where('chatroom_type_id', 2)->where('id', $message_group_id)->first();
+        $chatroom = Chatroom::where('chatroom_type_id', 4)->where('id', $message_group_id)->first();
         if($chatroom == null) {
             $error['message'] = "Invalid message group id.";
             $error['source'] = "get_user_role()";
@@ -445,7 +445,7 @@ class ChatroomController extends Controller
             $result['isLeader'] = false;
         }
         // dd(((int) $group_details->status) - 1);
-        $result['status'] = ((int) $group_details->status) - 1;
+        $result['status'] = (int) $group_details->status;
 
         return $result;
     }
