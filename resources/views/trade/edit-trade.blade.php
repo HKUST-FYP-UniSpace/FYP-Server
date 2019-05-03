@@ -90,6 +90,19 @@
                         </dd>
                     </div>
 
+                    <!-- trade District ID: need to select -->
+                    <div class="form-group row">
+                        <dt for="edit-trade-district_id" class="col-sm-9" style="padding-left:30px"> Trade District </dt>
+                        <dd  class="col-sm-12" style="padding-left:30px; padding-right:30px">
+                          <select class="form-control" id="edit-trade-district_id" name="edit-trade-district_id" value="{{  isset($trade) ? old('edit-trade-district_id', $trade->district_id) : old('edit-trade-district_id')}}">
+                              <option value="" selected disabled hidden> Please Select </option>
+                              @foreach($trade_districts as $trade_district)
+                                  <option value="{{ $trade_district ->id }}">{{ $trade_district->name }}</option>
+                              @endforeach
+                          </select>
+                        </dd>
+                    </div>
+
                     <!-- Description  -->
                     <div class="form-group row">
                         <dt for="edit-trade-description" class="col-sm-9" style="padding-left:30px"> Description </dt>
@@ -102,16 +115,17 @@
                     <!-- Images -->
                     <div class="form-group row">
                         <label for="edit-file" class="col-sm-12">Trade images</label>
-                          @foreach($trade_imgArrays as $trade_imgArray)
-                          <div class="col-sm-5" style="padding-left:30px; padding-bottom: 20px;font-size:15px;">{{ $trade_imgArray }}</div>
-                          <div class="row" style="padding-left:90%;  font-size:15px;">
-                            <form method="POST" action="{{ route('image-delete', $trade_imgArray) }}">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <a><button type="submit" class="btn-danger" onclick="return confirm('Are you sure to delete {{ $trade_imgArray }}?')"> Delete </button></a>
-                            </form>
-                          </div>
+                        @foreach($trade_imgIDs as $trade_imgID)
+                        <div class="col-sm-6" style="padding-left:30px; padding-bottom: 10px;font-size:15px;"><img src="{{ $trade_imgID["image_url"] }}" style="height: 200px;"></div>
 
-                          @endforeach
+                        <div class="row" style="padding-left: 90%;font-size:15px;">
+                          <form method="POST" action="{{ route('tradeimage-delete', $trade_imgID["id"]) }}">
+                              <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                              <a><button type="submit" class="btn-danger" onclick="return confirm('Are you sure to delete {{ $trade_imgID["image_url"] }}?')"> Delete </button></a>
+                          </form>
+                        </div>
+
+                        @endforeach
 
                       <div class="col-sm-12" style="padding-bottom: 15px; left: 2%;">
                         <i class="fas fa-plus" style=" padding-right: 5px;"></i><input id="myButton" type="button" class="btn btn-default" value="Add New Images"/>

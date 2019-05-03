@@ -30,7 +30,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Title</th>
-                            <th>Price</th>
+                            <th>Price (HKD)</th>
                             <th>Description</th>
                             <th>Quantity</th>
                             <th>Post Date</th>
@@ -44,7 +44,7 @@
 
                             <th>{{ $trade->id }}</th>
                             <th>{{ $trade->title }}</th>
-                            <th>{{ $trade->price }}</th>
+                            <th>${{ $trade->price }}</th>
                             <th>{{ $trade->description }}</th>
                             <th>{{ $trade->quantity }}</th>
                             <th>{{ $trade->created_at }}</th>
@@ -54,6 +54,13 @@
                                 <form method="POST" action="{{ route('trade-delete', $trade->id) }}">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <a><button type="submit" class="btn-danger submit-delete" onclick="return confirm('Are you sure to delete this item?')"> Delete </button></a>
+                                </form>
+                            </td>
+                            @else
+                            <td>
+                                <form method="POST" action="{{ route('trade-undelete', $trade->id) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <a><button type="submit" class="btn-primary" onclick="return confirm('Are you sure to undelete this item?')"> Undelete </button></a>
                                 </form>
                             </td>
                             @endif

@@ -28,11 +28,13 @@ use App\District;
 use App\Chatroom;
 use App\ChatroomParticipant;
 use App\Message;
+use App\HouseDetail;
 
 use Validator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class HouseController extends Controller
@@ -160,7 +162,7 @@ class HouseController extends Controller
         }
       }
 
-
+      $house_detail = HouseDetail::where('house_id', $house_id)->first();
 
       $result_house = [
         'id' => $house->id,
@@ -169,9 +171,13 @@ class HouseController extends Controller
         'size' => $house->size,
         'starRating' => self::get_averageHouseOverallRating($id),
         'subtitle' => $house->subtitle, // refering to the description in the DB maybe?
-        'address' => $house->address,
+        // 'address' => $house->address,
+        'address' => self::convertDistrictIdToEnum($house->district_id),
         'isBookmarked' => (HousePostBookmark::where('house_id', $house_id)->where('tenant_id', $userId)->count()>0)?true:false,
-        'photoURLs' => $house_imgArray
+        'photoURLs' => $house_imgArray,
+        'rooms' => $house_detail!=null?$house_detail->room:null,
+        'beds' => $house_detail!=null?$house_detail->bed:null,
+        'toilets' => $house_detail!=null?$house_detail->toilet:null
         // 'district_id' => $house->district_id,
         // 'description' => $house->description,
         // 'max_ppl' => $house->max_ppl,
@@ -192,11 +198,49 @@ class HouseController extends Controller
     }
 
 
-    //Get House List
+    //Get House List (Search House)
     // Filter to be added
-    public function index_house($userId){
+    public function index_house($userId, Request $request){
       $result_houses = array();
-      $houses = House::get();
+      // $houses = House::get();
+      $houses = DB::table('houses');
+
+      $keyword = $request->input('keyword');
+      $origin = $request->input('origin'); //required for the distance matrix api
+      $travelTime = $request ->input('travelTime'); //required for the distance matrix api
+      $type = self::convertHouseTypeEnumtoId($request->input('type'));
+      $minPrice = $request->input('minPrice');
+      $maxPrice = $request->input('maxPrice');
+      $minSize = $request->input('minSize');
+      $maxSize = $request->input('maxSize');
+
+      if(isset($keyword)){
+        $houses = $houses->where(function ($query) use ($keyword){
+          $query->where('title', 'LIKE', "%{$keyword}%")->orWhere('subtitle', 'LIKE', "%{$keyword}%")
+          ->orWhere('description', 'LIKE', "%{$keyword}%")->orWhere('address', 'LIKE', "%{$keyword}%");
+        });
+      }
+      if(isset($travelTime) && isset($origin)){
+        $districts_in_range = app('App\Http\Controllers\API\SearchEngineController')->get_districtsInDistance($origin, $travelTime);
+        $houses = $houses->whereIn("district_id", $districts_in_range);
+      }
+      if(isset($type)){
+        $houses = $houses->where("type", $type);
+      }
+      if(isset($minPrice)){
+        $houses = $houses->where("price", '>=' , $minPrice);
+      }
+      if(isset($maxPrice)){
+        $houses = $houses->where("price", '<=', $maxPrice);
+      }
+      if(isset($minSize)){
+        $houses = $houses->where("size", '>=' , $minSize);
+      }
+      if(isset($maxSize)){
+        $houses = $houses->where("size", '<=', $maxSize);
+      }
+
+      $houses = $houses->where('is_deleted', 0)->get(); // get houses that are not deleted only
 
       foreach ($houses as $house) {
         $house_id = $house->id;
@@ -217,7 +261,8 @@ class HouseController extends Controller
           'size' => $house->size,
           'starRating' => self::get_averageHouseOverallRating($house_id),
           'subtitle' => $house->subtitle, // refering to the description in the DB maybe?
-          'address' => $house->address,
+          // 'address' => $house->address,
+          'address' => self::convertDistrictIdToEnum($house->district_id),
           'isBookmarked' => (HousePostBookmark::where('house_id', $house->id)->where('tenant_id', $userId)->count()>0)?true:false,
           'photoURLs' => $house_imgArray
           // 'district_id' => $house->district_id,
@@ -262,7 +307,7 @@ class HouseController extends Controller
 
     // Get House Suggestion (suggest group)
     public function index_houseSuggestion($userId){
-      $required_num = 4; // Default set the number of suggested group to 4
+      $required_num = 10; // Default set the number of suggested group to 10
       $groups = self::match_group($userId, $required_num);
       $result = array();
       foreach($groups as $group){
@@ -310,35 +355,37 @@ class HouseController extends Controller
 
       $result_savedHouses = array();
       foreach($bookmarks as $bookmark){
-        $savedHouse = House::where('id', $bookmark->house_id)->first();
-        $savedHouse_id = $savedHouse->id;
+        $savedHouse = House::where('id', $bookmark->house_id)->where('is_deleted', 0)->first();
+        if($savedHouse != null){
+          $savedHouse_id = $savedHouse->id;
 
-        //$savedHouse_img = HouseImage::where('house_id', $savedHouse_id);
-        $house_imgList = HouseImage::where('house_id', $savedHouse_id);
-        $savedHouse_img = array();
-        if($house_imgList->count()>0){
-          $house_imgs = $house_imgList->get();
-          foreach($house_imgs as $house_img){
-            array_push($savedHouse_img, $house_img->img_url);
+          //$savedHouse_img = HouseImage::where('house_id', $savedHouse_id);
+          $house_imgList = HouseImage::where('house_id', $savedHouse_id);
+          $savedHouse_img = array();
+          if($house_imgList->count()>0){
+            $house_imgs = $house_imgList->get();
+            foreach($house_imgs as $house_img){
+              array_push($savedHouse_img, $house_img->img_url);
+            }
           }
+
+
+          if($savedHouse == null){
+            return "Saved house does not exist!";
+          }
+
+          $result_savedHouse = [
+            'id' => $savedHouse_id,
+            'title' => $savedHouse->title,
+            'price' => $savedHouse->price,
+            'size' => $savedHouse->size,
+            'starRating' => self::get_averageHouseOverallRating($savedHouse_id),
+            'subtitle' => $savedHouse->subtitle, //refering to the "description" in the db maybe?
+            'photoURLs' => $savedHouse_img
+          ];
+
+          array_push($result_savedHouses, $result_savedHouse);
         }
-
-
-        if($savedHouse == null){
-          return "Saved house does not exist!";
-        }
-
-        $result_savedHouse = [
-          'id' => $savedHouse_id,
-          'title' => $savedHouse->title,
-          'price' => $savedHouse->price,
-          'size' => $savedHouse->size,
-          'starRating' => self::get_averageHouseOverallRating($savedHouse_id),
-          'subtitle' => $savedHouse->subtitle, //refering to the "description" in the db maybe?
-          'photoURLs' => $savedHouse_img
-        ];
-
-        array_push($result_savedHouses, $result_savedHouse);
       }
 
       return $result_savedHouses;
@@ -529,7 +576,7 @@ class HouseController extends Controller
 
       $group_detail = new GroupDetail();
       $group_detail->member_user_id = $user_id;
-      $group_detail->status = 2; //Default to be "accepted" status
+      $group_detail->status = 1; //Default to be "accepted" status
       $group_detail->group_id = $team_id;
       $group_detail->save();
 
@@ -572,7 +619,7 @@ class HouseController extends Controller
 
       $groupDetail = new GroupDetail();
       $groupDetail->member_user_id = $user_id;
-      $groupDetail->status = 1; //*!!Test: 2 for accpeted // Status == 1 represent pending to be accepted by group leader (Accepted: 2, Rejected: 3)
+      $groupDetail->status = 0; //*!!Test: 1 for accpeted // Status == 0 represent pending to be accepted by group leader (Accepted: 2, Rejected: 3)
       $groupDetail->group_id = $teamId;
       $groupDetail->save();
 
@@ -1156,7 +1203,7 @@ class HouseController extends Controller
         arsort($matched_group);
         $result = array_slice($matched_group, 0, $required_num, $preserve_keys = TRUE);
 
-        return Group::whereIn('id', array_keys($result));
+        return Group::whereIn('id', array_keys($result))->get();
       }
 
       // look for matched group in trending houses
@@ -1272,6 +1319,38 @@ class HouseController extends Controller
 
       if($enum != null){
         return $enum->id;
+      }
+
+      return null;
+    }
+
+
+    // This is a helper function that convert house type to their enum name value
+    public function convertHouseTypeIdToEnum($id){
+      if($id == 0){
+        return 'Flat';
+      }elseif($id == 1){
+        return 'Cottage';
+      }elseif($id == 2){
+        return 'Detached';
+      }elseif($id == 3){
+        return 'Sub-divided';
+      }
+
+      return null;
+    }
+
+
+    // This is helper function that convert house type enum string to their id value
+    public function convertHouseTypeEnumtoId($type){
+      if($type == 'Flat'){
+        return 0;
+      }elseif($type == 'Cottage'){
+        return 1;
+      }elseif($type == 'Detached'){
+        return 2;
+      }elseif($type == 'Sub-divided'){
+        return 3;
       }
 
       return null;

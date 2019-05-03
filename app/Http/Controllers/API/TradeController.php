@@ -208,12 +208,12 @@ class TradeController extends Controller
       if($trade_imgList->count()>0){
         $trade_imgs = $trade_imgList->get();
         foreach($trade_imgs as $trade_img){
-          array_push($trade_imgArray, $trade_img->img_url);
+          array_push($trade_imgArray, $trade_img->image_url);
         }
       }
 
       $result_trade = [
-        'id' => $id,
+        'id' => $trade->id,
         'title' => $trade->title,
         'price' => $trade->price,
         'status' => self::convertTradeConditionIdtoStr($trade->trade_condition_type_id),
@@ -256,22 +256,22 @@ class TradeController extends Controller
       foreach($trades as $trade){
         $trade_id = $trade->id;
         // $trade_img = (TradeImage::where('trade_id', $trade_id)->count()>0)?TradeImage::where('trade_id', $trade_id)->get():null;
-        //$trade_img = TradeImage::where('trade_id', $trade_id)->get();
-        $trade_imgList = TradeImage::where('trade_id', $trade_id);
-        $trade_imgArray = array();
-        if($trade_imgList->count()>0){
-          $trade_imgs = $trade_imgList->get();
-          foreach($trade_imgs as $trade_img){
-            array_push($trade_imgArray, $trade_img->img_url);
-          }
-        }
+        $trade_img = TradeImage::where('trade_id', $trade_id)->first();
+        // $trade_imgList = TradeImage::where('trade_id', $trade_id);
+        // $trade_imgArray = array();
+        // if($trade_imgList->count()>0){
+        //   $trade_imgs = $trade_imgList->get();
+        //   foreach($trade_imgs as $trade_img){
+        //     array_push($trade_imgArray, $trade_img->image_url);
+        //   }
+        // }
 
         $result_trade=[
           'id'=>$trade_id,
           'title'=>$trade->title,
           'price'=>$trade->price,
           'views'=>TradeVisitor::where('trade_item_id', $trade_id)->count(), //visitor counter to be added
-          'photoURLs'=>$trade_imgArray
+          'photoURLs'=>$trade_img!=null?$trade_img->image_url:null
         ];
         array_push($result_trades, $result_trade);
       }
@@ -322,7 +322,7 @@ class TradeController extends Controller
         $trades = $trades->where('price', '<=', $maxPrice);
       }
 
-      $trades= $trades->get();
+      $trades= $trades->where('is_deleted', 0)->get(); // get data that are not deleted only
 
       foreach ($trades as $trade) {
         $trade_id = $trade->id;
@@ -390,7 +390,7 @@ class TradeController extends Controller
         if($trade_imgList->count()>0){
           $trade_imgs = $trade_imgList->get();
           foreach($trade_imgs as $trade_img){
-            array_push($trade_imgArray, $trade_img->img_url);
+            array_push($trade_imgArray, $trade_img->image_url);
           }
         }
 
@@ -419,7 +419,7 @@ class TradeController extends Controller
         if($trade_imgList->count()>0){
           $trade_imgs = $trade_imgList->get();
           foreach($trade_imgs as $trade_img){
-            array_push($trade_imgArray, $trade_img->img_url);
+            array_push($trade_imgArray, $trade_img->image_url);
           }
         }
 
@@ -441,9 +441,9 @@ class TradeController extends Controller
       return $result_pastTrades;
     }
 
-
+    // Get Trade Featured
     public function index_tradeFeatured($userId){
-      $required_num = 4;// default as 4
+      $required_num = 10;// default as 10
       $popularity_score = array();
       // get all common house_id in tradeBookmark table
       // then distribute score by the number of records they have (Default 10 points per each record)
@@ -474,7 +474,7 @@ class TradeController extends Controller
       // dd($popularity_score);
       $result = array_slice($popularity_score, 0, $required_num, $preserve_keys = TRUE);
 
-      $trades = Trade::whereIn('id', array_keys($result))->get();
+      $trades = Trade::whereIn('id', array_keys($result))->where('is_deleted', 0)->get();
       $result_trade = array();
       foreach($trades as $trade){
         $trade_id = $trade->id;
@@ -484,7 +484,7 @@ class TradeController extends Controller
         if($trade_imgList->count()>0){
           $trade_imgs = $trade_imgList->get();
           foreach($trade_imgs as $trade_img){
-            array_push($trade_imgArray, $trade_img->img_url);
+            array_push($trade_imgArray, $trade_img->image_url);
           }
         }
 
@@ -512,28 +512,30 @@ class TradeController extends Controller
       $bookmarkedTrades = TradeBookmark::where('user_id', $userId)->get();
 
       foreach ($bookmarkedTrades as $bookmarkedTrade) {
-        $trade = Trade::where('id', $bookmarkedTrade->trade_id)->first();
-        $trade_id = $trade->id;
+        $trade = Trade::where('id', $bookmarkedTrade->trade_id)->where('is_deleted', 0)->first();
+        if($trade != null){
+          $trade_id = $trade->id;
 
-        $trade_imgList = TradeImage::where('trade_id', $trade_id);
-        $trade_imgArray = array();
-        if($trade_imgList->count()>0){
-          $trade_imgs = $trade_imgList->get();
-          foreach($trade_imgs as $trade_img){
-            array_push($trade_imgArray, $trade_img->img_url);
+          $trade_imgList = TradeImage::where('trade_id', $trade_id);
+          $trade_imgArray = array();
+          if($trade_imgList->count()>0){
+            $trade_imgs = $trade_imgList->get();
+            foreach($trade_imgs as $trade_img){
+              array_push($trade_imgArray, $trade_img->image_url);
+            }
           }
+
+          $result_bookmarkedTrade = [
+            'id' => $trade_id,
+            'title' => $trade->title,
+            'price' => $trade->price,
+            'status' => self::convertTradeConditionIdtoStr($trade->trade_condition_type_id),
+            'description' => $trade->description,
+            'photoURLs' => $trade_imgArray
+          ];
+
+          array_push($result_bookmarkedTrades, $result_bookmarkedTrade);
         }
-
-        $result_bookmarkedTrade = [
-          'id' => $trade_id,
-          'title' => $trade->title,
-          'price' => $trade->price,
-          'status' => self::convertTradeConditionIdtoStr($trade->trade_condition_type_id),
-          'description' => $trade->description,
-          'photoURLs' => $trade_imgArray
-        ];
-
-        array_push($result_bookmarkedTrades, $result_bookmarkedTrade);
       }
 
       return $result_bookmarkedTrades;
@@ -730,7 +732,7 @@ class TradeController extends Controller
       $targetBookmarks = array();
       $otherBookmarks = array();
 
-      if($chartFilterOptions == "Week"){
+      if($chartFilterOptions == 0){ // Week
         for($i = 8, $order = 1; $i > 0; $i--){
           $day_before = Carbon::now()->subDays($i)->toDateTimeString();;
           $day_before_end = Carbon::now()->subDays($i-1)->toDateTimeString();
@@ -775,7 +777,7 @@ class TradeController extends Controller
 
           $order++;
         }
-      }else if($chartFilterOptions == "Month"){
+      }else if($chartFilterOptions == 1){ // Month
         for($i = 31, $order = 1; $i > 0; $i--){
           // $day_before = date( 'Y-m-d h:i:s', strtotime( $date . ' -'.$i. ' day' ) );
           $day_before = Carbon::now()->subDays($i)->toDateTimeString();;
@@ -821,7 +823,7 @@ class TradeController extends Controller
 
           $order++;
         }
-      }else if ($chartFilterOptions == "Year"){
+      }else if ($chartFilterOptions == 2){ // Year
         for($i = 13, $order = 1; $i > 0; $i--){
           // $month_before = date( 'Y-m-d h:i:s', strtotime( $date . ' -'.$i. ' month' ) );
           // $month_before_end = date( 'Y-m-d h:i:s', strtotime( $month_before . ' +1 month' ) );

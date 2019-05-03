@@ -81,7 +81,7 @@ class BlogController extends Controller
            [
             'edit-blog-title' => 'Input title',
             'edit-blog-subtitle' => 'Input subtitle',
-            'edit-blog-status' => 'Input status',
+            'edit-blog-status' => 'Select blog status',
             'edit-blog-admin_id' => 'Input Price',
             'edit-blog-detail' => 'Input detail',
             'edit-file.image' => 'Choose image',
@@ -96,7 +96,7 @@ class BlogController extends Controller
 
         $blog->title = $request->input('edit-blog-title');
         $blog->subtitle = $request->input('edit-blog-subtitle');
-        $blog->status = $request->input('edit-blog-status');
+        $blog->status = (intval($request->input('edit-blog-status')));
         $blog->admin_id = $request->input('edit-blog-admin_id');
         $blog->detail = $request->input('edit-blog-detail');
 
@@ -198,14 +198,23 @@ class BlogController extends Controller
     //   return view('blog.list-blog', compact('blogs','searchPhrase'));
     // }
     //
-    // public function delete($delete_id, Request $request) {
-    //   //dd($request);
-    //   $blog= Blog::where('id', $delete_id)->first();
-    //   $blog->is_deleted = 1;
-    //   $blog->save();
-    //
-    //   return back();
-    // }
+    public function delete($delete_id, Request $request) {
+      //dd($request);
+      $blog= Blog::where('id', $delete_id)->first();
+      $blog->is_deleted = 1;
+      $blog->save();
+
+      return back();
+    }
+
+    public function undelete($delete_id, Request $request) {
+      //dd($request);
+      $blog= Blog::where('id', $delete_id)->first();
+      $blog->is_deleted = 0;
+      $blog->save();
+
+      return back();
+    }
 
     public function search(Request $request){
     if ( $request->has('search') ){

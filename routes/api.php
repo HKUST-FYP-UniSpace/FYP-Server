@@ -167,8 +167,9 @@ Route::get('/blog/summary', 'API\BlogController@index_blogSummary'); // Get Blog
 Route::get('/blog/{id}/comment', 'API\BlogController@show_blogComments');
 
 // Search Engine
-Route::post('/search/trade', 'API\SearchEngineController@searchTrade');
-Route::post('/search/house', 'API\SearchEngineController@searchHouse');
+// Route::post('/search/trade', 'API\SearchEngineController@searchTrade');
+// Route::post('/search/house', 'API\SearchEngineController@searchHouse');
+Route::get('/search/houseInDistance', 'API\SearchEngineController@test_distanceMatrix'); // for testing only
 
 // Test
 Route::get('/test', 'TestController@index');
