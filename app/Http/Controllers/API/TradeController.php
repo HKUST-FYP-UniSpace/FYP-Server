@@ -562,7 +562,8 @@ class TradeController extends Controller
 
       // $success_msg = "New trade stored Successfully! (House ID = {$trade->id})";
       // return $success_msg;
-      $response = ['isSuccess' => true];
+      // $response = ['isSuccess' => true];
+      $response = ['tradeId' => $trade->id];
       return $response;
     }
 
