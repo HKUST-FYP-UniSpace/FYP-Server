@@ -31,23 +31,23 @@ class ChatroomController extends Controller
     		$temp = array();
             // dd($chatroom_summary);
     		$temp['id'] = $chatroom_summary['id'];
-	    	$temp['title'] = $chatroom_summary->title;
+	    	$temp['title'] = $chatroom_summary['title'];
 
 	    	// last message in the chatroom
-            if(Message::where('chatroom_id', $chatroom_summary->id)->orderBy('created_at', 'desc')->first() == null) {
+            if(Message::where('chatroom_id', $chatroom_summary['id'])->orderBy('created_at', 'desc')->first() == null) {
                 $temp['subtitle'] = '';
             }
             else {
-               $temp['subtitle'] = Message::where('chatroom_id', $chatroom_summary->id)->orderBy('created_at', 'desc')->first()->message; 
+               $temp['subtitle'] = Message::where('chatroom_id', $chatroom_summary['id'])->orderBy('created_at', 'desc')->first()->message; 
             }
 	    	
 
-	    	$temp['time'] = strtotime($chatroom_summary->created_at);
-	    	$temp['MessageGroupType'] = ( (int)$chatroom_summary->chatroom_type_id ) - 1;
+	    	$temp['time'] = strtotime($chatroom_summary['created_at']);
+	    	$temp['MessageGroupType'] = ( (int)$chatroom_summary['chatroom_type_id'] ) - 1;
 
 	    	$counter = 0;
-	    	$timestamp = date('Y-m-d H:i:s', $request[$chatroom_summary->id]);;
-	    	$messages = Message::where('chatroom_id', $chatroom_summary->id)->get();
+	    	$timestamp = date('Y-m-d H:i:s', $request[$chatroom_summary['id']]);;
+	    	$messages = Message::where('chatroom_id', $chatroom_summary['id'])->get();
 	    	foreach($messages as $message) {
 	    		$message_createtime = $message->created_at->toDateTimeString();
 	    		if($message_createtime > $timestamp) {
@@ -57,17 +57,17 @@ class ChatroomController extends Controller
 	    	$temp['unreadMessageCount'] = $counter;
 
 	    	// chatroom icon
-	    	if($chatroom_summary->chatroom_type_id == 2) {	// team chatroom
-	    		if(Group::where('id', $chatroom_summary->type_identifier)->first() == null) {
+	    	if($chatroom_summary['chatroom_type_id'] == 2) {	// team chatroom
+	    		if(Group::where('id', $chatroom_summary['type_identifier'])->first() == null) {
                     $temp['photoURL'] = '';
                 }
                 else {
-                    $temp['photoURL'] = Group::where('id', $chatroom_summary->type_identifier)->first()->image_url;
+                    $temp['photoURL'] = Group::where('id', $chatroom_summary['type_identifier'])->first()->image_url;
                 }
 	    	}
 	    	else {	// tenant vs owner, trade, request to join team
 	    		$receiver_user_id = '';
-	    		$participants = ChatroomParticipant::where('chatroom_id', $chatroom_summary->id)->get();
+	    		$participants = ChatroomParticipant::where('chatroom_id', $chatroom_summary['id'])->get();
 	    		foreach($participants as $participant) {
 	    			if($participant->user_id != $id) {
 	    				$receiver_user_id = $participant->user_id;
@@ -83,7 +83,7 @@ class ChatroomController extends Controller
 	    	}
 	    	$temp['users'] = array();
 	    	$temp_user = array();
-	    	$participants = ChatroomParticipant::where('chatroom_id', $chatroom_summary->id)->get();
+	    	$participants = ChatroomParticipant::where('chatroom_id', $chatroom_summary['id'])->get();
 	    	foreach($participants as $participant) {
                 if($participant->user_id == -1) {
                     $temp_user['id'] = $participant->user_id;
@@ -98,12 +98,12 @@ class ChatroomController extends Controller
 	    		
 	    		array_push($temp['users'], $temp_user);
 	    	}
-	    	if($chatroom_summary->chatroom_type_id == 2) {	// team
-	    		$temp['teamId'] = $chatroom_summary->type_identifier;
-                $temp['houseId'] = Group::where('id', $chatroom_summary->type_identifier)->first()->house_id;
+	    	if($chatroom_summary['chatroom_type_id'] == 2) {	// team
+	    		$temp['teamId'] = $chatroom_summary['type_identifier'];
+                $temp['houseId'] = Group::where('id', $chatroom_summary['type_identifier'])->first()->house_id;
 	    	}
-	    	if($chatroom_summary->chatroom_type_id == 3) {	//trade
-	    		$temp['tradeId'] = $chatroom_summary->type_identifier;
+	    	if($chatroom_summary['chatroom_type_id'] == 3) {	//trade
+	    		$temp['tradeId'] = $chatroom_summary['type_identifier'];
 	    	}
 
 	    	array_push($result, $temp);
