@@ -639,12 +639,11 @@ class HouseController extends Controller
       $leader_id = $request->input('leaderId');
       $acceptance = $request->input('acceptance');
       $group_id = Chatroom::where('id', $request_chatroomId)->first()->type_identifier;
+      $member_id = ChatroomParticipant::where('chatroom_id', $request_chatroomId)->where('user_id', '!=', $leader_id)->first()->user_id;
 
       $response = [];
 
       if($acceptance == true){
-        $member_id = ChatroomParticipant::where('chatroom_id', $request_chatroomId)->where('user_id', '!=', $leader_id)->first()->user_id;
-
         //create new chatroom participant linked to the requested group
         $joint_chatroom = Chatroom::where('chatroom_type_id', 2)->where('type_identifier', $group_id)->first();
         $joint_chatroom_id = $joint_chatroom->id;
@@ -664,6 +663,14 @@ class HouseController extends Controller
       	$message->deleted = 0;
       	$message->chatroom_id = $joint_chatroom_id;
       	$message->save();
+
+        $group_detail = GroupDetail::where('group_id', $group_id)->where('member_user_id',$member_id)->first();
+        $group_detail->status = 1; // accept status
+        $group_detail->save();
+      }else{
+        $group_detail = GroupDetail::where('group_id', $group_id)->where('member_user_id',$member_id)->first();
+        $group_detail->status = 2; //deny status
+        $group_detail->save();
       }
 
       //delete request related records
