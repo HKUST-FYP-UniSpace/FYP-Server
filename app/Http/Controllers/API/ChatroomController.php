@@ -24,10 +24,10 @@ class ChatroomController extends Controller
     public function get_message_summaries($id, Request $request) {
     	$result = array();
 
-    	$chatrooms = ChatroomParticipant::where('user_id', $id)->get();dd($chatrooms);
+    	$chatrooms = ChatroomParticipant::where('user_id', $id)->get();
 
     	foreach($chatrooms as $chatroom) {
-    		$chatroom_summary = $chatroom->chatroom()->first();
+    		$chatroom_summary = Chatroom::where('id', $chatroom->chatroom_id)->first();
     		$temp = array();
 
     		$temp['id'] = $chatroom_summary->id;
