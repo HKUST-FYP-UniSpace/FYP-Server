@@ -500,7 +500,7 @@ class UserController extends Controller
         $profile['userType'] = $user_type;
         $profile['isActive'] = $is_active;
         $profile['createTime'] = strtotime($stack->created_at);
-        $profile['verified'] = $stack->is_verified;
+        $profile['verified'] = $user->is_verified;
         
         return $profile;
     }
