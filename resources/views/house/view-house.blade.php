@@ -118,11 +118,11 @@
                   @endforeach
 
                   <dt class="col-sm-3">Status</dt>
-                  @if ($status->status  == "1")
+                  @if ($status["status"] == "1")
                       <dd class="col-sm-9">{{ "Hide" }}</dd>
-                  @elseif ($status->status  == "2")
+                  @elseif ($status["status"]  == "2")
                       <dd class="col-sm-9">{{ "Reveal" }}</dd>
-                  @elseif ($status->status  == "3")
+                  @elseif ($status["status"]  == "3")
                       <dd class="col-sm-9">{{ "Archive"  }}</dd>
                   @else
                       <dd class="col-sm-9">{{ "Rent" }}</dd>
