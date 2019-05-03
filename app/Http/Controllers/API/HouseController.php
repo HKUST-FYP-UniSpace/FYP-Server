@@ -307,9 +307,12 @@ class HouseController extends Controller
 
     // Get House Suggestion (suggest group)
     public function index_houseSuggestion($userId){
-      $required_num = 10; // Default set the number of suggested group to 10
+      $required_num = 8; // Default set the number of suggested group to 8
       $groups = self::match_group($userId, $required_num);
       $result = array();
+      if(isset($groups)){
+        return null;
+      }
       foreach($groups as $group){
         $group_id = $group->id;
         $house_id = $group->house_id;
@@ -797,7 +800,7 @@ class HouseController extends Controller
         'accuracy'=>$review->accuracy,
         'communication'=>$review->communication,
         'house_id'=>$review->house_id,
-        'date'=>date($review->created_at)
+        'date'=>strtotime($review->created_at)
       ];
 
       return $response;
@@ -1184,7 +1187,7 @@ class HouseController extends Controller
 
       // look for matched group in matched houses
       $match_houses = self::match_houses($userId, $required_num*2); // get a collection of matched house (default: search double quantity of house by required no. of groups)
-      if($match_houses->count() > 0){
+      if($match_houses!=null && $match_houses->count() > 0){
         foreach($match_houses as $match_house){
           $house_id = $match_house->id;
           $groups = Group::where('house_id', $house_id)->get();
