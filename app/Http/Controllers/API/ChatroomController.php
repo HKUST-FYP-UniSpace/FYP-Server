@@ -452,7 +452,7 @@ class ChatroomController extends Controller
             }
         }
         $member_detail = GroupDetail::where('member_user_id', $chatroom_member_id)->first();
-        $result['status'] = (int) $member_detail->status;
+        $result['status'] = (int) $member_detail['status'];
 
         return $result;
     }
