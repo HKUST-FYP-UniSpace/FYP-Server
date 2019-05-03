@@ -29,7 +29,7 @@ class ChatroomController extends Controller
     	foreach($chatrooms as $chatroom) {
     		$chatroom_summary = Chatroom::where('id', $chatroom->chatroom_id)->first();
     		$temp = array();
-
+            dd($chatroom_summry);
     		$temp['id'] = $chatroom_summary->id;
 	    	$temp['title'] = $chatroom_summary->title;
 
