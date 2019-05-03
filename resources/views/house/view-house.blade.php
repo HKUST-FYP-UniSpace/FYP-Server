@@ -34,7 +34,7 @@
                                 <th>{{ $group->leader_user_id }}</th>
                                 <th>{{ $group->description }}</th>
                                 <th>{{ $group->max_ppl }}</th>
-                                <th>{{ $group->duration }}</th>
+                                <th>{{ $group->duration }} year</th>
                                 <th>{{ $group->is_rent }}</th>
                                 <th><img src="{{ $group->image_url }}" style="height: 100px;"></th>
                             </tbody>
@@ -81,8 +81,8 @@
                   @endif
 
                   <dt class="col-sm-3">District</dt>
-                  @if ( $district != null)
-                  <dd class="col-sm-9">{{ $district }}</dd>
+                  @if ( $district["name"] != null)
+                  <dd class="col-sm-9">{{ $district["name"] }}</dd>
                   @else <dd class="col-sm-9">{{ "nil" }}</dd>
                   @endif
 

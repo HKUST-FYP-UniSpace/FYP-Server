@@ -18,32 +18,52 @@
 
                 <div class="panel-body-edit">
 
-      				  <dt class="col-sm-5">Group ID</dt>
-      				  <dd class="col-sm-7">{{ $house->id }}</dd>
+      				  <dt class="col-sm-3">Group ID</dt>
+      				  <dd class="col-sm-9">{{ $house->id }}</dd>
 
-      				  <dt class="col-sm-5">Title</dt>
-      				  <dd class="col-sm-7">{{ $group->title }}</dd>
+                <dt class="col-sm-3">Title</dt>
+                @if ( $group->title != null)
+                <dd class="col-sm-9">{{ $group->title }}</dd>
+                @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                @endif
 
-      				  <dt class="col-sm-5">Leader ID</dt>
-      				  <dd class="col-sm-7">{{ $group->leader_user_id }}</dd>
+                <dt class="col-sm-3">Leader ID</dt>
+                @if ( $group->leader_user_id != null)
+                <dd class="col-sm-9">{{ $group->leader_user_id }}</dd>
+                @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                @endif
 
-                <dt class="col-sm-5">Member ID</dt>
+                <dt class="col-sm-3">Member ID</dt>
                 @foreach ($group_details as $group_detail)
-                <dd class="col-sm-7">{{ $group_detail->member_user_id }}</dd>
+                @if ( $group_detail->member_user_id != null)
+                <dd class="col-sm-9">{{ $group_detail->member_user_id }}</dd>
+                @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                @endif
                 @endforeach
 
-                <dt class="col-sm-5">Group Status</dt>
-                <dd class="col-sm-7">{{ $group_detail->status }}</dd>
+                <dt class="col-sm-3">Group Status</dt>
+                @if ( $group_detail->status  != null)
+                <dd class="col-sm-9">{{ $group_detail->status  }}</dd>
+                @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                @endif
 
-      				  <dt class="col-sm-5">Maximum No. People</dt>
-      				  <dd class="col-sm-7">{{ $group->max_ppl }}</dd>
+                <dt class="col-sm-3">Maximum No. People</dt>
+                @if ( $group->max_ppl  != null)
+                <dd class="col-sm-9">{{ $group->max_ppl  }}</dd>
+                @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                @endif
 
-      				  <dt class="col-sm-5">Duration</dt>
-      				  <dd class="col-sm-7">{{ $group->duration }}</dd>
+                <dt class="col-sm-3">Duration</dt>
+                @if ( $group->duration  != null)
+                <dd class="col-sm-9">{{ $group->duration }} year</dd>
+                @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                @endif
 
-      				  <dt class="col-sm-5">Rent</dt>
-      				  <dd class="col-sm-7">{{ $group->is_rent }}</dd>
-
+                <dt class="col-sm-3">Rent</dt>
+                @if ( $group->is_rent  != null)
+                <dd class="col-sm-9">{{ $group->is_rent }}</dd>
+                @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                @endif
 			          </div>
 
                 <!-- edit button -->

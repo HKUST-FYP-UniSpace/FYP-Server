@@ -68,7 +68,7 @@ class HouseController extends Controller
         $status = HouseStatus::join('houses','house_statuses.id','=','houses.status')->where('houses.id', $id)->first();
         $house_type = House::where('id',$id)->first();
 
-        $district = District::join('houses','houses.district_id','=','districts.id')->where('houses.id',$id)->first()->value("name");
+        $district = District::join('houses','houses.district_id','=','districts.id')->where('houses.id',$id)->first();
 
         if ($house_type->type == "0")
           $type = "Flat";
