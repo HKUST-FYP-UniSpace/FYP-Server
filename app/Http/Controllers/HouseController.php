@@ -170,7 +170,7 @@ class HouseController extends Controller
         $house->type = (intval($request->input('edit-house-type')));
         $house->district_id = intval($request->input('edit-house-district_id'));
         $house->price = $request->input('edit-house-price');
-        $house->status = intval($request->input('add-house-status'));
+        $house->status = intval($request->input('edit-house-status'));
         $house->owner_id = $request->input('edit-house-owner_id');
         $house->max_ppl= $request->input('edit-house-max_ppl');
         $house->description = $request->input('edit-house-description');
