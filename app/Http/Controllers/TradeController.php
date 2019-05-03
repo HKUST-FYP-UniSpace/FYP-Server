@@ -10,6 +10,8 @@ use App\TradeStatus;
 use App\TradeCategory;
 use App\TradeConditionType;
 use App\TradeImage;
+use App\District;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
@@ -58,9 +60,12 @@ class TradeController extends Controller
         $category = TradeCategory::join('trades','trade_categories.id','=','trades.trade_category_id')->where('trades.id', $id)->first();
         $condition_type = TradeConditionType::join('trades','trade_condition_types.id','=','trades.trade_condition_type_id')->where('trades.id', $id)->first();
         $status = TradeStatus::join('trades','trade_statuses.id','=','trades.trade_status_id')->where('trades.id', $id)->first();
+        $district_id = District::join('trades','districts.id','=','trades.district_id')->where('trades.id', $id)->first();
+        $user = User::join('trades','users.id','=','trades.user_id')
+                ->where('trades.id', $id)->first();
 
 
-		return view('trade.view-trade',compact('trade','trade_urls','category','condition_type','status'));
+		return view('trade.view-trade',compact('trade','trade_urls','category','condition_type','status','district_id','user'));
 	}
 
     public function edit_trade_form($id) { // $id is user id
@@ -68,17 +73,21 @@ class TradeController extends Controller
         $trade_statuses = TradeStatus::get();
         $trade_categories = TradeCategory::get();
         $trade_conditions = TradeConditionType::get();
+        $trade_districts = District::get();
 
         $trade_imgList = TradeImage::where('trade_id', $id)->get();
         $trade_imgArrays = array();
+        $trade_imgIDs = array();
+
         if($trade_imgList->count()>0){
           $trade_imgs = $trade_imgList;
           foreach($trade_imgs as $trade_img){
             array_push($trade_imgArrays, $trade_img->image_url);
+            array_push($trade_imgIDs, $trade_img);
           }
         }
 
-        return view('trade.edit-trade', compact('trade','trade_statuses','trade_categories','trade_conditions','trade_imgArrays'));
+        return view('trade.edit-trade', compact('trade','trade_statuses','trade_categories','trade_conditions','trade_imgArrays','trade_districts','trade_imgIDs'));
 
     }
 
@@ -86,8 +95,9 @@ class TradeController extends Controller
         $trade_statuses = TradeStatus::get();
         $trade_categories = TradeCategory::get();
         $trade_conditions = TradeConditionType::get();
+        $trade_districts = District::get();
 
-        return view('trade.add-trade',compact('trade_statuses','trade_categories','trade_conditions'));
+        return view('trade.add-trade',compact('trade_statuses','trade_categories','trade_conditions','trade_districts'));
     }
 
 
@@ -100,6 +110,7 @@ class TradeController extends Controller
             'edit-trade-trade_category_id' => 'required|max:255',
             'edit-trade-trade_condition_type_id' => 'required|max:255',
             'edit-trade-trade_status_id'  => 'required|max:255',
+            'edit-trade-district_id'=> 'required',
             'edit-trade-description' => 'nullable|max:255'
             ],
 
@@ -110,6 +121,7 @@ class TradeController extends Controller
             'edit-trade-trade_category_id' => 'Select Trade Category ID',
             'edit-trade-trade_condition_type_id' => 'Select Trade Condition Type ID',
             'edit-trade-trade_status_id'  => 'Select Trade Status ID',
+            'edit-trade-district_id.required' => 'Select District ID', //select from database
             'edit-trade-description' => 'Input Description'
             ]);
 
@@ -124,17 +136,16 @@ class TradeController extends Controller
         $trade->trade_category_id = $request->input('edit-trade-trade_category_id');
         $trade->trade_condition_type_id = $request->input('edit-trade-trade_condition_type_id');
         $trade->trade_status_id= $request->input('edit-trade-trade_status_id');
+        $trade->district_id = intval($request->input('edit-trade-district_id'));
         $trade->description = $request->input('edit-trade-description');
 
         $trade->save();
 
         $images = $request->file('filename');
-        $size = sizeof($images);
-        $last_image = TradeImage::where('trade_id',$id)->get()->count();
-
-
 
         if(!empty($images)) {
+          $size = sizeof($images);
+          $last_image = TradeImage::where('trade_id',$id)->get()->count();
           // foreach($images as $image) {
            $j = $last_image;
           for($i = 0; $i < $size; $i++) {
@@ -146,7 +157,7 @@ class TradeController extends Controller
             //store
             $trade_image= new TradeImage();
             $trade_image->trade_id = $trade->id;
-            $trade_image->image_url = $url;
+            $trade_image->image_url = url('uploads/'.$url);
             $trade_image->save();
           }
         }
@@ -166,6 +177,7 @@ class TradeController extends Controller
                 'add-trade-quantity' => 'required|integer',
                 'add-trade-description' => 'required|max:255',
                 'add-trade-user_id' => 'required|max:255',
+                'add-trade-district_id' => 'required',
                 'add-trade-status' => 'required',
                 'add-trade-trade_category_id' => 'required',
                 'add-trade-trade_condition_type_id' => 'required',
@@ -181,6 +193,8 @@ class TradeController extends Controller
 
                 'add-trade-quantity.required' => 'Input price',
                 'add-trade-quantity.integer' => 'Input integer only',
+
+                'add-trade-district_id.required' => 'Select District ID', //select from database
 
                 'add-trade-description.required' => 'Input description',
                 'add-trade-description.max' => 'Description cannot be too long',
@@ -217,6 +231,8 @@ class TradeController extends Controller
         $trade->trade_category_id= intval($request->input('add-trade-trade_category_id'));
         // trade_condition_type_id
         $trade->trade_condition_type_id= intval($request->input('add-trade-trade_condition_type_id'));
+        // district_id
+        $trade->district_id = intval($request->input('add-trade-district_id'));
 
         $trade->save();
 
@@ -233,7 +249,7 @@ class TradeController extends Controller
             //store
             $trade_image= new TradeImage();
             $trade_image->trade_id = $trade->id;
-            $trade_image->image_url = $url;
+            $trade_image->image_url = url('uploads/'.$url);
             $trade_image->save();
           }
         }
@@ -250,9 +266,18 @@ class TradeController extends Controller
       return back();
     }
 
-    public function delete_image($trade_imgArray) {
+    public function undelete($delete_id, Request $request) {
+      //dd($request);
+      $trade= Trade::where('id', $delete_id)->first();
+      $trade->is_deleted = 0;
+      $trade->save();
 
-      $trade_image = TradeImage::where('image_url',$trade_imgArray)->first()->delete();
+      return back();
+    }
+
+    public function delete_image($trade_imgID) {
+
+      $trade_image = TradeImage::where('id',$trade_imgID)->delete();
 
       return back();
     }

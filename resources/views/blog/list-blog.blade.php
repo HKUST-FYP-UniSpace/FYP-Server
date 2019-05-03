@@ -56,7 +56,14 @@
                             <th>{{ $blog->created_at }}</th>
                             <th>{{ $blog->updated_at }}</th>
                             <th>{{ $blog->admin_id }}</th>
-                            <th>{{ $blog->status }}</th>
+
+                            <!-- blog status -->
+                            @if ($blog->status == "1") <th>{{ "Hide" }}</th>
+                            @elseif ($blog->status == "2") <th>{{ "Reveal" }}</th>
+                            @elseif ($blog->status== "3") <th>{{ "Archive" }}</th>
+                            @else <th>{{ "" }}</th>
+                            @endif
+
                             <td><a href="{{ route('blog-view', $blog->id) }}">details</a></td>
                             <td><a href="{{ route('blog-comment', $blog->id) }}">show comments</a></td>
                             @if($blog->is_deleted == 0)
@@ -64,6 +71,13 @@
                                 <form method="POST" action="{{ route('blog-delete', $blog->id) }}">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <a><button type="submit" class="btn-danger submit-delete" onclick="return confirm('Are you sure to delete the post?')"> Delete </button></a>
+                                </form>
+                            </td>
+                            @else
+                            <td>
+                                <form method="POST" action="{{ route('blog-undelete', $blog->id) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <a><button type="submit" class="btn-primary" onclick="return confirm('Are you sure to undelete the post?')"> Undelete </button></a>
                                 </form>
                             </td>
                             @endif

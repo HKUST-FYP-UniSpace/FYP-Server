@@ -177,7 +177,7 @@ class BlogController extends Controller
       //$errors = array();
 
       $result_blogs = array();
-      $blogs = Blog::get();
+      $blogs = Blog::where('status', 2)->where('is_deleted', 0)->get();
       foreach ($blogs as $blog) {
         $result_blog = [
           'id' => $blog->id,
@@ -203,9 +203,10 @@ class BlogController extends Controller
     }
 
     // Get blog summaries
+    //status: 1: Hide, 2: Reveal, 3: Archive
     public function index_blogSummary(){
       $result_blogs = array();
-      $blogs = Blog::get();
+      $blogs = Blog::where('status', 2)->where('is_deleted', 0)->get();
       foreach ($blogs as $blog) {
         $result_blog = [
           'id' => $blog->id,

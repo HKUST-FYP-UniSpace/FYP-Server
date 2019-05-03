@@ -10,7 +10,7 @@
         {{ csrf_field() }}
 
         <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">  <!--size of form box -->
-            <div class="panel panel-default" style="height: 400px;"> <!-- border+background -->
+            <div class="panel-default"> <!-- border+background -->
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Trade Item</h4>
                 </div>
@@ -19,45 +19,92 @@
 
                 <div class="panel-body-edit">
 
-
                   <dt class="col-sm-3">Trade ID</dt>
-                  <dd class="col-sm-9">{{ $trade->id }}</dd>
+                  @if (  $trade['id']   != null)
+                  <dd class="col-sm-9">{{  $trade['id']  }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">User ID</dt>
-                  <dd class="col-sm-9">{{ $trade->user_id }}</dd>
+                  @if ( $trade['user_id']  != null)
+                  <dd class="col-sm-9">{{ $trade['user_id']   }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
+
+                  <dt class="col-sm-3">User Name</dt>
+                  @if ( $user['name']   != null)
+                  <dd class="col-sm-9">{{ $user['name'] }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Title</dt>
-                  <dd class="col-sm-9">{{ $trade->title }}</dd>
+                  @if ( $trade['title']  != null)
+                  <dd class="col-sm-9">{{ $trade['title'] }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
-                  <dt class="col-sm-3">Price</dt>
-                  <dd class="col-sm-9">{{ $trade->price }}</dd>
+                  <dt class="col-sm-3">Price (HKD)</dt>
+                  @if ( $trade['price']  != null)
+                  <dd class="col-sm-9">${{ $trade['price'] }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Quantity</dt>
-                  <dd class="col-sm-9">{{ $trade->quantity }}</dd>
+                  @if ( $trade['quantity'] != null)
+                  <dd class="col-sm-9">{{ $trade['quantity'] }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
+
+                  <dt class="col-sm-3">Trade District</dt>
+                  @if ( $district_id['name'] != null)
+                  <dd class="col-sm-9">{{ $district_id['name'] }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Description</dt>
-                  <dd class="col-sm-9">{{ $trade->description }}</dd>
+                  @if ( $trade['description'] != null)
+                  <dd class="col-sm-9">{{ $trade['description'] }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Category</dt>
-                  <dd class="col-sm-9">{{ $category->category}}</dd>
+                  @if ( $category['category'] != null)
+                  <dd class="col-sm-9">{{ $category['category'] }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Condition Type</dt>
-                  <dd class="col-sm-9">{{ $condition_type->type }}</dd>
+                  @if ( $condition_type['type'] != null)
+                  <dd class="col-sm-9">{{ $condition_type['type'] }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
+                  @if ( $trade_urls != null)
                   @foreach ($trade_urls as $trade_url)
-                  <dt class="col-sm-3">Image URLs</dt>
-                  <dd class="col-sm-9">{{ $trade_url->image_url }}</dd>
+                  <dt class="col-sm-3">Image</dt>
+                  <dd class="col-sm-9"><img src="{{ $trade_url['image_url'] }}" style="height: 200px; padding-bottom: 10px"></dd>
+                  <!-- <dd class="col-sm-9">{{ $trade_url['image_url'] }}</dd> -->
                   @endforeach
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Status</dt>
-                  <dd class="col-sm-9">{{ $status->status}}</dd>
+                  @if ( $status['status'] != null)
+                  <dd class="col-sm-9">{{ $status['status'] }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Post Date</dt>
-                  <dd class="col-sm-9">{{ $trade->created_at }}</dd>
+                  @if ( $trade['created_at'] != null)
+                  <dd class="col-sm-9">{{ $trade['created_at'] }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Update Date</dt>
-                  <dd class="col-sm-9">{{ $trade->updated_at }}</dd>
-
+                  @if ( $trade['updated_at'] != null)
+                  <dd class="col-sm-9">{{ $trade['updated_at'] }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
               </div>
 
                     <!-- edit button -->

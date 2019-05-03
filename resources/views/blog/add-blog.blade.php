@@ -49,8 +49,9 @@
                           <div class="col-sm-10">
                               <select class="form-control" id="add-blog-status" name="add-blog-status" value="{{ old('add-blog-status')}}">
                                   <option value= "" selected disabled hidden> Please Select </option>
-                                  <option value = "0" {{ old('add-blog-status') == 0 ? 'selected' : '' }}> Available </option>
-                                  <option value = "1" {{ old('add-blog-status') == 1 ? 'selected' : '' }}> Unavailable </option>
+                                  <option value = "1" {{ old('add-blog-status') == 0 ? 'selected' : '' }}> Hide </option>
+                                  <option value = "2" {{ old('add-blog-status') == 1 ? 'selected' : '' }}> Reveal </option>
+                                  <option value = "3" {{ old('add-blog-status') == 1 ? 'selected' : '' }}> Archive </option>
                               </select>
                               @if($errors->has('add-blog-status'))
                                   <span class="label-error"><i class="fa fa-times"></i> {{ $errors->first('add-blog-status') }}</span>

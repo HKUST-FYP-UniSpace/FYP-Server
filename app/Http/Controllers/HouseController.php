@@ -14,6 +14,7 @@ use App\Preference;
 use App\GroupDetail;
 use App\HouseImage;
 use App\HouseVisitor;
+use App\Owner;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
@@ -60,8 +61,25 @@ class HouseController extends Controller
         $house = HouseImage::join('houses','house_images.house_id','=','houses.id')->where('houses.id', $id)->first();
         $house_urls = $house->where('house_id', $id)->get();
         $house_visitors = HouseVisitor::join('houses','house_visitors.house_id','=','houses.id')->where('houses.id', $id)->get()->count();
+        $owner = Owner::join('houses','owners.id','=','houses.owner_id')
+                ->join('users','owners.user_id','=','users.id')
+                ->where('houses.id', $id)->first();
 
-		return view('house.view-house',compact('house','groups','house_urls','house_visitors'));
+        $status = HouseStatus::join('houses','house_statuses.id','=','houses.status')->where('houses.id', $id)->first();
+        $house_type = House::where('id',$id)->first();
+
+        $district = District::join('houses','houses.district_id','=','districts.id')->where('houses.id',$id)->first()->value("name");
+
+        if ($house_type->type == "0")
+          $type = "Flat";
+        elseif ($house_type->type == "1")
+          $type = "Cottage";
+        elseif ($house_type->type == "2")
+          $type = "Detached";
+        else
+          $type = "Sub-divided";
+
+		return view('house.view-house',compact('house','groups','house_urls','house_visitors','owner','status','house_type','type','district'));
 	}
 
   public function show_group_details($id) {
@@ -90,14 +108,16 @@ class HouseController extends Controller
 
         $house_imgList = HouseImage::where('house_id', $id)->get();
         $house_imgArrays = array();
+        $house_imgIDs = array();
         if($house_imgList->count()>0){
           $house_imgs = $house_imgList;
           foreach($house_imgs as $house_img){
             array_push($house_imgArrays, $house_img->img_url);
+            array_push($house_imgIDs, $house_img);
           }
         }
 
-        return view('house.edit-house', compact('house','house_districts','house_statuses','house_imgArrays'));
+        return view('house.edit-house', compact('house','house_districts','house_statuses','house_imgArrays','house_imgIDs'));
     }
 
     public function add_house_form() { // $id is user id
@@ -160,16 +180,15 @@ class HouseController extends Controller
         $house->save();
 
         $images = $request->file('filename');
-        $size = sizeof($images);
-        $last_image = HouseImage::where('house_id',$id)->get()->count();
-
-
 
         if(!empty($images)) {
+          $size = sizeof($images);
+          $last_image = HouseImage::where('house_id',$id)->get()->count();
           // foreach($images as $image) {
            $j = $last_image;
           for($i = 0; $i < $size; $i++) {
             $extension = $images[$i]->getClientOriginalExtension();
+
             $now = strtotime(Carbon::now());
             $url = 'house_' . $house->id . '_' . $now . '_' .$j .'.' . $extension;
             Storage::disk('public')->put($url,  File::get($images[$i]));
@@ -177,7 +196,7 @@ class HouseController extends Controller
             //store
             $house_image= new HouseImage();
             $house_image->house_id = $house->id;
-            $house_image->img_url = $url;
+            $house_image->img_url = url('uploads/'.$url);
             $house_image->save();
           }
         }
@@ -289,7 +308,7 @@ class HouseController extends Controller
             //store
             $house_image= new HouseImage();
             $house_image->house_id = $house->id;
-            $house_image->img_url = $url;
+            $house_image->img_url = url('uploads/'.$url);
             $house_image->save();
           }
         }
@@ -307,9 +326,18 @@ class HouseController extends Controller
       return back();
     }
 
-    public function delete_image($house_imgArray) {
+    public function undelete($delete_id, Request $request) {
+      //dd($request);
+      $house= House::where('id', $delete_id)->first();
+      $house->is_deleted = 0;
+      $house->save();
 
-      $house_image = HouseImage::where('img_url',$house_imgArray)->first()->delete();
+      return back();
+    }
+
+    public function delete_image($house_imgID) {
+
+      $house_image = HouseImage::where('id',$house_imgID)->delete();
 
       return back();
     }

@@ -42,7 +42,7 @@ class OwnerController extends Controller
     // $userId = $request->input('userId');
     $result_summary = array();
 
-    $owned_houses = House::where('owner_id', $userId)->get();
+    $owned_houses = House::where('owner_id', $userId)->where('is_deleted', 0)->get();
 
     if(!isset($owned_houses)){
       $response = ["isSuccess"=>false];
@@ -128,7 +128,7 @@ class OwnerController extends Controller
     $targetBookmarks = array();
     $otherBookmarks = array();
 
-    if($chartFilterOptions == "Week"){
+    if($chartFilterOptions == 0){ // Week
       for($i = 8, $order = 1; $i > 0; $i--){
         $day_before = Carbon::now()->subDays($i)->toDateTimeString();;
         $day_before_end = Carbon::now()->subDays($i-1)->toDateTimeString();
@@ -173,7 +173,7 @@ class OwnerController extends Controller
 
         $order++;
       }
-    }else if($chartFilterOptions == "Month"){
+    }else if($chartFilterOptions == 1){ // Month
       for($i = 31, $order = 1; $i > 0; $i--){
         // $day_before = date( 'Y-m-d h:i:s', strtotime( $date . ' -'.$i. ' day' ) );
         $day_before = Carbon::now()->subDays($i)->toDateTimeString();;
@@ -219,7 +219,7 @@ class OwnerController extends Controller
 
         $order++;
       }
-    }else if ($chartFilterOptions == "Year"){
+    }else if ($chartFilterOptions == 2){ // Year
       for($i = 13, $order = 1; $i > 0; $i--){
         // $month_before = date( 'Y-m-d h:i:s', strtotime( $date . ' -'.$i. ' month' ) );
         // $month_before_end = date( 'Y-m-d h:i:s', strtotime( $month_before . ' +1 month' ) );
@@ -338,7 +338,7 @@ class OwnerController extends Controller
         $extension = $images[$i]->getClientOriginalExtension();
 
         $now = strtotime(Carbon::now());
-        $url = 'trade_' . $house_id . '_' . $now . '_' .$i .'.' . $extension;
+        $url = 'house_' . $house_id . '_' . $now . '_' .$i .'.' . $extension;
         Storage::disk('public')->put($url,  File::get($images[$i]));
 
         // Save url in db
@@ -407,7 +407,18 @@ class OwnerController extends Controller
     $images = $request->file('photoURLs');
     $size = sizeof($images);
 
-    HouseImage::where('house_id', $house_id)->delete(); // first delete old images
+    // first delete old images
+    $old_images = HouseImage::where('house_id', $house_id)->get();
+    foreach($old_images as $old_image){
+      $old_img_url = $old_image->img_url;
+
+      if(isset($old_img_url)){
+        $url_parts = explode('/', $old_img_url);
+        $delete_file = end($url_parts);
+        Storage::disk('public')->delete($delete_file);
+      }
+    }
+    HouseImage::where('house_id', $house_id)->delete();
 
     if(!empty($images)) {
       // foreach($images as $image) {
@@ -415,7 +426,7 @@ class OwnerController extends Controller
         $extension = $images[$i]->getClientOriginalExtension();
 
         $now = strtotime(Carbon::now());
-        $url = 'trade_' . $house_id . '_' . $now . '_' .$i .'.' . $extension;
+        $url = 'house_' . $house_id . '_' . $now . '_' .$i .'.' . $extension;
         Storage::disk('public')->put($url,  File::get($images[$i]));
 
         // Save url in db

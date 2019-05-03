@@ -12,7 +12,7 @@
 
         <div class="panel panel-default col-md-12" style="border-color: white; padding-left:10%; padding-right:10%;">  <!--size of form box -->
 
-            <div class="panel panel-default" style="height: 300px;"> <!-- border+background -->
+            <div class="panel-default"> <!-- border+background -->
 
                 <div class="panel-heading text-center">
                     <h4 class="title text-muted">Blog</h4>
@@ -28,7 +28,11 @@
                   <dd class="col-sm-9">{{ $blog->title }}</dd>
 
                   <dt class="col-sm-3">Status</dt>
-                  <dd class="col-sm-9">{{ $blog->status}}</dd>
+                  @if ($blog->status  == "1") <dd class="col-sm-9">{{ "Hide" }}</dd>
+                  @elseif ($blog->status  == "2") <dd class="col-sm-9">{{ "Reveal" }}</dd>
+                  @elseif ($blog->status  == "3") <dd class="col-sm-9">{{ "Archive"  }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Admin ID</dt>
                   <dd class="col-sm-9">{{ $blog->admin_id }}</dd>
@@ -37,14 +41,20 @@
                   <dd class="col-sm-9">{{ $blog->detail}}</dd>
 
                   <dt class="col-sm-3">Image</dt>
-                  <dd class="col-sm-9">{{ $blog->image_url }}</dd>
+                  <dd class="col-sm-9"><img src="{{ $blog->image_url }}" style="height: 200px; padding-bottom: 10px"></dd>
+                  <!-- <dd class="col-sm-9">{{ $blog->image_url }}</dd> -->
 
                   <dt class="col-sm-3">Post Date</dt>
-                  <dd class="col-sm-9">{{ $blog->created_at}}</dd>
+                  @if ( $blog->created_at  != null)
+                  <dd class="col-sm-9">{{ $blog->created_at   }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
                   <dt class="col-sm-3">Update Date</dt>
-                  <dd class="col-sm-9">{{ $blog->updated_at}}</dd>
-
+                  @if ( $blog->updated_at != null)
+                  <dd class="col-sm-9">{{ $blog->updated_at  }}</dd>
+                  @else <dd class="col-sm-9">{{ "nil" }}</dd>
+                  @endif
 
               </div>
 

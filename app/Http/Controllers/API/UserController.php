@@ -100,13 +100,13 @@ class UserController extends Controller
         $new_user->save();
 
         // user type -> tenant/owner
-        if($input['userType'] == 0) { 
+        if($input['userType'] == 0) {
             // tenant
             $new_user_type = new Tenant();
             $new_user_type->user_id = $new_user->id;
             $new_user_type->save();
         }
-        else if($input['userType'] == 1) {    
+        else if($input['userType'] == 1) {
             // owner
             $new_user_type = new Owner();
             $new_user_type->user_id = $new_user->id;
@@ -141,7 +141,7 @@ class UserController extends Controller
             $now = strtotime(Carbon::now());
             $url = $new_user->username.$now.'.'.$extension;
             Storage::disk('public')->put($url,  File::get($image));
-            
+
 
             $new_profile->icon_url = url('uploads/'.$url);
         }
@@ -232,7 +232,7 @@ class UserController extends Controller
         else {
             $preferenceModel = null;
         }
-        
+
         // for return object
         $profile = array();
         $profile['id'] = $new_user->id;
@@ -245,7 +245,7 @@ class UserController extends Controller
         $profile['gender'] = $new_profile->gender;
         $profile['contact'] = $new_profile->contact;
         $profile['selfIntro'] = $new_profile->self_intro;
-        
+
         // check user type
         $user_type = 0; // default is a tenant
         $tenant = Tenant::where('user_id', $new_user->id);
@@ -263,7 +263,7 @@ class UserController extends Controller
         $profile['isActive'] = $is_active;
         $profile['createTime'] = strtotime($new_user->created_at);
         $profile['verified'] = $new_user->is_verified;
-        
+
         return response($profile)->cookie('token', $new_user->token, 1440);
     }
 
@@ -339,7 +339,7 @@ class UserController extends Controller
         $profile['username'] = $user->username;
 
 
-        
+
 
         $has_profile = Profile::where('user_id', $user->id)->first();
         if($has_profile == null) {
@@ -390,7 +390,7 @@ class UserController extends Controller
 
         $profile['email'] = $user->email;
         $profile['name'] = $user->name;
-        
+
         // check user type
         $user_type = 0; // default is a tenant
         $tenant = Tenant::where('user_id', $user->id);
@@ -479,7 +479,7 @@ class UserController extends Controller
                     }
                 }
             }
-        
+
         if($stack->is_deleted == 0) {
             $is_active = 1;
         }
@@ -531,7 +531,7 @@ class UserController extends Controller
             $now = strtotime(Carbon::now());
             $url = $user->username.$now.'.'.$extension;
             Storage::disk('public')->put($url,  File::get($image));
-            
+
 
             $user_profile->icon_url = url('uploads/'.$url);
         }
@@ -694,11 +694,11 @@ class UserController extends Controller
                     }
 
                     array_push($result, $temp_date);
-                }   
-                
+                }
+
             }
         }
-        
+
 
         return $result;
     }
@@ -715,12 +715,12 @@ class UserController extends Controller
         $event->end_time = date('h:i:s', strtotime($request['endTime']));
         $event->venue = $request['venue'];
         $event->user_id = $id;
-        
+
         $event->save();
         $result['isSuccess'] = true;
 
         return $result;
     }
 
-    
+
 }
