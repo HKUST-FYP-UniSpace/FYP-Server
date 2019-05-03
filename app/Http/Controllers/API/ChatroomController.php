@@ -444,8 +444,15 @@ class ChatroomController extends Controller
         else {
             $result['isLeader'] = false;
         }
-        // dd(((int) $group_details->status) - 1);
-        $result['status'] = (int) $group_details->status;
+        $chatroom_member_id = -1;
+        $chatroom_members = ChatroomParticipant::where('chatroom_id', $message_group_id)->get();
+        foreach($chatroom_members as $chatroom_member) {
+            if($chatroom_member->id != $id) {
+                $chatroom_member_id = $chatroom_member->id;
+            }
+        }
+        $member_detail = GroupDetail::where('member_user_id', $chatroom_member_id)->first();
+        $result['status'] = (int) $member_detail->status;
 
         return $result;
     }
