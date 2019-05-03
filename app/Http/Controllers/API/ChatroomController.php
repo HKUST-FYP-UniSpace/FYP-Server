@@ -318,7 +318,7 @@ class ChatroomController extends Controller
     	// create a new chatroom
     	$chatroom = new Chatroom();
         $chatroom->total_message = 0; // Should have no messgae when team first created
-    	$chatroom->title = Group::where('id', $request['teamId'])->first()->title;	// title = team name
+    	$chatroom->title = Group::where('id', $team_id)->first()->title;	// title = team name
     	$chatroom->chatroom_type_id = 2;	// type = team
         $chatroom->type_identifier = $team_id;
     	$chatroom->save();
