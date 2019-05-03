@@ -420,7 +420,7 @@ class ChatroomController extends Controller
             array_push($errors, $error);
         }
 
-        $team_id = $chatroom->type_identifier;
+        $team_id = $chatroom['type_identifier'];
         $group = Group::where('id', $team_id)->first();
         if($group == null) {
             $error['message'] = "The target user is not found.";
