@@ -240,7 +240,7 @@ class HouseController extends Controller
       if(isset($maxSize)){
         $houses = $houses->where("size", '<=', $maxSize);
       }
-      if(isset($teamFormed)&& $teamFormed == true){
+      if(isset($teamFormed)&& $teamFormed == 1){
         $grouped_houseId = Group::select('house_id')->groupBy('house_id')->get();
         $houses = $houses->whereIn("id", $grouped_houseId);
       }
