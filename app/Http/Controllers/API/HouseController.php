@@ -213,6 +213,7 @@ class HouseController extends Controller
       $maxPrice = $request->input('maxPrice');
       $minSize = $request->input('minSize');
       $maxSize = $request->input('maxSize');
+      $teamFormed = $request->input('teamFormed');
 
       if(isset($keyword)){
         $houses = $houses->where(function ($query) use ($keyword){
@@ -238,6 +239,10 @@ class HouseController extends Controller
       }
       if(isset($maxSize)){
         $houses = $houses->where("size", '<=', $maxSize);
+      }
+      if(isset($teamFormed)&& $teamFormed == true){
+        $grouped_houseId = Group::select('house_id')->groupBy('house_id')->get();
+        $houses = $houses->whereIn("id", $grouped_houseId);
       }
 
       $houses = $houses->where('is_deleted', 0)->get(); // get houses that are not deleted only
@@ -860,7 +865,7 @@ class HouseController extends Controller
           $result_teamMember = [
             'id' => $user_id,
             'name' => User::where('id',$user_id)->first()->username,
-            'role' => ((Group::where('id', $id)->first()->leader_user_id==$teamMember->member_user_id)?1:0), // 1 represent "leaders" when 0 represnet "regular members"
+            'role' => ((Group::where('id', $id)->first()->leader_user_id==$teamMember->member_user_id)?0:1), // 0 represent "leaders" when 1 represnet "regular members"
             'photoURL' => Profile::where('user_id', $user_id)->first()->icon_url //to be added to the ERD
           ];
           array_push($result_teamMembers, $result_teamMember);
