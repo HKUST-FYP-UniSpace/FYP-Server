@@ -860,7 +860,7 @@ class HouseController extends Controller
           $result_teamMember = [
             'id' => $user_id,
             'name' => User::where('id',$user_id)->first()->username,
-            'role' => ((Group::where('id', $id)->first()->leader_user_id==$teamMember->member_user_id)?1:0), // 1 represent "leaders" when 0 represnet "regular members"
+            'role' => ((Group::where('id', $id)->first()->leader_user_id==$teamMember->member_user_id)?0:1), // 0 represent "leaders" when 1 represnet "regular members"
             'photoURL' => Profile::where('user_id', $user_id)->first()->icon_url //to be added to the ERD
           ];
           array_push($result_teamMembers, $result_teamMember);

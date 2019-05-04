@@ -313,7 +313,7 @@ class TradeController extends Controller
         $trades = $trades->whereIn('trade_category_id', $category);
       }
       if(isset($itemCondition)){
-        $trades = $trades->whereIn('trade_condition_type', self::convertTradeConditionIdtoStr($itemCondition));
+        $trades = $trades->whereIn('trade_condition_type', $itemCondition);
       }
       if(isset($minPrice)){
         $trades = $trades->where('price', '>=', $minPrice);
