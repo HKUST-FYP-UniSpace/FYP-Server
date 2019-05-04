@@ -350,7 +350,7 @@ class OwnerController extends Controller
 
         $temp++;
       }
-      $response = ['isSuccess' => true, 'counter' => $temp];
+      $response = ['isSuccess' => true];
 
     }
     else{
