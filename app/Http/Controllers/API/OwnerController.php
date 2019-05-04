@@ -288,7 +288,7 @@ class OwnerController extends Controller
     $house->address = $request->input('address');
     $house->district_id = app('App\Http\Controllers\API\HouseController')->convertDistrictEnumToId($request->input('district_id'));//extra
     // $house->description = $request->input('description'); //extra
-    $house->description = "";
+    $house->description = "*";
     $house->max_ppl = $request->input('max_ppl'); //extra
     $house->price = $request->input('price');
     $house->status = 2; //extra //set to "reveal" by default
