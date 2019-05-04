@@ -213,6 +213,7 @@ class HouseController extends Controller
       $maxPrice = $request->input('maxPrice');
       $minSize = $request->input('minSize');
       $maxSize = $request->input('maxSize');
+      $teamFormed = $request->input('teamFormed');
 
       if(isset($keyword)){
         $houses = $houses->where(function ($query) use ($keyword){
@@ -238,6 +239,10 @@ class HouseController extends Controller
       }
       if(isset($maxSize)){
         $houses = $houses->where("size", '<=', $maxSize);
+      }
+      if(isset($teamFormed)&& $teamFormed == true){
+        $grouped_houseId = Group::select('house_id')->groupBy('house_id')->get();
+        $houses = $houses->whereIn("id", $grouped_houseId);
       }
 
       $houses = $houses->where('is_deleted', 0)->get(); // get houses that are not deleted only
