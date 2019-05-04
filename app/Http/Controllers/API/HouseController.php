@@ -858,7 +858,7 @@ class HouseController extends Controller
     // helper function that retrieve an array of team members given housePostGroup/GroupDetail id
     public function get_teamMembers($id){
         $result_teamMembers = array();
-        $teamMembers = GroupDetail::where('group_id', $id)->get();
+        $teamMembers = GroupDetail::where('group_id', $id)->where('status', 1)->get();
         foreach($teamMembers as $teamMember){
           //$user_id = Tenant::where('id', $teamMember->tenant_id)->first()->user_id;
           $user_id = (int)$teamMember->member_user_id;
